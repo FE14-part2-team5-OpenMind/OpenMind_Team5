@@ -48,6 +48,7 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
     width: 100%;
     height: 100%;
+    background-color: rgba(249, 249, 249, 1);
   } 
 
   h1, h2, h3 {

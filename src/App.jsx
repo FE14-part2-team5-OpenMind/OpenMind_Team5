@@ -1,13 +1,10 @@
 import styled from "styled-components";
 import "./reset.css";
-const Test = styled.div`
-  font-size: var(--caption1-medium);
-  color: var(--yellow50);
-`;
+import IndividualFeed from "./pages/IndividualFeed";
 function App() {
   return (
     <>
-      <Test>테스트</Test>
+      <IndividualFeed />
     </>
   );
 }
