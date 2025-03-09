@@ -1,14 +1,20 @@
-import styled from "styled-components";
-import "./reset.css";
+import styled from 'styled-components';
+import './reset.css';
+import MainPage from './pages/MainPage';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 const Test = styled.div`
   font-size: var(--caption1-medium);
   color: var(--yellow50);
 `;
+
 function App() {
   return (
-    <>
-      <Test>테스트</Test>
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<MainPage />} />
+      </Routes>
+    </Router>
   );
 }
 
