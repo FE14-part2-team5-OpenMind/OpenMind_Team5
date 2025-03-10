@@ -1,0 +1,117 @@
+import styled from "styled-components";
+
+export const Card = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 684px;
+  padding: 32px;
+  background-color: var(--gray10);
+  box-shadow: 0px 4px 4px rgba(140, 140, 140, 0.25);
+  border-radius: 16px;
+
+  @media (max-width: 767px) {
+    width: 295px;
+  }
+
+  div.head {
+    display: flex;
+    flex-direction: row;
+
+    img {
+      margin-left: auto;
+    }
+  }
+
+  div.question {
+    display: flex;
+    flex-direction: column;
+    margin-top: 36px;
+
+    span.tip {
+      font: var(--caption1-medium);
+      color: var(--gray40);
+    }
+    span.content {
+      margin-top: 4px;
+      font: var(--body2-regular);
+      color: var(--gray60);
+
+      @media (max-width: 767px) {
+        font: var(--body3-regular);
+      }
+    }
+  }
+
+  div.answer {
+    display: flex;
+    flex-direction: row;
+    margin-top: 32px;
+
+    img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+
+      @media (max-width: 767px) {
+        width: 32px;
+        height: 32px;
+      }
+    }
+    div.content {
+      display: flex;
+      flex-direction: column;
+      margin-left: 12px;
+
+      span.userName {
+        color: var(--gray60);
+        font: var(--body2-regular);
+
+        @media (max-width: 767px) {
+          font: var(--caption1-regular);
+        }
+      }
+      p.content-answer {
+        color: var(--gray60);
+        font: var(--body3-regular);
+        margin-top: 4px;
+      }
+    }
+  }
+
+  div.divider {
+    border: 0.5px solid var(--gray30);
+    margin-top: 32px;
+  }
+
+  div.like-dislike {
+    display: flex;
+    flex-direction: row;
+    margin-top: 25px;
+    align-items: center;
+
+    span {
+      margin-left: 6px;
+    }
+    div.like {
+      color: var(--gray40);
+      font: var(--caption1-medium);
+
+      img {
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+      }
+    }
+    div.dislike {
+      color: var(--gray40);
+      font: var(--caption1-medium);
+      margin-left: 32px;
+
+      img {
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+      }
+    }
+  }
+`;
