@@ -1,6 +1,6 @@
-import { createGlobalStyle } from "styled-components";
-import "../../assets/font/actor/Actor.css";
-import "../../assets/font/pretendard/pretendard.css";
+import { createGlobalStyle } from 'styled-components';
+import '../../assets/font/actor/Actor.css';
+import '../../assets/font/pretendard/pretendard.css';
 
 const GlobalStyle = createGlobalStyle`
   :root{
