@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import backgroundImage from "../assets/images/IndividualFeed-BackgroundImage.png";
 import logo from "../assets/images/logo.png";
 import profileImage from "../assets/images/profile-image.png";
@@ -8,9 +8,20 @@ import message from "../assets/images/Messages.png";
 import link from "../assets/images/Link.png";
 import FeedCard from "../components/FeedCard";
 import AddQuestion from "../components/AddQuestion";
-import { Wrapper, Logo, Profile, Icons, Icon, BodyWrapper } from "../styles/individualFeedStyle";
+import {
+  Wrapper,
+  Logo,
+  Profile,
+  Icons,
+  Icon,
+  BodyWrapper,
+} from "../styles/individualFeedStyle";
+import { useSubjectInfo } from "../hooks/useSubjectInfo";
 
 const IndividualFeed = () => {
+  const [offset, setOffset] = useState(0);
+  const { userInfo } = useSubjectInfo();
+
   return (
     <Wrapper>
       <img src={backgroundImage} alt="배경사진" />
@@ -33,7 +44,6 @@ const IndividualFeed = () => {
         </Icon>
       </Icons>
 
-      {/* 질문이 있다고 가정하고 퍼블리싱 */}
       {/* 질문을 보여주는 부분 */}
       <BodyWrapper>
         <div className="questionNum">
@@ -42,7 +52,8 @@ const IndividualFeed = () => {
         </div>
 
         {/* 카드 예시 */}
-        <FeedCard />
+        {/* userInfo를 .map해서 만들어야 함 */}
+        <FeedCard offset={offset} />
       </BodyWrapper>
 
       {/* 질문 작성하기 버튼 */}

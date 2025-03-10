@@ -5,8 +5,11 @@ import More from "../assets/icons/More.png";
 import thumbsUp from "../assets/icons/thumbs-up.png";
 import thumbsDown from "../assets/icons/thumbs-down.png";
 import profileImage from "../assets/images/profile-image.png";
+import { useIndividualQuestions } from "../hooks/useIndividualQuestions";
 
-const FeedCard = () => {
+const FeedCard = ({offset}) => {
+    const { questionInfo } = useIndividualQuestions({offset});
+
   return (
     <Card>
       <div className="head">
