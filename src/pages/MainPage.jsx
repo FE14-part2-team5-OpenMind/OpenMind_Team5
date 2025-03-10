@@ -14,12 +14,31 @@ import {
   UserIcon,
   NameInput,
 } from '../styles/mainpageStyle';
+import { sendUserName } from '../services/mainpageService';
+import { useNavigate } from 'react-router-dom';
 
 function MainPage() {
   const [name, setName] = useState('');
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     setName(e.target.value);
+  };
+
+  const handleSubmit = async () => {
+    //질문받기 버튼을 클릭하면 피드 생성 후 id를 가지고 응답 페이지로 이동
+    try {
+      const response = await sendUserName(name);
+      console.log(response);
+
+      if (response?.id) {
+        navigate(`/post/${response.id}/answer`);
+      } else {
+        console.error('응답에 ID가 없습니다.');
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -44,7 +63,9 @@ function MainPage() {
                 onChange={handleInputChange}
               />
             </InputField>
-            <Button variant="submit">질문 받기</Button>
+            <Button variant="submit" onClick={handleSubmit}>
+              질문 받기
+            </Button>
           </FormContainer>
         </MainContainer>
       </WrapperContainer>
