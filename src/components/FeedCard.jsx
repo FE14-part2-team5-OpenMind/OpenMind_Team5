@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "../styles/feedCardStyle";
 import Badge from "./Badge";
 import More from "../assets/icons/More.png";
@@ -6,10 +6,20 @@ import thumbsUp from "../assets/icons/thumbs-up.png";
 import thumbsDown from "../assets/icons/thumbs-down.png";
 
 const FeedCard = ({ question, userName, profileImage }) => {
+  const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    if (question.answer) {
+      setDone(true);
+    } else {
+      setDone(false);
+    }
+  }, []);
+
   return (
     <Card>
       <div className="head">
-        <Badge finished={true} />
+        <Badge finished={done} />
         <img src={More} alt="more 아이콘" />
       </div>
 
@@ -20,13 +30,17 @@ const FeedCard = ({ question, userName, profileImage }) => {
       </div>
 
       {/* 답변 */}
-      <div className="answer">
-        <img src={profileImage} alt="프로필 사진" />
-        <div className="content">
-          <span className="userName">{userName}</span>
-          <p className="content-answer">{question.answer.content}</p>
+      {done ? (
+        <div className="answer">
+          <img src={profileImage} alt="프로필 사진" />
+          <div className="content">
+            <span className="userName">{userName}</span>
+            <p className="content-answer">{question.answer?.content}</p>
+          </div>
         </div>
-      </div>
+      ) : (
+        <></>
+      )}
 
       <div className="divider"></div>
 
