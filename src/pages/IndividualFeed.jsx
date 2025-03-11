@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import backgroundImage from "../assets/images/IndividualFeed-BackgroundImage.png";
 import logo from "../assets/images/logo.png";
-import profileImage from "../assets/images/profile-image.png";
 import facebook from "../assets/images/Facebook.png";
 import kakao from "../assets/images/Kakaotalk.png";
 import message from "../assets/images/Messages.png";
@@ -15,19 +14,37 @@ import {
   Icons,
   Icon,
   BodyWrapper,
+  ProfilePlaceholder,
 } from "../styles/individualFeedStyle";
 import { useSubjectInfo } from "../hooks/useSubjectInfo";
+import { useIndividualQuestions } from "../hooks/useIndividualQuestions";
+import FeedCardPlaceholder from "../components/FeedCardPlaceholder";
 
 const IndividualFeed = () => {
   const [offset, setOffset] = useState(0);
   const { userInfo } = useSubjectInfo();
+  const { questionInfo, count } = useIndividualQuestions({ offset });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (userInfo && questionInfo) {
+      setLoading(false);
+    } else {
+      setLoading(true);
+    }
+  }, [userInfo, questionInfo]);
 
   return (
     <Wrapper>
+      {/* 배경사진, 사용자 이름은 userInfo에서 가져온다 */}
       <img src={backgroundImage} alt="배경사진" />
       <Logo src={logo} alt="로고" />
-      <Profile src={profileImage} alt="프로필 이미지" />
-      <span className="profileName">아초는 고양이</span>
+      {loading ? (
+        <ProfilePlaceholder />
+      ) : (
+        <Profile src={userInfo.imageSource} />
+      )}
+      <span className="profileName">{userInfo.name}</span>
 
       <Icons>
         <Icon colorType="link">
@@ -48,12 +65,29 @@ const IndividualFeed = () => {
       <BodyWrapper>
         <div className="questionNum">
           <img src={message} alt="질문 아이콘" />
-          <span>N개의 질문이 있습니다</span>
+          {/* 질문이 없는 경우의 개수를 나타내는 문장은 나경님이 추가 */}
+          <span>{count}개의 질문이 있습니다</span>
         </div>
 
-        {/* 카드 예시 */}
-        {/* userInfo를 .map해서 만들어야 함 */}
-        <FeedCard offset={offset} />
+        {/* 질문이 없는 경우의 카드 부분은 나경님이 추가 */}
+        {loading ? (
+          <>
+            {Array.from({ length: 5 }).map((_, index) => (
+              <FeedCardPlaceholder key={index} />
+            ))}
+          </>
+        ) : questionInfo.length > 0 ? (
+          questionInfo.map((question, index) => {
+            <FeedCard
+              question={question}
+              key={index}
+              userName={userInfo.name}
+              profileImage={userInfo.imageSource}
+            />;
+          })
+        ) : (
+          <></>
+        )}
       </BodyWrapper>
 
       {/* 질문 작성하기 버튼 */}

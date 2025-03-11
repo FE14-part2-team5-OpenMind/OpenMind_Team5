@@ -1,4 +1,10 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+
+const placeholderGlow = keyframes`
+    50% {
+    opacity: 0.2;
+  }
+`;
 
 export const Wrapper = styled.div`
   display: flex;
@@ -31,6 +37,21 @@ export const Profile = styled.img`
   width: 136px;
   height: 136px;
   border-radius: 50%;
+
+  @media (max-width: 767px) {
+    width: 104px;
+    height: 104px;
+  }
+`;
+
+export const ProfilePlaceholder = styled.img`
+  position: absolute;
+  top: 129px;
+  width: 136px;
+  height: 136px;
+  border-radius: 50%;
+  background: var(--gray30);
+  animation: ${placeholderGlow} 1.5s infinite ease-in-out;
 
   @media (max-width: 767px) {
     width: 104px;
