@@ -33,6 +33,11 @@ const IndividualFeed = () => {
   const { moreData } = useScroll({ setOffset, questionInfo, LIMIT });
   const [loading, setLoading] = useState(true);
 
+  // clipboard에 현재 url 복사
+  const copyUrl = () => {
+    navigator.clipboard.writeText(window.location.href);
+  };
+
   // 스켈리톤 ui를 위한 상태 변경
   useEffect(() => {
     if (userInfo && questionInfo) {
@@ -55,7 +60,7 @@ const IndividualFeed = () => {
       <span className="profileName">{userInfo.name}</span>
 
       <Icons>
-        <Icon colorType="link">
+        <Icon colorType="link" onClick={copyUrl}>
           <img src={link} alt="링크" />
         </Icon>
         <Icon
