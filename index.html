@@ -5,6 +5,14 @@
     <!-- <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>OpenMind</title>
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.5.0/kakao.min.js"></script>
+    <script>
+      if (!window.Kakao) {
+        console.error("❌ Kakao SDK가 로드되지 않았습니다.");
+      } else {
+        console.log("✅ Kakao SDK 로드 성공");
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
