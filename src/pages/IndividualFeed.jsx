@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import backgroundImage from "../assets/images/IndividualFeed-BackgroundImage.png";
 import logo from "../assets/images/logo.png";
 import facebook from "../assets/images/Facebook.png";
@@ -19,13 +19,33 @@ import {
 import { useSubjectInfo } from "../hooks/useSubjectInfo";
 import { useIndividualQuestions } from "../hooks/useIndividualQuestions";
 import FeedCardPlaceholder from "../components/FeedCardPlaceholder";
+import { RotatingAnimation } from "../styles/rotatingAnimation";
 
 const IndividualFeed = () => {
   const [offset, setOffset] = useState(0);
+  const LIMIT = 10;
   const { userInfo } = useSubjectInfo();
-  const { questionInfo, count } = useIndividualQuestions({ offset });
+  const { questionInfo, count } = useIndividualQuestions({
+    offset,
+    limit: LIMIT,
+  });
   const [loading, setLoading] = useState(true);
+  const [moreData, setMoreData] = useState(false);
 
+  // 무한 스크롤
+  const handleScroll = useCallback(() => {
+    if (
+      window.innerHeight + window.scrollY >=
+      document.body.offsetHeight - 50
+    ) {
+      if (moreData === false) {
+        setMoreData(true);
+        setOffset((prev) => prev + LIMIT);
+      }
+    }
+  }, [moreData]);
+
+  // 스켈리톤 ui를 위한 상태 변경
   useEffect(() => {
     if (userInfo && questionInfo) {
       setLoading(false);
@@ -33,6 +53,19 @@ const IndividualFeed = () => {
       setLoading(true);
     }
   }, [userInfo, questionInfo]);
+
+  // 무한 스크롤 이벤트 등록, 삭제
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+
+  // 추가로 정보를 더 받아와서 배열이 변경되면 moreData를 false로 변경
+  useEffect(() => {
+    if (questionInfo?.length > 0) {
+      setMoreData(false);
+    }
+  }, [questionInfo]);
 
   return (
     <Wrapper>
@@ -76,19 +109,21 @@ const IndividualFeed = () => {
               <FeedCardPlaceholder key={index} />
             ))}
           </>
-        ) : questionInfo.length > 0 ? (
-          questionInfo.map((question, index) => {
+        ) : questionInfo?.length > 0 ? (
+          questionInfo.map((question, index) => (
             <FeedCard
               question={question}
               key={index}
               userName={userInfo.name}
               profileImage={userInfo.imageSource}
-            />;
-          })
+            />
+          ))
         ) : (
           <></>
         )}
       </BodyWrapper>
+
+      {(moreData && (questionInfo.length < questionInfo.count)) && <RotatingAnimation />}
 
       {/* 질문 작성하기 버튼 */}
       <AddQuestion />
