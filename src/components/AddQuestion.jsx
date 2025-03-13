@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useState } from "react";
 import { useEffect } from "react";
+import useModal from "../hooks/useModal";
 
 const Button = styled.button`
   position: fixed;
@@ -33,8 +34,13 @@ const Button = styled.button`
   }
 `;
 
-const AddQuestion = ({ onClick }) => {
+const AddQuestion = () => {
   const [buttonText, setButtonText] = useState("");
+  const { setOpen, open } = useModal();
+
+  const handleOpen = () => {
+    setOpen(!open);
+  }
 
   useEffect(() => {
     //창 크기가 모바일 일 때, 버튼 text 바꾸기
@@ -52,11 +58,7 @@ const AddQuestion = ({ onClick }) => {
     };
   }, []);
 
-  const handleWriteQuestion = () => {
-    onClick();
-  };
-
-  return <Button onClick={handleWriteQuestion}>{buttonText}</Button>;
+  return <Button onClick={handleOpen}>{buttonText}</Button>;
 };
 
 export default AddQuestion;

@@ -19,16 +19,8 @@ import { RotatingAnimation } from "../styles/rotatingAnimation";
 import { useScroll } from "../hooks/useScroll";
 import IconBox from "../components/IconBox";
 import Modal from "../components/Modal/Modal";
-// =======
-//   EmptyIcon,
-// } from '../styles/individualFeedStyle';
-// import { useSubjectInfo } from '../hooks/useSubjectInfo';
-// import { useIndividualQuestions } from '../hooks/useIndividualQuestions';
-// import FeedCardPlaceholder from '../components/FeedCardPlaceholder';
-// import { RotatingAnimation } from '../styles/rotatingAnimation';
-// import { useScroll } from '../hooks/useScroll';
-// import IconBox from '../components/IconBox';
 import emptyIcon from "../assets/images/NoQuestion.svg";
+import useModal from "../hooks/useModal";
 
 const IndividualFeed = () => {
   const [offset, setOffset] = useState(0);
@@ -40,7 +32,7 @@ const IndividualFeed = () => {
   });
   const { moreData } = useScroll({ setOffset, questionInfo, LIMIT, count });
   const [loading, setLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { isModalOpen } = useModal();
 
   // 스켈리톤 ui를 위한 상태 변경
   useEffect(() => {
@@ -53,10 +45,6 @@ const IndividualFeed = () => {
 
   console.log(questionInfo);
   console.log(count);
-
-  const handleModalOpen = () => {
-    setIsModalOpen(!isModalOpen);
-  };
 
   return (
     <Wrapper>
@@ -107,8 +95,8 @@ const IndividualFeed = () => {
       {moreData && questionInfo.length < count && <RotatingAnimation />}
 
       {/* 질문 작성하기 버튼 */}
-      <AddQuestion onClick={handleModalOpen} />
-      {isModalOpen && <Modal onClose={handleModalOpen} userInfo={userInfo} />}
+      <AddQuestion />
+      {isModalOpen && <Modal userInfo={userInfo} />}
     </Wrapper>
   );
 };

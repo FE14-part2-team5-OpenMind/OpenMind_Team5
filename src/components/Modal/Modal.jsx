@@ -15,22 +15,22 @@ import {
   TextArea,
   SendingButton,
 } from "../../styles/modalStyle";
+import useModal from "../../hooks/useModal";
 
-const Modal = ({ onClose, userInfo }) => {
+const Modal = ({ userInfo }) => {
   const [textValue, setTextValue] = useState("");
+  const { setOpen, open } = useModal();
 
   const handleModalClose = (e) => {
     // 모달창 상태변화 기능 구현
-
     if (e.target === e.currentTarget) {
-      onClose();
+      setOpen(!open);
     }
   };
 
   const handleTextChange = (e) => {
     // TextArea 상태 변화
     const nextValue = e.target.value;
-
     setTextValue(nextValue);
   };
 
@@ -46,10 +46,10 @@ const Modal = ({ onClose, userInfo }) => {
         </TitleContainer>
         <Receiver>
           <To>To.</To>
-          <Profile src={userInfo.imageSource} alt="프로필 이미지" />
+          <Profile src={userInfo?.imageSource} alt="프로필 이미지" />
           {/* userName 연결 */}
           {/* 아초는 고양이  */}
-          {userInfo.name}
+          {userInfo?.name}
         </Receiver>
         {/* Question 입력 공간 */}
         <TextArea
