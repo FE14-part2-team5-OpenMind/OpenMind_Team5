@@ -85,6 +85,7 @@ export const Icon = styled.a`
   color: white;
   font-size: 1.5rem;
   text-decoration: none;
+  cursor: pointer;
 `;
 
 export const BodyWrapper = styled.div`

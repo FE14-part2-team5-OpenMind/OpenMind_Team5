@@ -20,6 +20,7 @@ import { useSubjectInfo } from "../hooks/useSubjectInfo";
 import { useIndividualQuestions } from "../hooks/useIndividualQuestions";
 import FeedCardPlaceholder from "../components/FeedCardPlaceholder";
 import { RotatingAnimation } from "../styles/rotatingAnimation";
+import { useScroll } from "../hooks/useScroll";
 
 const IndividualFeed = () => {
   const [offset, setOffset] = useState(0);
@@ -29,8 +30,14 @@ const IndividualFeed = () => {
     offset,
     limit: LIMIT,
   });
+  const { moreData } = useScroll({ setOffset, questionInfo, LIMIT });
   const [loading, setLoading] = useState(true);
   const [moreData, setMoreData] = useState(false);
+
+  // clipboard에 현재 url 복사
+  const copyUrl = () => {
+    navigator.clipboard.writeText(window.location.href);
+  };
 
   // 무한 스크롤
   const handleScroll = useCallback(() => {
@@ -80,7 +87,7 @@ const IndividualFeed = () => {
       <span className="profileName">{userInfo.name}</span>
 
       <Icons>
-        <Icon colorType="link">
+        <Icon colorType="link" onClick={copyUrl}>
           <img src={link} alt="링크" />
         </Icon>
         <Icon
@@ -123,7 +130,9 @@ const IndividualFeed = () => {
         )}
       </BodyWrapper>
 
-      {(moreData && (questionInfo.length < questionInfo.count)) && <RotatingAnimation />}
+      {moreData && questionInfo.length < questionInfo.count && (
+        <RotatingAnimation />
+      )}
 
       {/* 질문 작성하기 버튼 */}
       <AddQuestion />
