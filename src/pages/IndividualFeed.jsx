@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import backgroundImage from '../assets/images/IndividualFeed-BackgroundImage.png';
-import logo from '../assets/images/logo.png';
-import message from '../assets/images/Messages.png';
-import FeedCard from '../components/FeedCard';
-import AddQuestion from '../components/AddQuestion';
+import React, { useCallback, useEffect, useState } from "react";
+import backgroundImage from "../assets/images/IndividualFeed-BackgroundImage.png";
+import logo from "../assets/images/logo.png";
+import message from "../assets/images/Messages.png";
+import FeedCard from "../components/FeedCard";
+import AddQuestion from "../components/AddQuestion";
 import {
   Wrapper,
   Logo,
@@ -11,14 +11,24 @@ import {
   BodyWrapper,
   ProfilePlaceholder,
   EmptyIcon,
-} from '../styles/individualFeedStyle';
-import { useSubjectInfo } from '../hooks/useSubjectInfo';
-import { useIndividualQuestions } from '../hooks/useIndividualQuestions';
-import FeedCardPlaceholder from '../components/FeedCardPlaceholder';
-import { RotatingAnimation } from '../styles/rotatingAnimation';
-import { useScroll } from '../hooks/useScroll';
-import IconBox from '../components/IconBox';
-import emptyIcon from '../assets/images/NoQuestion.svg';
+} from "../styles/individualFeedStyle";
+import { useSubjectInfo } from "../hooks/useSubjectInfo";
+import { useIndividualQuestions } from "../hooks/useIndividualQuestions";
+import FeedCardPlaceholder from "../components/FeedCardPlaceholder";
+import { RotatingAnimation } from "../styles/rotatingAnimation";
+import { useScroll } from "../hooks/useScroll";
+import IconBox from "../components/IconBox";
+import Modal from "../components/Modal/Modal";
+// =======
+//   EmptyIcon,
+// } from '../styles/individualFeedStyle';
+// import { useSubjectInfo } from '../hooks/useSubjectInfo';
+// import { useIndividualQuestions } from '../hooks/useIndividualQuestions';
+// import FeedCardPlaceholder from '../components/FeedCardPlaceholder';
+// import { RotatingAnimation } from '../styles/rotatingAnimation';
+// import { useScroll } from '../hooks/useScroll';
+// import IconBox from '../components/IconBox';
+import emptyIcon from "../assets/images/NoQuestion.svg";
 
 const IndividualFeed = () => {
   const [offset, setOffset] = useState(0);
@@ -30,6 +40,7 @@ const IndividualFeed = () => {
   });
   const { moreData } = useScroll({ setOffset, questionInfo, LIMIT, count });
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // 스켈리톤 ui를 위한 상태 변경
   useEffect(() => {
@@ -42,6 +53,10 @@ const IndividualFeed = () => {
 
   console.log(questionInfo);
   console.log(count);
+
+  const handleModalOpen = () => {
+    setIsModalOpen(!isModalOpen);
+  };
 
   return (
     <Wrapper>
@@ -64,7 +79,7 @@ const IndividualFeed = () => {
           <img src={message} alt="질문 아이콘" />
           <span>
             {count === 0
-              ? '아직 질문이 없습니다.'
+              ? "아직 질문이 없습니다."
               : `${count}개의 질문이 있습니다.`}
           </span>
         </div>
@@ -92,7 +107,8 @@ const IndividualFeed = () => {
       {moreData && questionInfo.length < count && <RotatingAnimation />}
 
       {/* 질문 작성하기 버튼 */}
-      <AddQuestion />
+      <AddQuestion onClick={handleModalOpen} />
+      {isModalOpen && <Modal onClose={handleModalOpen} userInfo={userInfo} />}
     </Wrapper>
   );
 };
