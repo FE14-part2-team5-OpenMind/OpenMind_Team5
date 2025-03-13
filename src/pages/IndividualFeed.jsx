@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
-import backgroundImage from "../assets/images/IndividualFeed-BackgroundImage.png";
-import logo from "../assets/images/logo.png";
-import facebook from "../assets/images/Facebook.png";
-import kakao from "../assets/images/Kakaotalk.png";
-import message from "../assets/images/Messages.png";
-import link from "../assets/images/Link.png";
-import FeedCard from "../components/FeedCard";
-import AddQuestion from "../components/AddQuestion";
+import React, { useEffect, useState } from 'react';
+import backgroundImage from '../assets/images/IndividualFeed-BackgroundImage.png';
+import logo from '../assets/images/logo.png';
+import facebook from '../assets/images/Facebook.png';
+import kakao from '../assets/images/Kakaotalk.png';
+import message from '../assets/images/Messages.png';
+import link from '../assets/images/Link.png';
+import FeedCard from '../components/FeedCard';
+import AddQuestion from '../components/AddQuestion';
+import emptyIcon from '../assets/images/NoQuestion.svg';
 import {
   Wrapper,
   Logo,
@@ -15,10 +16,11 @@ import {
   Icon,
   BodyWrapper,
   ProfilePlaceholder,
-} from "../styles/individualFeedStyle";
-import { useSubjectInfo } from "../hooks/useSubjectInfo";
-import { useIndividualQuestions } from "../hooks/useIndividualQuestions";
-import FeedCardPlaceholder from "../components/FeedCardPlaceholder";
+  EmptyIcon,
+} from '../styles/individualFeedStyle';
+import { useSubjectInfo } from '../hooks/useSubjectInfo';
+import { useIndividualQuestions } from '../hooks/useIndividualQuestions';
+import FeedCardPlaceholder from '../components/FeedCardPlaceholder';
 
 const IndividualFeed = () => {
   const [offset, setOffset] = useState(0);
@@ -62,31 +64,34 @@ const IndividualFeed = () => {
       </Icons>
 
       {/* 질문을 보여주는 부분 */}
-      <BodyWrapper>
+      <BodyWrapper count={count}>
         <div className="questionNum">
           <img src={message} alt="질문 아이콘" />
-          {/* 질문이 없는 경우의 개수를 나타내는 문장은 나경님이 추가 */}
-          <span>{count}개의 질문이 있습니다</span>
+          <span>
+            {count === 0
+              ? '아직 질문이 없습니다.'
+              : `${count}개의 질문이 있습니다.`}
+          </span>
         </div>
 
+        {count === 0 && <EmptyIcon src={emptyIcon} alt="질문 없을 때 이미지" />}
+
         {/* 질문이 없는 경우의 카드 부분은 나경님이 추가 */}
-        {loading ? (
+        {count !== 0 && (
           <>
-            {Array.from({ length: 5 }).map((_, index) => (
-              <FeedCardPlaceholder key={index} />
-            ))}
+            {loading
+              ? Array.from({ length: 5 }).map((_, index) => (
+                  <FeedCardPlaceholder key={index} />
+                ))
+              : questionInfo.map((question, index) => (
+                  <FeedCard
+                    question={question}
+                    key={index}
+                    userName={userInfo.name}
+                    profileImage={userInfo.imageSource}
+                  />
+                ))}
           </>
-        ) : questionInfo.length > 0 ? (
-          questionInfo.map((question, index) => {
-            <FeedCard
-              question={question}
-              key={index}
-              userName={userInfo.name}
-              profileImage={userInfo.imageSource}
-            />;
-          })
-        ) : (
-          <></>
         )}
       </BodyWrapper>
 
