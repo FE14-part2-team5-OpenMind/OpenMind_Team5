@@ -69,8 +69,6 @@ const IndividualFeed = () => {
           </span>
         </div>
 
-        {count === 0 && <EmptyIcon src={emptyIcon} alt="질문 없을 때 이미지" />}
-
         {loading ? (
           <>
             {Array.from({ length: 5 }).map((_, index) => (
@@ -86,7 +84,9 @@ const IndividualFeed = () => {
               profileImage={userInfo.imageSource}
             />
           ))
-        ) : null}
+        ) : (
+          <EmptyIcon src={emptyIcon} alt="질문 없을 때 이미지" />
+        )}
       </BodyWrapper>
 
       {moreData && questionInfo.length < count && <RotatingAnimation />}
