@@ -13,6 +13,7 @@ export const useIndividualQuestions = ({ offset, limit = 10 }) => {
       const response = await getIndividualQuestions(id, limit, offset);
       setQuestionInfo((prev) => [...prev, ...response.results]);
       setCount(response.count);
+      console.log(`offset : ${offset}`);
     };
 
     fetchIndividualQuestions();

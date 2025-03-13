@@ -8,6 +8,7 @@ export const Card = styled.div`
   background-color: var(--gray10);
   box-shadow: 0px 4px 4px rgba(140, 140, 140, 0.25);
   border-radius: 16px;
+  margin-top: 16px;
 
   @media (max-width: 767px) {
     width: 295px;
@@ -96,7 +97,18 @@ export const Card = styled.div`
       color: var(--gray40);
       font: var(--caption1-medium);
 
-      img {
+      div.like-icon {
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+      }
+    }
+    div.like-clicked {
+      color: var(--blue50);
+      font: var(--caption1-medium);
+
+      div.like-icon {
+        border-color: var(--blue50);
         width: 16px;
         height: 16px;
         cursor: pointer;
@@ -107,7 +119,19 @@ export const Card = styled.div`
       font: var(--caption1-medium);
       margin-left: 32px;
 
-      img {
+      div.dislike-icon {
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+      }
+    }
+    div.dislike-clicked {
+      color: var(--red50);
+      font: var(--caption1-medium);
+      margin-left: 32px;
+
+      div.dislike-icon {
+        border-color: var(--red50);
         width: 16px;
         height: 16px;
         cursor: pointer;

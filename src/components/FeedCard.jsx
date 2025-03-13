@@ -2,11 +2,36 @@ import React, { useEffect, useState } from "react";
 import { Card } from "../styles/feedCardStyle";
 import Badge from "./Badge";
 import More from "../assets/icons/More.png";
-import thumbsUp from "../assets/icons/thumbs-up.png";
-import thumbsDown from "../assets/icons/thumbs-down.png";
+import { BiLike } from "react-icons/bi";
+import { BiDislike } from "react-icons/bi";
+import { postLikeDislike } from "../services/postLikeDislike";
 
 const FeedCard = ({ question, userName, profileImage }) => {
   const [done, setDone] = useState(false);
+  const [isLikeClicked, setIsLikeClicked] = useState(false);
+  const [isDislikeClicked, setIsDislikeClicked] = useState(false);
+  const [like, setLike] = useState(question.like);
+  const [dislike, setDislike] = useState(question.dislike);
+
+  const handleClick = async ({ type }) => {
+    if (type === "like" && isLikeClicked === false) {
+      setIsLikeClicked(!isLikeClicked);
+      const response = await postLikeDislike({ type, id: question.id });
+      setLike(response.like);
+    } else if(type === "dislike" && isDislikeClicked === false) {
+      setIsDislikeClicked(!isDislikeClicked);
+      const response = await postLikeDislike({
+        type,
+        id: question.id,
+      });
+      setDislike(response.dislike);
+    } else if (type === "like" && isLikeClicked === true) {
+      setIsLikeClicked(!isLikeClicked);
+    } else if (type === "dislike" && isDislikeClicked === true) {
+      setIsDislikeClicked(!isDislikeClicked);
+    }
+  };
+
 
   useEffect(() => {
     if (question.answer) {
@@ -46,13 +71,19 @@ const FeedCard = ({ question, userName, profileImage }) => {
 
       {/* 좋아요 싫어요 */}
       <div className="like-dislike">
-        <div className="like">
-          <img src={thumbsUp} alt="좋아요" />
-          <span>{question.like}</span>
+        <div className={isLikeClicked ? "like-clicked" : "like"}>
+          <BiLike
+            onClick={() => handleClick({ type: "like" })}
+            className="like-icon"
+          />
+          <span>{like}</span>
         </div>
-        <div className="dislike">
-          <img src={thumbsDown} alt="싫어요" />
-          <span>{question.dislike}</span>
+        <div className={isDislikeClicked ? "dislike-clicked" : "dislike"}>
+          <BiDislike
+            onClick={() => handleClick({ type: "dislike" })}
+            className="dislike-icon"
+          />
+          <span>{dislike}</span>
         </div>
       </div>
     </Card>

@@ -1,18 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
 import backgroundImage from "../assets/images/IndividualFeed-BackgroundImage.png";
 import logo from "../assets/images/logo.png";
-import facebook from "../assets/images/Facebook.png";
-import kakao from "../assets/images/Kakaotalk.png";
 import message from "../assets/images/Messages.png";
-import link from "../assets/images/Link.png";
 import FeedCard from "../components/FeedCard";
 import AddQuestion from "../components/AddQuestion";
 import {
   Wrapper,
   Logo,
   Profile,
-  Icons,
-  Icon,
   BodyWrapper,
   ProfilePlaceholder,
 } from "../styles/individualFeedStyle";
@@ -21,7 +16,7 @@ import { useIndividualQuestions } from "../hooks/useIndividualQuestions";
 import FeedCardPlaceholder from "../components/FeedCardPlaceholder";
 import { RotatingAnimation } from "../styles/rotatingAnimation";
 import { useScroll } from "../hooks/useScroll";
-import { useKakaoShare } from "../hooks/useKakaoShare";
+import IconBox from "../components/IconBox";
 
 const IndividualFeed = () => {
   const [offset, setOffset] = useState(0);
@@ -31,31 +26,8 @@ const IndividualFeed = () => {
     offset,
     limit: LIMIT,
   });
-  const { moreData } = useScroll({ setOffset, questionInfo, LIMIT });
+  const { moreData } = useScroll({ setOffset, questionInfo, LIMIT, count });
   const [loading, setLoading] = useState(true);
-  const { shareKakao } = useKakaoShare();
-  const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-    window.location.href
-  )}`;
-  const [moreData, setMoreData] = useState(false);
-
-  // clipboard에 현재 url 복사
-  const copyUrl = () => {
-    navigator.clipboard.writeText(window.location.href);
-  };
-
-  // 무한 스크롤
-  const handleScroll = useCallback(() => {
-    if (
-      window.innerHeight + window.scrollY >=
-      document.body.offsetHeight - 50
-    ) {
-      if (moreData === false) {
-        setMoreData(true);
-        setOffset((prev) => prev + LIMIT);
-      }
-    }
-  }, [moreData]);
 
   // 스켈리톤 ui를 위한 상태 변경
   useEffect(() => {
@@ -66,18 +38,8 @@ const IndividualFeed = () => {
     }
   }, [userInfo, questionInfo]);
 
-  // 무한 스크롤 이벤트 등록, 삭제
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
-
-  // 추가로 정보를 더 받아와서 배열이 변경되면 moreData를 false로 변경
-  useEffect(() => {
-    if (questionInfo?.length > 0) {
-      setMoreData(false);
-    }
-  }, [questionInfo]);
+  console.log(questionInfo);
+  console.log(count);
 
   return (
     <Wrapper>
@@ -91,20 +53,8 @@ const IndividualFeed = () => {
       )}
       <span className="profileName">{userInfo.name}</span>
 
-      <Icons>
-        <Icon colorType="link" onClick={copyUrl}>
-          <img src={link} alt="링크" />
-        </Icon>
-        <Icon
-          onClick={() => shareKakao(window.location.href)}
-          colorType="kakao"
-        >
-          <img src={kakao} alt="카카오" />
-        </Icon>
-        <Icon href={facebookShareUrl} colorType="facebook">
-          <img src={facebook} alt="페이스북" />
-        </Icon>
-      </Icons>
+      {/* 아이콘 컴포넌트 */}
+      <IconBox />
 
       {/* 질문을 보여주는 부분 */}
       <BodyWrapper>
@@ -135,9 +85,7 @@ const IndividualFeed = () => {
         )}
       </BodyWrapper>
 
-      {moreData && questionInfo.length < questionInfo.count && (
-        <RotatingAnimation />
-      )}
+      {moreData && questionInfo.length < count && <RotatingAnimation />}
 
       {/* 질문 작성하기 버튼 */}
       <AddQuestion />
