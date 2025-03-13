@@ -106,7 +106,9 @@ export const BodyWrapper = styled.div`
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    margin: 16px auto;
+    margin-top: 16px;
+    margin-left: auto;
+    margin-right: auto;
 
     span {
       color: var(--brown40);

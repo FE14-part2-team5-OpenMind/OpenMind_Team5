@@ -26,7 +26,7 @@ const IndividualFeed = () => {
     offset,
     limit: LIMIT,
   });
-  const { moreData } = useScroll({ setOffset, questionInfo, LIMIT });
+  const { moreData } = useScroll({ setOffset, questionInfo, LIMIT, count });
   const [loading, setLoading] = useState(true);
 
   // 스켈리톤 ui를 위한 상태 변경
@@ -37,6 +37,9 @@ const IndividualFeed = () => {
       setLoading(true);
     }
   }, [userInfo, questionInfo]);
+
+  console.log(questionInfo);
+  console.log(count);
 
   return (
     <Wrapper>
@@ -82,9 +85,7 @@ const IndividualFeed = () => {
         )}
       </BodyWrapper>
 
-      {moreData && questionInfo.length < questionInfo.count && (
-        <RotatingAnimation />
-      )}
+      {moreData && questionInfo.length < count && <RotatingAnimation />}
 
       {/* 질문 작성하기 버튼 */}
       <AddQuestion />

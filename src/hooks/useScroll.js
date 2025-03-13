@@ -1,19 +1,24 @@
 import { useCallback, useEffect, useState } from "react";
 
-export const useScroll = ({ setOffset, questionInfo, LIMIT }) => {
+export const useScroll = ({ setOffset, questionInfo, LIMIT, count }) => {
   const [moreData, setMoreData] = useState(false);
+  console.log(`count: ${count}`);
+  console.log(`questionInfo 길이: ${questionInfo.length}`);
+  console.log(moreData);
 
   const handleScroll = useCallback(() => {
     if (
-      window.innerHeight + window.scrollY >=
-      document.body.offsetHeight - 50
+      document.documentElement.scrollHeight -
+        document.documentElement.clientHeight <=
+      window.scrollY
     ) {
-      if (moreData === false) {
+      if (moreData === false && questionInfo.length < count) {
+        console.log("데이터 추가로 호출");
         setMoreData(true);
         setOffset((prev) => prev + LIMIT);
       }
     }
-  }, [moreData]);
+  }, [moreData, questionInfo, count, setOffset]);
 
   // 무한 스크롤 이벤트 등록, 삭제
   useEffect(() => {
