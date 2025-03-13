@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import backgroundImage from "../assets/images/IndividualFeed-BackgroundImage.png";
 import logo from "../assets/images/logo.png";
 import facebook from "../assets/images/Facebook.png";
@@ -37,11 +37,25 @@ const IndividualFeed = () => {
   const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
     window.location.href
   )}`;
+  const [moreData, setMoreData] = useState(false);
 
   // clipboard에 현재 url 복사
   const copyUrl = () => {
     navigator.clipboard.writeText(window.location.href);
   };
+
+  // 무한 스크롤
+  const handleScroll = useCallback(() => {
+    if (
+      window.innerHeight + window.scrollY >=
+      document.body.offsetHeight - 50
+    ) {
+      if (moreData === false) {
+        setMoreData(true);
+        setOffset((prev) => prev + LIMIT);
+      }
+    }
+  }, [moreData]);
 
   // 스켈리톤 ui를 위한 상태 변경
   useEffect(() => {
@@ -51,6 +65,19 @@ const IndividualFeed = () => {
       setLoading(true);
     }
   }, [userInfo, questionInfo]);
+
+  // 무한 스크롤 이벤트 등록, 삭제
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+
+  // 추가로 정보를 더 받아와서 배열이 변경되면 moreData를 false로 변경
+  useEffect(() => {
+    if (questionInfo?.length > 0) {
+      setMoreData(false);
+    }
+  }, [questionInfo]);
 
   return (
     <Wrapper>
