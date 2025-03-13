@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes } from 'styled-components';
 
 const placeholderGlow = keyframes`
     50% {
@@ -75,13 +75,13 @@ export const Icon = styled.a`
   height: 40px;
   border-radius: 50%;
   background-color: ${({ colorType }) =>
-    colorType === "facebook"
-      ? "var(--blue50)"
-      : colorType === "kakao"
-      ? "var(--yellow50)"
-      : colorType === "link"
-      ? "var(--brown50)"
-      : "var(--gray50)"};
+    colorType === 'facebook'
+      ? 'var(--blue50)'
+      : colorType === 'kakao'
+      ? 'var(--yellow50)'
+      : colorType === 'link'
+      ? 'var(--brown50)'
+      : 'var(--gray50)'};
   color: white;
   font-size: 1.5rem;
   text-decoration: none;
@@ -93,9 +93,21 @@ export const BodyWrapper = styled.div`
   width: 716px;
   padding: 0 16px;
   padding-bottom: 16px;
-  background-color: var(--brown30);
+  background-color: var(--brown10);
   border-radius: 16px;
   margin-bottom: 136px;
+  border: 1px solid var(--brown20);
+
+  ${({ count }) =>
+    count === 0 &&
+    `
+    height: 330px;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 8px;
+    flex-shrink: 0;
+    text-align:center;
+  `}
 
   @media (max-width: 767px) {
     width: 327px;
@@ -106,9 +118,8 @@ export const BodyWrapper = styled.div`
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    margin-top: 16px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 16px auto;
+    gap: 8px;
 
     span {
       color: var(--brown40);
@@ -119,5 +130,15 @@ export const BodyWrapper = styled.div`
         font-size: 1.8rem;
       }
     }
+  }
+`;
+
+export const EmptyIcon = styled.img`
+  width: 150px;
+  height: 154px;
+  margin-top: 54px;
+
+  @media (max-width: 480px) {
+    margin-top: 35px;
   }
 `;
