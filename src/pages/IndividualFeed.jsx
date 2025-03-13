@@ -71,7 +71,6 @@ const IndividualFeed = () => {
 
         {count === 0 && <EmptyIcon src={emptyIcon} alt="질문 없을 때 이미지" />}
 
-        {/* 질문이 없는 경우의 카드 부분은 나경님이 추가 */}
         {loading ? (
           <>
             {Array.from({ length: 5 }).map((_, index) => (
