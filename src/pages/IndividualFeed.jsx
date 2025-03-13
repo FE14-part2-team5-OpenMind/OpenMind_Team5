@@ -21,6 +21,7 @@ import { useIndividualQuestions } from "../hooks/useIndividualQuestions";
 import FeedCardPlaceholder from "../components/FeedCardPlaceholder";
 import { RotatingAnimation } from "../styles/rotatingAnimation";
 import { useScroll } from "../hooks/useScroll";
+import { useKakaoShare } from "../hooks/useKakaoShare";
 
 const IndividualFeed = () => {
   const [offset, setOffset] = useState(0);
@@ -32,6 +33,10 @@ const IndividualFeed = () => {
   });
   const { moreData } = useScroll({ setOffset, questionInfo, LIMIT });
   const [loading, setLoading] = useState(true);
+  const { shareKakao } = useKakaoShare();
+  const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+    window.location.href
+  )}`;
   const [moreData, setMoreData] = useState(false);
 
   // clipboard에 현재 url 복사
@@ -91,12 +96,12 @@ const IndividualFeed = () => {
           <img src={link} alt="링크" />
         </Icon>
         <Icon
-          href="https://www.kakaocorp.com/page/service/service/KakaoTalk"
+          onClick={() => shareKakao(window.location.href)}
           colorType="kakao"
         >
           <img src={kakao} alt="카카오" />
         </Icon>
-        <Icon href="https://facebook.com" colorType="facebook">
+        <Icon href={facebookShareUrl} colorType="facebook">
           <img src={facebook} alt="페이스북" />
         </Icon>
       </Icons>
