@@ -31,7 +31,7 @@ const IndividualFeed = () => {
 
   // 스켈리톤 ui를 위한 상태 변경
   useEffect(() => {
-    if (userInfo && questionInfo) {
+    if (userInfo) {
       setLoading(false);
     } else {
       setLoading(true);
@@ -51,7 +51,7 @@ const IndividualFeed = () => {
       ) : (
         <Profile src={userInfo.imageSource} />
       )}
-      <span className="profileName">{userInfo.name}</span>
+      <span className="profileName">{userInfo?.name}</span>
 
       {/* 아이콘 컴포넌트 */}
       <IconBox />
