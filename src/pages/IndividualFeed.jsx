@@ -60,11 +60,9 @@ const IndividualFeed = () => {
       <BodyWrapper>
         <div className="questionNum">
           <img src={message} alt="질문 아이콘" />
-          {/* 질문이 없는 경우의 개수를 나타내는 문장은 나경님이 추가 */}
           <span>{count}개의 질문이 있습니다</span>
         </div>
 
-        {/* 질문이 없는 경우의 카드 부분은 나경님이 추가 */}
         {loading ? (
           <>
             {Array.from({ length: 5 }).map((_, index) => (
