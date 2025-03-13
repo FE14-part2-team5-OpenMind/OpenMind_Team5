@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import backgroundImage from "../assets/images/IndividualFeed-BackgroundImage.png";
 import logo from "../assets/images/logo.png";
 import message from "../assets/images/Messages.png";

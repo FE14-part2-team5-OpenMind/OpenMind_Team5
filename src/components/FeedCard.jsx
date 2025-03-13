@@ -32,6 +32,7 @@ const FeedCard = ({ question, userName, profileImage }) => {
     }
   };
 
+
   useEffect(() => {
     if (question.answer) {
       setDone(true);
