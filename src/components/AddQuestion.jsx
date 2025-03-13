@@ -31,8 +31,11 @@ const Button = styled.button`
   }
 `;
 
-const AddQuestion = () => {
-  return <Button>질문 작성하기</Button>;
+const AddQuestion = ({ onClick }) => {
+  const handleWriteQuestion = () => {
+    onClick();
+  };
+  return <Button onClick={handleWriteQuestion}>질문 작성하기</Button>;
 };
 
 export default AddQuestion;
