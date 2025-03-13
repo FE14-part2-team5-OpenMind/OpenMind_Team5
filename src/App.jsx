@@ -3,6 +3,7 @@ import "./reset.css";
 import MainPage from "./pages/MainPage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import IndividualFeed from "./pages/IndividualFeed";
+import QuestionList from "./pages/QuestionList";
 
 const Test = styled.div`
   font-size: var(--caption1-medium);
@@ -15,6 +16,7 @@ function App() {
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/post/:id" element={<IndividualFeed />} />
+        <Route path="/list" element={<QuestionList />} />
       </Routes>
     </Router>
   );
