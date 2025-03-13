@@ -1,22 +1,24 @@
-import React, { useCallback, useEffect, useState } from "react";
-import backgroundImage from "../assets/images/IndividualFeed-BackgroundImage.png";
-import logo from "../assets/images/logo.png";
-import message from "../assets/images/Messages.png";
-import FeedCard from "../components/FeedCard";
-import AddQuestion from "../components/AddQuestion";
+import React, { useCallback, useEffect, useState } from 'react';
+import backgroundImage from '../assets/images/IndividualFeed-BackgroundImage.png';
+import logo from '../assets/images/logo.png';
+import message from '../assets/images/Messages.png';
+import FeedCard from '../components/FeedCard';
+import AddQuestion from '../components/AddQuestion';
 import {
   Wrapper,
   Logo,
   Profile,
   BodyWrapper,
   ProfilePlaceholder,
-} from "../styles/individualFeedStyle";
-import { useSubjectInfo } from "../hooks/useSubjectInfo";
-import { useIndividualQuestions } from "../hooks/useIndividualQuestions";
-import FeedCardPlaceholder from "../components/FeedCardPlaceholder";
-import { RotatingAnimation } from "../styles/rotatingAnimation";
-import { useScroll } from "../hooks/useScroll";
-import IconBox from "../components/IconBox";
+  EmptyIcon,
+} from '../styles/individualFeedStyle';
+import { useSubjectInfo } from '../hooks/useSubjectInfo';
+import { useIndividualQuestions } from '../hooks/useIndividualQuestions';
+import FeedCardPlaceholder from '../components/FeedCardPlaceholder';
+import { RotatingAnimation } from '../styles/rotatingAnimation';
+import { useScroll } from '../hooks/useScroll';
+import IconBox from '../components/IconBox';
+import emptyIcon from '../assets/images/NoQuestion.svg';
 
 const IndividualFeed = () => {
   const [offset, setOffset] = useState(0);
@@ -57,10 +59,14 @@ const IndividualFeed = () => {
       <IconBox />
 
       {/* 질문을 보여주는 부분 */}
-      <BodyWrapper>
+      <BodyWrapper count={count}>
         <div className="questionNum">
           <img src={message} alt="질문 아이콘" />
-          <span>{count}개의 질문이 있습니다</span>
+          <span>
+            {count === 0
+              ? '아직 질문이 없습니다.'
+              : `${count}개의 질문이 있습니다.`}
+          </span>
         </div>
 
         {loading ? (
@@ -79,7 +85,7 @@ const IndividualFeed = () => {
             />
           ))
         ) : (
-          <></>
+          <EmptyIcon src={emptyIcon} alt="질문 없을 때 이미지" />
         )}
       </BodyWrapper>
 
