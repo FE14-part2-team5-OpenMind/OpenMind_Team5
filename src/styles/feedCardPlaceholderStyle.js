@@ -14,6 +14,7 @@ export const Card = styled.div`
   background-color: var(--gray10);
   box-shadow: 0px 4px 4px rgba(140, 140, 140, 0.25);
   border-radius: 16px;
+  margin-top: 16px;
 
   @media (max-width: 767px) {
     width: 295px;
