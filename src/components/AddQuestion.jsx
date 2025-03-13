@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const Button = styled.button`
   position: fixed;
@@ -32,10 +34,29 @@ const Button = styled.button`
 `;
 
 const AddQuestion = ({ onClick }) => {
+  const [buttonText, setButtonText] = useState("");
+
+  useEffect(() => {
+    //창 크기가 모바일 일 때, 버튼 text 바꾸기
+    const handleResize = () => {
+      if (window.innerWidth <= 480) {
+        setButtonText("질문 작성");
+      } else {
+        setButtonText("질문 작성하기");
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const handleWriteQuestion = () => {
     onClick();
   };
-  return <Button onClick={handleWriteQuestion}>질문 작성하기</Button>;
+
+  return <Button onClick={handleWriteQuestion}>{buttonText}</Button>;
 };
 
 export default AddQuestion;
