@@ -196,7 +196,7 @@ const AnswerPage = () => {
   });
 
   useEffect(() => {
-    // 사용자 정보도 가져와야 합니다
+    // 사용자 정보 가져옴
     const fetchUserInfo = async () => {
       try {
         // 실제 API 호출 대신 임시 데이터
@@ -211,7 +211,7 @@ const AnswerPage = () => {
       }
     };
 
-    // 모든 질문 목록을 가져옵니다
+    // 모든 질문 목록 가져옴
     const fetchQuestions = async () => {
       try {
         // 실제 API 호출 대신 임시 데이터
@@ -226,18 +226,17 @@ const AnswerPage = () => {
           },
           {
             id: "2",
-            content: "수정이나 삭제 버튼은 어디에 있나요?",
+            content: "수정이나 삭제 버튼 위치?",
             createdAt: new Date().toISOString(),
             isAnswered: true,
             answer: {
-              content:
-                "카드 우측 메뉴 버튼을 클릭하면 플로팅 메뉴가 나오고 수정 삭제 기능을 구현해두었습니다.",
+              content: "카드 우측 메뉴 버튼을 클릭하여 실행함.",
             },
             likes: 12,
           },
           {
             id: "3",
-            content: "이 프로젝트에서 가장 어려웠던 부분은 무엇인가요?",
+            content: "좋아하는 동물은?",
             createdAt: new Date().toISOString(),
             isAnswered: false,
             answer: null,
@@ -262,7 +261,7 @@ const AnswerPage = () => {
   };
 
   const handleAnswerSubmit = (questionId, answerText) => {
-    // 실제로는 API를 호출하여 답변을 제출해야 합니다
+    // 실제로 API를 호출하여 답변을 제출 필요
     console.log("답변 제출:", { questionId, content: answerText });
 
     // 테스트를 위해 로컬 상태 업데이트
@@ -283,7 +282,7 @@ const AnswerPage = () => {
   };
 
   const handleAnswerDelete = (questionId) => {
-    // 실제로는 API를 호출하여 질문을 삭제해야 합니다
+    // 실제로는 API를 호출하여 질문을 삭제
     console.log("질문 삭제:", { questionId });
 
     // 테스트를 위해 로컬 상태 업데이트
@@ -292,7 +291,7 @@ const AnswerPage = () => {
   };
 
   const handleAnswerUpdate = (questionId, updatedText) => {
-    // 실제로는 API를 호출하여 답변을 업데이트해야 합니다
+    // 실제로는 API를 호출하여 답변을 업데이트
     console.log("답변 업데이트:", { questionId, content: updatedText });
 
     // 테스트를 위해 로컬 상태 업데이트
