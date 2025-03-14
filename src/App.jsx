@@ -4,7 +4,7 @@ import MainPage from "./pages/MainPage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import IndividualFeed from "./pages/IndividualFeed";
 import QuestionList from "./pages/QuestionList";
-import AnswerForPage from "./pages/AnswerForm"; // AnswerForm 컴포넌트를 임포트
+import AnswerFormPage from "./pages/AnswerForm"; // AnswerForm 컴포넌트를 임포트
 
 const Test = styled.div`
   font-size: var(--caption1-medium);
