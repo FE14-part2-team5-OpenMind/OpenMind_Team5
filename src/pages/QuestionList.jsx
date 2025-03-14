@@ -18,7 +18,9 @@ const QuestionList = () => {
   return (
     <Container>
       <Header>
-        <Logo src={openMindLogo} />
+        <Logo href="/">
+          <img src={openMindLogo} />
+        </Logo>
         <Button variant="ask" icon={ArrowRightIcon}>
           답변하러 가기
         </Button>
@@ -71,11 +73,17 @@ const Header = styled.div`
   padding: 20px 0;
 `;
 
-const Logo = styled.img`
+const Logo = styled.a`
+  display: block;
   width: 146px;
   height: 57px;
-  object-fit: cover;
-  overflow: hidden;
+
+  > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    overflow: hidden;
+  }
 `;
 
 const Title = styled.h1`
