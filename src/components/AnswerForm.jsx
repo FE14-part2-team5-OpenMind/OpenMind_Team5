@@ -1,16 +1,16 @@
 // 파일 위치: src/components/AnswerForm.jsx
 
 import React, { useState } from "react";
-// 1번 프로젝트에 이미 구현된 InputTextArea 컴포넌트를 사용합니다.
-// 파일 경로는 1번 프로젝트의 구조에 맞춰 './common/InputTextArea/InputTextArea.jsx'로 지정합니다.
+// 1번 프로젝트에 이미 구현된 InputTextArea 컴포넌트를 사용
+// 파일 경로는 1번 프로젝트의 구조에 맞춰 './common/InputTextArea/InputTextArea.jsx'로 지정
 import InputTextArea from "./common/InputTextArea/InputTextArea.jsx";
 
-// API 호출 관련 파일의 경로를 1번 프로젝트에 맞게 수정합니다.
-// 1번 프로젝트의 api 파일은 'src/api/api.js'에 있으므로, '../api/api'로 import 합니다.
-import api from "../api/api";
+// API 호출 관련 파일의 경로를 1번 프로젝트에 맞게 수정
+// 1번 프로젝트의 api 파일은 'src/api/api.js'에 있으므로, '../api/api'로 import
+import * as api from "../api/api";
 
-// 스타일링을 위한 CSS 파일을 import 합니다.
-// 이 파일은 같은 폴더(src/components)에 위치하도록 생성해 주세요.
+// 스타일링을 위한 CSS 파일을 import
+// 이 파일은 같은 폴더(src/components)에 위치하도록 생성
 import "./StyleAnswerForm.css";
 
 const AnswerForm = ({
