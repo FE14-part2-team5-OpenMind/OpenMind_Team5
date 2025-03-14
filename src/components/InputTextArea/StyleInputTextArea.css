@@ -1,0 +1,9 @@
+.input-textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 8px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
