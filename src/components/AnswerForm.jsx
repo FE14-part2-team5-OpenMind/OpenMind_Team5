@@ -1,9 +1,14 @@
 // 파일 위치: src/components/AnswerForm.jsx
 
 import React, { useState } from "react";
+// 수정된 import 경로: src/components/InputTextArea/InputTextArea.jsx
 import InputTextArea from "./InputTextArea/InputTextArea.jsx";
+
+// API 호출 관련 파일을 named import 방식으로 수정
 import * as api from "../api/api";
-import "./StyleAnswerForm.css";
+
+// CSS 파일의 경로를 src/StyleAnswerForm.css 로 변경
+import "../StyleAnswerForm.css";
 
 const AnswerForm = ({
   questionId,
@@ -17,11 +22,11 @@ const AnswerForm = ({
     e.preventDefault();
     try {
       if (isEditing) {
-        // 답변 수정 API 호출 (1번 프로젝트의 api.updateAnswer 함수가 구현되어 있어야 함)
+        // 답변 수정 API 호출 (api.updateAnswer 함수)
         const response = await api.updateAnswer({ questionId, answer });
         onAnswerSubmit(response.data);
       } else {
-        // 새 답변 등록 API 호출 (1번 프로젝트의 api.postAnswer 함수가 구현되어 있어야 함)
+        // 새 답변 등록 API 호출 (api.postAnswer 함수)
         const response = await api.postAnswer({ questionId, answer });
         onAnswerSubmit(response.data);
       }
