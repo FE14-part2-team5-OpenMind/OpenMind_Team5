@@ -1,34 +1,28 @@
 /* 파일 위치: src/StyleAnswerForm.css */
 
+/* (5) 폼 간격과 여백을 좀 더 늘려서 디자인적으로 여유를 줌 */
 .answer-form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
   width: 100%;
   max-width: 600px;
-  margin: 20px auto;
-  padding: 16px;
+  margin: 24px auto;
+  padding: 20px;
   background-color: #f9f9f9;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
 }
 
-.answer-form textarea.input-textarea {
-  width: 100%;
-  min-height: 120px;
-  padding: 8px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  resize: vertical;
-}
+/* InputTextArea 자체는 별도의 CSS 파일에서 스타일링할 수도 있음 */
 
+/* (7) 버튼 색상 변경 (예: 갈색 계열) */
 .answer-form button {
   align-self: flex-end;
-  padding: 8px 16px;
+  padding: 10px 16px;
   font-size: 1rem;
   border: none;
-  background-color: #007bff;
+  background-color: #8b4513; /* 갈색 */
   color: white;
   border-radius: 4px;
   cursor: pointer;
@@ -36,5 +30,5 @@
 }
 
 .answer-form button:hover {
-  background-color: #0056b3;
+  background-color: #5d3310; /* 조금 더 짙은 갈색 */
 }

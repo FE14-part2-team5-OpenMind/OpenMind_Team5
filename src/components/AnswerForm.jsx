@@ -1,13 +1,9 @@
 // 파일 위치: src/components/AnswerForm.jsx
 
 import React, { useState } from "react";
-// 수정된 import 경로: src/components/InputTextArea/InputTextArea.jsx
 import InputTextArea from "./InputTextArea/InputTextArea.jsx";
-
-// API 호출 관련 파일을 named import 방식으로 수정
 import * as api from "../api/api";
-
-// CSS 파일의 경로를 src/StyleAnswerForm.css 로 변경
+// 스타일 파일을 src/StyleAnswerForm.css로 지정
 import "../StyleAnswerForm.css";
 
 const AnswerForm = ({
@@ -21,15 +17,15 @@ const AnswerForm = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      let response;
       if (isEditing) {
-        // 답변 수정 API 호출 (api.updateAnswer 함수)
-        const response = await api.updateAnswer({ questionId, answer });
-        onAnswerSubmit(response.data);
+        // 답변 수정 API 호출
+        response = await api.updateAnswer({ questionId, answer });
       } else {
-        // 새 답변 등록 API 호출 (api.postAnswer 함수)
-        const response = await api.postAnswer({ questionId, answer });
-        onAnswerSubmit(response.data);
+        // 새 답변 등록 API 호출
+        response = await api.postAnswer({ questionId, answer });
       }
+      onAnswerSubmit(response.data);
       setAnswer("");
     } catch (error) {
       console.error("답변 전송 실패:", error);
@@ -43,7 +39,8 @@ const AnswerForm = ({
         onChange={(e) => setAnswer(e.target.value)}
         placeholder={isEditing ? "답변을 수정하세요" : "답변을 작성하세요"}
       />
-      <button type="submit">{isEditing ? "답변 수정" : "답변 등록"}</button>
+      {/* (7) 버튼 텍스트를 ‘답변 완료’로 변경, isEditing일 때만 ‘답변 수정’으로 표시 */}
+      <button type="submit">{isEditing ? "답변 수정" : "답변 완료"}</button>
     </form>
   );
 };
