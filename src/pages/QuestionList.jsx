@@ -2,24 +2,19 @@ import styled from "styled-components";
 import openMindLogo from "../assets/images/Openmind.svg";
 import ArrowRightIcon from "../assets/images/arrow-right.svg";
 import ArrowDownIcon from "../assets/icons/Arrow-down.svg";
-import Button from "../components/Button";
+import ArrowUpIcon from "../assets/icons/Arrow-up.svg";
 import React, { useState } from "react";
+import Button from "../components/Button";
 
 const QuestionList = () => {
   const [sortOrder, setSortOrder] = useState("이름순");
-
-  // 더미 데이터 (API로 가져올 경우 대체 가능)
-  // const profiles = Array(8).fill({
-  //   name: "아초는고양이",
-  //   questionCount: 9,
-  //   avatarUrl: "https://example.com/cat.jpg", // 실제 이미지 URL로 변경
-  // });
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
     <Container>
       <Header>
         <Logo href="/">
-          <img src={openMindLogo} />
+          <img src={openMindLogo} alt="Logo" />
         </Logo>
         <Button variant="ask" icon={ArrowRightIcon}>
           답변하러 가기
@@ -28,32 +23,37 @@ const QuestionList = () => {
 
       <TitleContainer>
         <Title>누구에게 질문할까요?</Title>
-        <SortDropdown
-          onClick={() =>
-            setSortOrder(sortOrder === "이름순" ? "최신순" : "이름순")
-          }>
-          <button>{sortOrder}</button>
-          <div>
-            <img src={ArrowDownIcon} alt="Arrow Down" />
-          </div>
-
-          {/* 드롭다운 메뉴
+        <SortDropdown onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+          <SortButton active={isDropdownOpen}>
+            {sortOrder}{" "}
+            <img
+              src={isDropdownOpen ? ArrowUpIcon : ArrowDownIcon}
+              active={isDropdownOpen}
+              alt="Arrow"
+            />
+          </SortButton>
           {isDropdownOpen && (
             <DropdownMenu>
-              <li onClick={() => setSortOrder("이름순")}>이름순</li>
-              <li onClick={() => setSortOrder("최신순")}>최신순</li>
+              <DropdownItem
+                selected={sortOrder === "이름순"}
+                onClick={() => {
+                  setSortOrder("이름순");
+                  setIsDropdownOpen(false);
+                }}>
+                이름순
+              </DropdownItem>
+              <DropdownItem
+                selected={sortOrder === "최신순"}
+                onClick={() => {
+                  setSortOrder("최신순");
+                  setIsDropdownOpen(false);
+                }}>
+                최신순
+              </DropdownItem>
             </DropdownMenu>
-          )} */}
+          )}
         </SortDropdown>
       </TitleContainer>
-
-      {/* <Grid>
-        {profiles.map((profile, index) => (
-          <ProfileCard key={index} {...profile} />
-        ))}
-      </Grid>
-
-      <Pagination totalPages={5} currentPage={4} /> */}
     </Container>
   );
 };
@@ -67,7 +67,7 @@ const Container = styled.div`
   text-align: center;
 `;
 
-const Header = styled.div`
+const Header = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -83,14 +83,12 @@ const Logo = styled.a`
     width: 100%;
     height: 100%;
     object-fit: cover;
-    overflow: hidden;
   }
 `;
 
 const TitleContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
   margin: 20px auto;
 `;
@@ -102,61 +100,57 @@ const Title = styled.h1`
 `;
 
 const SortDropdown = styled.div`
-  margin: 0 auto;
-  width: 79px;
-  height: 34px;
-  display: flex;
-  justify-content: space-around;
-  gap: 1px;
-  background: white;
-  border: 1px solid var(--Grayscale-40);
-  border-radius: 8px;
+  position: relative;
+  display: inline-block;
   cursor: pointer;
+`;
 
-  > button {
-    all: unset;
-    display: block;
-    font-size: 14px;
-    font-weight: 500;
-  }
+const SortButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 89px;
+  height: 34px;
+  background: white;
+  border: ${({ active }) =>
+    active ? "1px solid black" : "1px solid var(--Grayscale-40)"};
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: ${({ active }) => (active ? "black" : "var(--Grayscale-40)")};
 
-  > div {
-    align-self: center;
-
-    width: 15px;
-    height: 10px;
-  }
-
-  > div img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    overflow: hidden;
+  > img {
+    width: 18px;
+    height: 16px;
+    filter: ${({ active }) => (active ? "none" : "grayscale(100%)")};
+    opacity: ${({ active }) => (active ? "1" : "0.6")};
   }
 `;
 
 const DropdownMenu = styled.ul`
-  display: none;
   position: absolute;
+  top: 40px;
+  left: 0;
+  width: 89px;
   background: white;
-  list-style: none;
-  margin: 0;
-  padding: 0;
   border: 1px solid #ccc;
-
-  li {
-    padding: 8px;
-    cursor: pointer;
-
-    &:hover {
-      background: #f0f0f0;
-    }
-  }
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  list-style: none;
+  padding: 5px 0;
+  z-index: 1000;
 `;
 
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 16px;
-  margin-top: 20px;
+const DropdownItem = styled.li`
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: center;
+  color: ${({ selected }) => (selected ? "var(--blue50)" : "black")};
+
+  &:hover {
+    background: #f0f0f0;
+  }
 `;
