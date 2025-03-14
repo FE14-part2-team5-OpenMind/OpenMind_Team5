@@ -76,6 +76,11 @@ export const Card = styled.div`
         font: var(--body3-regular);
         margin-top: 4px;
       }
+      p.answer-rejected {
+        color: var(--red50);
+        font: var(--body3-regular);
+        margin-top: 4px;
+      }
     }
   }
 
