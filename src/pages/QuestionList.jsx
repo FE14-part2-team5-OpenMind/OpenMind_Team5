@@ -26,25 +26,26 @@ const QuestionList = () => {
         </Button>
       </Header>
 
-      <Title>누구에게 질문할까요?</Title>
-
-      <SortDropdown>
-        <button
+      <TitleContainer>
+        <Title>누구에게 질문할까요?</Title>
+        <SortDropdown
           onClick={() =>
             setSortOrder(sortOrder === "이름순" ? "최신순" : "이름순")
           }>
-          {/* {sortOrder} */}
-          이름순
-        </button>
-        <div>
-          <img src={ArrowDownIcon} />
-        </div>
+          <button>{sortOrder}</button>
+          <div>
+            <img src={ArrowDownIcon} alt="Arrow Down" />
+          </div>
 
-        {/* <DropdownMenu>
-          <li onClick={() => setSortOrder("이름순")}>이름순</li>
-          <li onClick={() => setSortOrder("최신순")}>최신순</li>
-        </DropdownMenu> */}
-      </SortDropdown>
+          {/* 드롭다운 메뉴
+          {isDropdownOpen && (
+            <DropdownMenu>
+              <li onClick={() => setSortOrder("이름순")}>이름순</li>
+              <li onClick={() => setSortOrder("최신순")}>최신순</li>
+            </DropdownMenu>
+          )} */}
+        </SortDropdown>
+      </TitleContainer>
 
       {/* <Grid>
         {profiles.map((profile, index) => (
@@ -84,6 +85,14 @@ const Logo = styled.a`
     object-fit: cover;
     overflow: hidden;
   }
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px auto;
 `;
 
 const Title = styled.h1`
