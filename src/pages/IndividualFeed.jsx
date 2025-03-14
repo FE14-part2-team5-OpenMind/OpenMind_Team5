@@ -19,15 +19,6 @@ import { RotatingAnimation } from "../styles/rotatingAnimation";
 import { useScroll } from "../hooks/useScroll";
 import IconBox from "../components/IconBox";
 import Modal from "../components/Modal/Modal";
-// =======
-//   EmptyIcon,
-// } from '../styles/individualFeedStyle';
-// import { useSubjectInfo } from '../hooks/useSubjectInfo';
-// import { useIndividualQuestions } from '../hooks/useIndividualQuestions';
-// import FeedCardPlaceholder from '../components/FeedCardPlaceholder';
-// import { RotatingAnimation } from '../styles/rotatingAnimation';
-// import { useScroll } from '../hooks/useScroll';
-// import IconBox from '../components/IconBox';
 import emptyIcon from "../assets/images/NoQuestion.svg";
 
 const IndividualFeed = () => {
@@ -42,6 +33,10 @@ const IndividualFeed = () => {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const handleModalOpen = () => {
+    setIsModalOpen((prev) => !prev);
+  };
+
   // 스켈리톤 ui를 위한 상태 변경
   useEffect(() => {
     if (userInfo) {
@@ -50,13 +45,6 @@ const IndividualFeed = () => {
       setLoading(true);
     }
   }, [userInfo, questionInfo]);
-
-  console.log(questionInfo);
-  console.log(count);
-
-  const handleModalOpen = () => {
-    setIsModalOpen(!isModalOpen);
-  };
 
   return (
     <Wrapper>

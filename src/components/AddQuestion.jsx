@@ -36,6 +36,10 @@ const Button = styled.button`
 const AddQuestion = ({ onClick }) => {
   const [buttonText, setButtonText] = useState("");
 
+   const handleWriteQuestion = () => {
+     onClick();
+   };
+
   useEffect(() => {
     //창 크기가 모바일 일 때, 버튼 text 바꾸기
     const handleResize = () => {
@@ -51,10 +55,6 @@ const AddQuestion = ({ onClick }) => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
-  const handleWriteQuestion = () => {
-    onClick();
-  };
 
   return <Button onClick={handleWriteQuestion}>{buttonText}</Button>;
 };

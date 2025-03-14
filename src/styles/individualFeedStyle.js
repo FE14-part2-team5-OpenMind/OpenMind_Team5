@@ -121,6 +121,7 @@ export const BodyWrapper = styled.div`
     margin: 16px auto;
     gap: 8px;
 
+
     span {
       color: var(--brown40);
       font: var(--body2-bold);

@@ -18,7 +18,7 @@ const FeedCard = ({ question, userName, profileImage }) => {
       setIsLikeClicked(!isLikeClicked);
       const response = await postLikeDislike({ type, id: question.id });
       setLike(response.like);
-    } else if(type === "dislike" && isDislikeClicked === false) {
+    } else if (type === "dislike" && isDislikeClicked === false) {
       setIsDislikeClicked(!isDislikeClicked);
       const response = await postLikeDislike({
         type,
@@ -31,7 +31,6 @@ const FeedCard = ({ question, userName, profileImage }) => {
       setIsDislikeClicked(!isDislikeClicked);
     }
   };
-
 
   useEffect(() => {
     if (question.answer) {
@@ -60,7 +59,17 @@ const FeedCard = ({ question, userName, profileImage }) => {
           <img src={profileImage} alt="프로필 사진" />
           <div className="content">
             <span className="userName">{userName}</span>
-            <p className="content-answer">{question.answer?.content}</p>
+            <p
+              className={
+                question.answer?.isRejected
+                  ? "answer-rejected"
+                  : "content-answer"
+              }
+            >
+              {question.answer?.isRejected
+                ? "답변 거절"
+                : question.answer.content}
+            </p>
           </div>
         </div>
       ) : (

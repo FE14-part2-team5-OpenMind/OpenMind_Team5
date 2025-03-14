@@ -1,6 +1,5 @@
 import MessagesIcon from "../../assets/icons/Messages.svg";
 import CloseIcon from "../../assets/icons/Close.svg";
-// import profileImg from "../../assets/images/profile-image.svg";
 import { useState } from "react";
 import {
   Background,
