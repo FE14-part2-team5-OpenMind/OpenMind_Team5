@@ -1,6 +1,5 @@
 import MessagesIcon from "../../assets/icons/Messages.svg";
 import CloseIcon from "../../assets/icons/Close.svg";
-// import profileImg from "../../assets/images/profile-image.svg";
 import { useState } from "react";
 import {
   Background,
@@ -15,22 +14,22 @@ import {
   TextArea,
   SendingButton,
 } from "../../styles/modalStyle";
-import useModal from "../../hooks/useModal";
 
-const Modal = ({ userInfo }) => {
+const Modal = ({ onClose, userInfo }) => {
   const [textValue, setTextValue] = useState("");
-  const { setOpen, open } = useModal();
 
   const handleModalClose = (e) => {
     // 모달창 상태변화 기능 구현
+
     if (e.target === e.currentTarget) {
-      setOpen(!open);
+      onClose();
     }
   };
 
   const handleTextChange = (e) => {
     // TextArea 상태 변화
     const nextValue = e.target.value;
+
     setTextValue(nextValue);
   };
 
@@ -46,10 +45,10 @@ const Modal = ({ userInfo }) => {
         </TitleContainer>
         <Receiver>
           <To>To.</To>
-          <Profile src={userInfo?.imageSource} alt="프로필 이미지" />
+          <Profile src={userInfo.imageSource} alt="프로필 이미지" />
           {/* userName 연결 */}
           {/* 아초는 고양이  */}
-          {userInfo?.name}
+          {userInfo.name}
         </Receiver>
         {/* Question 입력 공간 */}
         <TextArea
