@@ -14,7 +14,7 @@ const FeedCardPlaceholder = () => {
 
       {/* 답변 */}
       <div className="answer">
-        <img alt="프로필 사진" />
+        <img />
         <div className="content">
           <div className="userName"></div>
           <div className="content-answer"></div>

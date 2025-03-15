@@ -54,7 +54,7 @@ const IndividualFeed = () => {
       {loading ? (
         <ProfilePlaceholder />
       ) : (
-        <Profile src={userInfo.imageSource} />
+        <Profile src={userInfo?.imageSource} />
       )}
       <span className="profileName">{userInfo?.name}</span>
 
