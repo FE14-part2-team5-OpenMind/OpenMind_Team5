@@ -23,6 +23,11 @@ export const Container = styled.div`
   box-shadow: var(--shadow3pt);
   border-radius: 24px;
   padding: 40px;
+
+  @media (max-width: 480px) {
+    width: 327px;
+    height: 568px;
+  }
 `;
 
 export const TitleContainer = styled.div`
@@ -41,9 +46,18 @@ export const Message = styled.img`
   margin-right: 8px;
 `;
 
+export const Title = styled.h3`
+  @media (max-width: 480px) {
+    font: var(--body1-bold);
+  }
+`;
+
 export const Close = styled.img`
   width: 28px;
   cursor: pointer;
+  @media (max-width: 480px) {
+    width: 22px;
+  }
 `;
 
 export const Receiver = styled.div`
@@ -65,35 +79,4 @@ export const Profile = styled.img`
   width: 28px;
   border-radius: 50%;
   margin: 2px 4px;
-`;
-
-export const TextArea = styled.textarea`
-  display: flex;
-  max-width: 532px;
-  width: 100%;
-  height: 180px;
-  padding: 16px;
-  border: none;
-  border-radius: 8px;
-  background: var(--gray20);
-  white-space: pre-wrap;
-  resize: none;
-  &::placeholder {
-    color: var(--gray40);
-  }
-  &:focus {
-    /* outline: none; */
-    outline: 1px solid var(--brown40);
-  }
-`;
-
-export const SendingButton = styled.button`
-  width: 100%;
-  background: var(--brown30);
-  color: var(--gray10);
-  border-radius: 8px;
-  border: none;
-  margin-top: 8px;
-  padding: 12px 24px;
-  cursor: pointer;
 `;
