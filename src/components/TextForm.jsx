@@ -46,7 +46,14 @@ export const SendingButton = styled.button`
       : `background: var(--brown30)`}
 `;
 
-const TextForm = ({ placeholder, buttonText, subject_id, mode, onClose }) => {
+const TextForm = ({
+  placeholder,
+  buttonText,
+  subject_id,
+  mode,
+  onClose,
+  setSend,
+}) => {
   const [textValue, setTextValue] = useState("");
   const [isValid, setIsValid] = useState(false);
 
@@ -65,6 +72,7 @@ const TextForm = ({ placeholder, buttonText, subject_id, mode, onClose }) => {
         await postQuestion({ subject_id, content: textValue });
         console.log("질문 등록 완료!");
         onClose();
+        setSend(true);
       }
       //답변 부분 (mode == "answer")
     } catch (error) {

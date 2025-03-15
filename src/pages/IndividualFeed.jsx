@@ -25,16 +25,17 @@ const IndividualFeed = () => {
   const [offset, setOffset] = useState(0);
   const LIMIT = 10;
   const { userInfo } = useSubjectInfo();
-  const { questionInfo, count } = useIndividualQuestions({
+  const { questionInfo, count, setSend } = useIndividualQuestions({
     offset,
     limit: LIMIT,
   });
-  const { moreData } = useScroll({ setOffset, questionInfo, LIMIT, count });
+  const { moreData } = useScroll({ setOffset, questionInfo, LIMIT, count, setSend });
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleModalOpen = () => {
     setIsModalOpen((prev) => !prev);
+    setSend(false);
   };
 
   // 스켈리톤 ui를 위한 상태 변경
@@ -96,7 +97,13 @@ const IndividualFeed = () => {
 
       {/* 질문 작성하기 버튼 */}
       <AddQuestion onClick={handleModalOpen} />
-      {isModalOpen && <Modal onClose={handleModalOpen} userInfo={userInfo} />}
+      {isModalOpen && (
+        <Modal
+          onClose={handleModalOpen}
+          userInfo={userInfo}
+          setSend={setSend}
+        />
+      )}
     </Wrapper>
   );
 };

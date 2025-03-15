@@ -14,7 +14,7 @@ import {
   Profile,
 } from "../../styles/modalStyle";
 
-const Modal = ({ onClose, userInfo }) => {
+const Modal = ({ onClose, userInfo, setSend }) => {
   const handleModalClose = (e) => {
     if (e.target === e.currentTarget) {
       onClose();
@@ -44,6 +44,7 @@ const Modal = ({ onClose, userInfo }) => {
           subject_id={userInfo.id}
           mode="question"
           onClose={onClose}
+          setSend={setSend}
         />
       </Container>
     </Background>
