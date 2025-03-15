@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { StyledButton } from "../styles/buttonStyle";
 import logo from "../assets/images/logo.png";
 import backgroundImage from "../assets/images/IndividualFeed-BackgroundImage.png";
 import message from "../assets/images/Messages.png";
@@ -17,82 +15,39 @@ import {
   EmptyIcon,
 } from "../styles/individualFeedStyle";
 import {
-  ProfileSection,
-  IconBoxContainer,
   QuestionsContainer,
   QuestionsWrapper,
   QuestionCount,
-} from "../styles/AnswerPageStyle";
+} from "../styles/AnswerPageStyle"; // 수정: 필요한 스타일만 유지
+import { useSubjectInfo } from "../hooks/useSubjectInfo";
+import { useIndividualQuestions } from "../hooks/useIndividualQuestions";
+import { useScroll } from "../hooks/useScroll";
+import { RotatingAnimation } from "../styles/rotatingAnimation";
 
 const AnswerPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [questions, setQuestions] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [userInfo, setUserInfo] = useState({
-    name: "사용자",
-    imageSource: "https://via.placeholder.com/36",
+  const [offset, setOffset] = useState(0);
+  const LIMIT = 10;
+
+  const { userInfo } = useSubjectInfo();
+  const { questionInfo, count } = useIndividualQuestions({
+    offset,
+    limit: LIMIT,
   });
+  const { moreData } = useScroll({ setOffset, questionInfo, LIMIT, count });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // 사용자 정보 가져옴
-    const fetchUserInfo = async () => {
-      try {
-        // 실제 API 호출 대신 임시 데이터
-        const mockUserInfo = {
-          name: "아초는고양이",
-          imageSource: "https://via.placeholder.com/120",
-        };
+    if (userInfo && questionInfo !== null) {
+      setLoading(false);
+    } else {
+      setLoading(true);
+    }
+  }, [userInfo, questionInfo, id]);
 
-        setUserInfo(mockUserInfo);
-      } catch (error) {
-        console.error("사용자 정보를 불러오는데 실패했습니다:", error);
-      }
-    };
-
-    // 모든 질문 목록 가져옴
-    const fetchQuestions = async () => {
-      try {
-        // 실제 API 호출 대신 임시 데이터
-        const mockQuestions = [
-          {
-            id: "1",
-            content: "좋아하는 동물은?",
-            createdAt: new Date().toISOString(),
-            isAnswered: false,
-            answer: null,
-            likes: 0,
-          },
-          {
-            id: "2",
-            content: "수정이나 삭제 버튼 위치?",
-            createdAt: new Date().toISOString(),
-            isAnswered: true,
-            answer: {
-              content: "카드 우측 메뉴 버튼을 클릭하여 실행함.",
-            },
-            likes: 12,
-          },
-          {
-            id: "3",
-            content: "좋아하는 동물은?",
-            createdAt: new Date().toISOString(),
-            isAnswered: false,
-            answer: null,
-            likes: 0,
-          },
-        ];
-
-        setQuestions(mockQuestions);
-        setLoading(false);
-      } catch (error) {
-        console.error("질문 목록을 불러오는데 실패했습니다:", error);
-        setLoading(false);
-      }
-    };
-
-    fetchUserInfo();
-    fetchQuestions();
+  useEffect(() => {
+    setOffset(0);
   }, [id]);
 
   const handleLogoClick = () => {
@@ -100,54 +55,15 @@ const AnswerPage = () => {
   };
 
   const handleAnswerSubmit = (questionId, answerText) => {
-    // 실제로 API를 호출하여 답변을 제출 필요
     console.log("답변 제출:", { questionId, content: answerText });
-
-    // 테스트를 위해 로컬 상태 업데이트
-    const updatedQuestions = questions.map((q) => {
-      if (q.id === questionId) {
-        return {
-          ...q,
-          isAnswered: true,
-          answer: {
-            content: answerText,
-          },
-        };
-      }
-      return q;
-    });
-
-    setQuestions(updatedQuestions);
   };
 
   const handleAnswerDelete = (questionId) => {
-    // 실제로는 API를 호출하여 질문을 삭제
     console.log("질문 삭제:", { questionId });
-
-    // 테스트를 위해 로컬 상태 업데이트
-    const updatedQuestions = questions.filter((q) => q.id !== questionId);
-    setQuestions(updatedQuestions);
   };
 
   const handleAnswerUpdate = (questionId, updatedText) => {
-    // 실제로는 API를 호출하여 답변을 업데이트
     console.log("답변 업데이트:", { questionId, content: updatedText });
-
-    // 테스트를 위해 로컬 상태 업데이트
-    const updatedQuestions = questions.map((q) => {
-      if (q.id === questionId && q.isAnswered) {
-        return {
-          ...q,
-          answer: {
-            ...q.answer,
-            content: updatedText,
-          },
-        };
-      }
-      return q;
-    });
-
-    setQuestions(updatedQuestions);
   };
 
   if (loading) {
@@ -155,10 +71,8 @@ const AnswerPage = () => {
       <Wrapper>
         <img src={backgroundImage} alt="배경사진" />
         <Logo src={logo} alt="로고" onClick={handleLogoClick} />
-        <ProfileSection>
-          <ProfilePlaceholder />
-          <p>로딩 중...</p>
-        </ProfileSection>
+        <ProfilePlaceholder />
+        <span className="profileName">로딩 중...</span>
       </Wrapper>
     );
   }
@@ -167,35 +81,30 @@ const AnswerPage = () => {
     <Wrapper>
       <img src={backgroundImage} alt="배경사진" />
       <Logo src={logo} alt="로고" onClick={handleLogoClick} />
-
-      <ProfileSection>
-        <Profile src={userInfo.imageSource} />
-        <ProfileName>{userInfo.name}</ProfileName>
-        <IconBoxContainer>
-          <IconBox />
-        </IconBoxContainer>
-      </ProfileSection>
-
-      <BodyWrapper>
-        {questions.length > 0 ? (
+      <Profile src={userInfo.imageSource} />
+      <span className="profileName">{userInfo.name}</span>{" "}
+      {/* 수정: ProfileName 대신 className 사용 */}
+      <IconBox /> {/* 수정: IconBoxContainer 대신 직접 사용 */}
+      <BodyWrapper count={count}>
+        {questionInfo?.length > 0 ? (
           <QuestionsWrapper>
             <QuestionCount>
               <img src={message} alt="질문 아이콘" />
-              <span>{questions.length}개의 질문이 있습니다.</span>
+              <span>{count}개의 질문이 있습니다.</span>
             </QuestionCount>
             <QuestionsContainer>
-              {questions.map((q) => (
+              {questionInfo.map((q) => (
                 <Answer
                   key={q.id}
                   questionId={q.id}
                   question={q.content}
-                  answer={q.answer?.content}
+                  answer={q.answer?.content || q.answer}
                   profileImage={userInfo.imageSource}
                   username={userInfo.name}
-                  timestamp="2주전"
-                  likes={q.likes}
+                  timestamp={q.createdAt}
+                  likes={q.likes || 0}
                   dislikes={q.dislikes || 0}
-                  isAnswered={q.isAnswered}
+                  isAnswered={q.isAnswered || false}
                   onAnswerSubmit={handleAnswerSubmit}
                   onAnswerDelete={handleAnswerDelete}
                   onAnswerUpdate={handleAnswerUpdate}
@@ -205,13 +114,14 @@ const AnswerPage = () => {
           </QuestionsWrapper>
         ) : (
           <>
-            <QuestionCount>
+            <div className="questionNum">
               <img src={message} alt="질문 아이콘" />
               <span>아직 질문이 없습니다.</span>
-            </QuestionCount>
+            </div>
             <EmptyIcon src={emptyIcon} alt="질문 없을 때 이미지" />
           </>
         )}
+        {moreData && questionInfo.length < count && <RotatingAnimation />}
       </BodyWrapper>
     </Wrapper>
   );

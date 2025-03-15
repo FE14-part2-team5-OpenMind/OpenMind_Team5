@@ -1,38 +1,37 @@
-// AnswerPageStyle.js
 import styled from "styled-components";
 
 export const ProfileSection = styled.div`
+  /* 수정: absolute positioning으로 변경하여 individualFeedStyle.js와 동일한 위치 제어 */
+  position: absolute;
+  top: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 40px;
   width: 100%;
-
-  @media (max-width: 767px) {
-    margin-bottom: 24px;
-  }
 `;
 
 export const ProfileName = styled.span`
-  font-size: 24px;
-  font-weight: 600;
-  margin-top: 16px;
-  margin-bottom: 24px;
+  /* 수정: individualFeedStyle.js의 profileName과 동일한 위치 및 스타일 적용 */
+  position: absolute;
+  top: 277px;
+  font: var(--body1-regular);
+  font-size: 3.2rem;
   color: var(--gray60);
 
   @media (max-width: 767px) {
-    font-size: 20px;
-    margin-top: 12px;
-    margin-bottom: 20px;
+    font-size: 2.4rem;
   }
 `;
 
 export const IconBoxContainer = styled.div`
-  margin-bottom: 16px;
+  /* 수정: individualFeedStyle.js의 Icons와 동일한 위치 적용 */
+  position: absolute;
+  top: 329px;
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
 
-  @media (max-width: 767px) {
-    margin-bottom: 12px;
-  }
+  /* 기존 반응형 스타일 제거, individualFeedStyle.js와 통일 */
 `;
 
 export const QuestionsContainer = styled.div`
