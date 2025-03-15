@@ -1,36 +1,24 @@
 import MessagesIcon from "../../assets/icons/Messages.svg";
 import CloseIcon from "../../assets/icons/Close.svg";
-import { useState } from "react";
+import TextForm from "../TextForm";
 import {
   Background,
   Container,
   TitleContainer,
   TitleWrapper,
   Message,
+  Title,
   Close,
   Receiver,
   To,
   Profile,
-  TextArea,
-  SendingButton,
 } from "../../styles/modalStyle";
 
 const Modal = ({ onClose, userInfo }) => {
-  const [textValue, setTextValue] = useState("");
-
   const handleModalClose = (e) => {
-    // 모달창 상태변화 기능 구현
-
     if (e.target === e.currentTarget) {
       onClose();
     }
-  };
-
-  const handleTextChange = (e) => {
-    // TextArea 상태 변화
-    const nextValue = e.target.value;
-
-    setTextValue(nextValue);
   };
 
   return (
@@ -39,7 +27,7 @@ const Modal = ({ onClose, userInfo }) => {
         <TitleContainer>
           <TitleWrapper>
             <Message src={MessagesIcon} alt="Message" />
-            <h3>질문을 작성하세요</h3>
+            <Title>질문을 작성하세요</Title>
           </TitleWrapper>
           <Close src={CloseIcon} alt="close" onClick={handleModalClose} />
         </TitleContainer>
@@ -50,13 +38,13 @@ const Modal = ({ onClose, userInfo }) => {
           {/* 아초는 고양이  */}
           {userInfo.name}
         </Receiver>
-        {/* Question 입력 공간 */}
-        <TextArea
+        <TextForm
           placeholder="질문을 입력해주세요"
-          value={textValue}
-          onChange={handleTextChange}
+          buttonText="질문 보내기"
+          subject_id={userInfo.id}
+          mode="question"
+          onClose={onClose}
         />
-        <SendingButton>질문 보내기</SendingButton>
       </Container>
     </Background>
   );
