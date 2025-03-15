@@ -8,21 +8,182 @@ import message from "../assets/images/Messages.png";
 import emptyIcon from "../assets/images/NoQuestion.svg";
 import Answer from "../components/Answer";
 import IconBox from "../components/IconBox";
-import {
-  Wrapper,
-  Logo,
-  Profile,
-  BodyWrapper,
-  ProfilePlaceholder,
-  EmptyIcon,
-} from "../styles/individualFeedStyle";
-import {
-  ProfileSection,
-  IconBoxContainer,
-  QuestionsContainer,
-  QuestionsWrapper,
-  QuestionCount,
-} from "../styles/AnswerPageStyle";
+
+const Wrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+
+  > img:first-child {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+
+    @media (max-width: 767px) {
+      height: 160px;
+    }
+  }
+`;
+
+const Logo = styled.img`
+  width: 170px;
+  height: 67px;
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+
+  @media (max-width: 767px) {
+    width: 120px;
+    height: auto;
+    top: 16px;
+  }
+`;
+
+const ProfileSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+  width: 100%;
+
+  @media (max-width: 767px) {
+    margin-bottom: 24px;
+  }
+`;
+
+const Profile = styled.img`
+  width: 136px;
+  height: 136px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-top: -60px;
+  border: 4px solid white;
+
+  @media (max-width: 767px) {
+    width: 100px;
+    height: 100px;
+    margin-top: -50px;
+  }
+`;
+
+const ProfileName = styled.span`
+  font-size: 24px;
+  font-weight: 600;
+  margin-top: 16px;
+  margin-bottom: 24px;
+  color: var(--gray60);
+
+  @media (max-width: 767px) {
+    font-size: 20px;
+    margin-top: 12px;
+    margin-bottom: 20px;
+  }
+`;
+
+const IconBoxContainer = styled.div`
+  margin-bottom: 16px;
+
+  @media (max-width: 767px) {
+    margin-bottom: 12px;
+  }
+`;
+
+const ProfilePlaceholder = styled.div`
+  width: 136px;
+  height: 136px;
+  border-radius: 50%;
+  background-color: var(--gray20);
+  margin-top: -60px;
+  border: 4px solid white;
+
+  @media (max-width: 767px) {
+    width: 100px;
+    height: 100px;
+    margin-top: -50px;
+  }
+`;
+
+const BodyWrapper = styled.div`
+  width: 100%;
+  max-width: 720px;
+  padding: 0 24px;
+
+  @media (max-width: 767px) {
+    padding: 0 16px;
+  }
+`;
+
+const EmptyIcon = styled.img`
+  width: 240px;
+  height: auto;
+  margin: 40px auto;
+  display: block;
+
+  @media (max-width: 767px) {
+    width: 180px;
+    margin: 24px auto;
+  }
+`;
+
+const QuestionsContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+const QuestionsWrapper = styled.div`
+  width: 100%;
+  background-color: rgba(199, 187, 181, 0.3);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  position: relative;
+
+  @media (max-width: 767px) {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+`;
+
+const QuestionCount = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  width: 100%;
+  text-align: center;
+
+  img {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+  }
+
+  span {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--gray60);
+  }
+
+  @media (max-width: 767px) {
+    margin-bottom: 16px;
+
+    img {
+      width: 20px;
+      height: 20px;
+      margin-right: 6px;
+    }
+
+    span {
+      font-size: 14px;
+    }
+  }
+`;
 
 const AnswerPage = () => {
   const { id } = useParams();
