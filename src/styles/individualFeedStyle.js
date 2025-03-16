@@ -143,3 +143,22 @@ export const EmptyIcon = styled.img`
     margin-top: 35px;
   }
 `;
+
+export const Toast = styled.div`
+  position: fixed;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+  padding: 12px 20px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  background: var(--gray60);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  color: var(--gray10);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 18px;
+`;
