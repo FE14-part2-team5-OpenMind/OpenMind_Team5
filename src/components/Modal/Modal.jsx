@@ -14,7 +14,7 @@ import {
   Profile,
 } from "../../styles/modalStyle";
 
-const Modal = ({ onClose, userInfo, setSend }) => {
+const Modal = ({ onClose, userInfo, setSend, setOffset }) => {
   const handleModalClose = (e) => {
     if (e.target === e.currentTarget) {
       onClose();
@@ -41,10 +41,11 @@ const Modal = ({ onClose, userInfo, setSend }) => {
         <TextForm
           placeholder="질문을 입력해주세요"
           buttonText="질문 보내기"
-          subject_id={userInfo.id}
+          id={userInfo.id}
           mode="question"
           onClose={onClose}
           setSend={setSend}
+          setOffset={setOffset}
         />
       </Container>
     </Background>

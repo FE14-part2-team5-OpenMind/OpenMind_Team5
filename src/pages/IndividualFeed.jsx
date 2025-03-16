@@ -1,3 +1,15 @@
+<<<<<<< HEAD
+import React, { useEffect, useState } from "react";
+import AddQuestion from "../components/AddQuestion";
+import { Wrapper } from "../styles/individualFeedStyle";
+import { useSubjectInfo } from "../hooks/useSubjectInfo";
+import { useIndividualQuestions } from "../hooks/useIndividualQuestions";
+import { RotatingAnimation } from "../styles/rotatingAnimation";
+import { useScroll } from "../hooks/useScroll";
+import Modal from "../components/Modal/Modal";
+import FeedHeader from "../components/FeedHeader";
+import FeedBody from "../components/FeedBody";
+=======
 import React, { useCallback, useEffect, useState } from 'react';
 import backgroundImage from '../assets/images/IndividualFeed-BackgroundImage.png';
 import logo from '../assets/images/logo.png';
@@ -21,6 +33,7 @@ import { useScroll } from '../hooks/useScroll';
 import IconBox from '../components/IconBox';
 import Modal from '../components/Modal/Modal';
 import emptyIcon from '../assets/images/NoQuestion.svg';
+>>>>>>> 0886f2c0614aa0f002ed287bce73764f42ba4700
 
 const IndividualFeed = () => {
   const [offset, setOffset] = useState(0);
@@ -30,7 +43,17 @@ const IndividualFeed = () => {
     offset,
     limit: LIMIT,
   });
+<<<<<<< HEAD
+  const { moreData } = useScroll({
+    setOffset,
+    questionInfo,
+    LIMIT,
+    count,
+    setSend,
+  });
+=======
   const { moreData } = useScroll({ setOffset, questionInfo, LIMIT, count, setSend });
+>>>>>>> 0886f2c0614aa0f002ed287bce73764f42ba4700
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [toast, setToast] = useState(false);
@@ -59,6 +82,16 @@ const IndividualFeed = () => {
 
   return (
     <Wrapper>
+<<<<<<< HEAD
+      <FeedHeader loading={loading} userInfo={userInfo} />
+
+      <FeedBody
+        count={count}
+        loading={loading}
+        questionInfo={questionInfo}
+        userInfo={userInfo}
+      />
+=======
       {/* 배경사진, 사용자 이름은 userInfo에서 가져온다 */}
       <img src={backgroundImage} alt="배경사진" />
       <Logo src={logo} alt="로고" />
@@ -102,6 +135,7 @@ const IndividualFeed = () => {
           <EmptyIcon src={emptyIcon} alt="질문 없을 때 이미지" />
         )}
       </BodyWrapper>
+>>>>>>> 0886f2c0614aa0f002ed287bce73764f42ba4700
 
       {toast && <Toast>URL이 복사되었습니다</Toast>}
 
@@ -114,6 +148,10 @@ const IndividualFeed = () => {
           onClose={handleModalOpen}
           userInfo={userInfo}
           setSend={setSend}
+<<<<<<< HEAD
+          setOffset={setOffset}
+=======
+>>>>>>> 0886f2c0614aa0f002ed287bce73764f42ba4700
         />
       )}
     </Wrapper>

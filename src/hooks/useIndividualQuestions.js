@@ -12,10 +12,14 @@ export const useIndividualQuestions = ({ offset, limit = 10 }) => {
   useEffect(() => {
     const fetchIndividualQuestions = async () => {
       const response = await getIndividualQuestions(id, limit, offset);
-      if (send) {
+      if (send || offset === 0) {
         setQuestionInfo(response.results);
+        setCount(response.count);
         return;
-      } else {
+      } else if (send === true && offset > 0) {
+        setQuestionInfo(response.results);
+        setCount(response.count);
+      } else if (send === false && offset > 0) {
         setQuestionInfo((prev) => [...prev, ...response.results]);
       }
       setCount(response.count);
