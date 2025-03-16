@@ -10,7 +10,7 @@ import logo from "../assets/images/logo.png";
 import backgroundImage from "../assets/images/IndividualFeed-BackgroundImage.png";
 import { useNavigate } from "react-router-dom";
 
-const FeedHeader = ({ loading, userInfo }) => {
+const FeedHeader = ({ loading, userInfo, setToast }) => {
   const navigate = useNavigate();
 
   const navigateToMain = () => {
@@ -30,7 +30,7 @@ const FeedHeader = ({ loading, userInfo }) => {
       <span className="profileName">{userInfo?.name}</span>
 
       {/* 아이콘 컴포넌트 */}
-      <IconBox />
+      <IconBox setToast={setToast}/>
     </Wrapper>
   );
 };

@@ -17,7 +17,6 @@ const IndividualFeed = () => {
     offset,
     limit: LIMIT,
   });
-
   const { moreData } = useScroll({
     setOffset,
     questionInfo,
@@ -25,7 +24,6 @@ const IndividualFeed = () => {
     count,
     setSend,
   });
-
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [toast, setToast] = useState(false);
@@ -54,8 +52,7 @@ const IndividualFeed = () => {
 
   return (
     <Wrapper>
-
-      <FeedHeader loading={loading} userInfo={userInfo} />
+      <FeedHeader loading={loading} userInfo={userInfo} setToast={setToast} />
 
       <FeedBody
         count={count}
