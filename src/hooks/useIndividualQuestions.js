@@ -7,20 +7,27 @@ export const useIndividualQuestions = ({ offset, limit = 10 }) => {
   const { id } = useParams();
   const [questionInfo, setQuestionInfo] = useState([]);
   const [count, setCount] = useState(0);
+  const [send, setSend] = useState(false);
 
   useEffect(() => {
     const fetchIndividualQuestions = async () => {
       const response = await getIndividualQuestions(id, limit, offset);
-      setQuestionInfo((prev) => [...prev, ...response.results]);
+      if (send) {
+        setQuestionInfo(response.results);
+        return;
+      } else {
+        setQuestionInfo((prev) => [...prev, ...response.results]);
+      }
       setCount(response.count);
       console.log(`offset : ${offset}`);
     };
 
     fetchIndividualQuestions();
-  }, [offset]);
+  }, [offset, send]);
 
   return {
     questionInfo,
     count,
+    setSend,
   };
 };

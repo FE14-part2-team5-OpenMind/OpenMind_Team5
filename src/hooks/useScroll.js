@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-export const useScroll = ({ setOffset, questionInfo, LIMIT, count }) => {
+export const useScroll = ({ setOffset, questionInfo, LIMIT, count, setSend }) => {
   const [moreData, setMoreData] = useState(false);
   console.log(`count: ${count}`);
   console.log(`questionInfo 길이: ${questionInfo.length}`);
@@ -13,6 +13,7 @@ export const useScroll = ({ setOffset, questionInfo, LIMIT, count }) => {
       window.scrollY
     ) {
       if (moreData === false && questionInfo.length < count) {
+        setSend(false);
         console.log("데이터 추가로 호출");
         setMoreData(true);
         setOffset((prev) => prev + LIMIT);
