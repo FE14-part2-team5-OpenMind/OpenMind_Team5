@@ -10,19 +10,15 @@ import {
   Wrapper,
   Logo,
   Profile,
-  BodyWrapper,
   ProfilePlaceholder,
+  BodyWrapper,
   EmptyIcon,
 } from "../styles/individualFeedStyle";
-import {
-  QuestionsContainer,
-  QuestionsWrapper,
-  QuestionCount,
-} from "../styles/AnswerPageStyle"; // 수정: 필요한 스타일만 유지
 import { useSubjectInfo } from "../hooks/useSubjectInfo";
 import { useIndividualQuestions } from "../hooks/useIndividualQuestions";
 import { useScroll } from "../hooks/useScroll";
 import { RotatingAnimation } from "../styles/rotatingAnimation";
+import { deleteQuestion } from "../services/answerService";
 
 const AnswerPage = () => {
   const { id } = useParams();
@@ -31,15 +27,16 @@ const AnswerPage = () => {
   const LIMIT = 10;
 
   const { userInfo } = useSubjectInfo();
-  const { questionInfo, count } = useIndividualQuestions({
+  const { questionInfo, count, setSend } = useIndividualQuestions({
     offset,
     limit: LIMIT,
   });
   const { moreData } = useScroll({ setOffset, questionInfo, LIMIT, count });
   const [loading, setLoading] = useState(true);
+  const [toastMessage, setToastMessage] = useState("");
 
   useEffect(() => {
-    if (userInfo && questionInfo !== null) {
+    if (userInfo && questionInfo !== null && questionInfo !== undefined) {
       setLoading(false);
     } else {
       setLoading(true);
@@ -54,75 +51,117 @@ const AnswerPage = () => {
     navigate("/");
   };
 
-  const handleAnswerSubmit = (questionId, answerText) => {
-    console.log("답변 제출:", { questionId, content: answerText });
+  const handleQuestionDelete = async (questionId) => {
+    try {
+      await deleteQuestion(questionId);
+      setSend(true);
+      setToastMessage("질문이 삭제되었습니다.");
+      setTimeout(() => setToastMessage(""), 3000);
+    } catch (error) {
+      console.error("질문 삭제 실패:", error);
+      setToastMessage("질문 삭제에 실패했습니다.");
+      setTimeout(() => setToastMessage(""), 3000);
+    }
   };
-
-  const handleAnswerDelete = (questionId) => {
-    console.log("질문 삭제:", { questionId });
-  };
-
-  const handleAnswerUpdate = (questionId, updatedText) => {
-    console.log("답변 업데이트:", { questionId, content: updatedText });
-  };
-
-  if (loading) {
-    return (
-      <Wrapper>
-        <img src={backgroundImage} alt="배경사진" />
-        <Logo src={logo} alt="로고" onClick={handleLogoClick} />
-        <ProfilePlaceholder />
-        <span className="profileName">로딩 중...</span>
-      </Wrapper>
-    );
-  }
 
   return (
     <Wrapper>
       <img src={backgroundImage} alt="배경사진" />
       <Logo src={logo} alt="로고" onClick={handleLogoClick} />
-      <Profile src={userInfo.imageSource} />
-      <span className="profileName">{userInfo.name}</span>{" "}
-      {/* 수정: ProfileName 대신 className 사용 */}
-      <IconBox /> {/* 수정: IconBoxContainer 대신 직접 사용 */}
+      {loading || !userInfo ? (
+        <ProfilePlaceholder />
+      ) : (
+        <Profile src={userInfo.imageSource} />
+      )}
+      <span className="profileName">
+        {loading || !userInfo ? "로딩 중..." : userInfo.name}
+      </span>
+      <IconBox />
+      {questionInfo.length > 0 && (
+        <button
+          onClick={() => handleQuestionDelete(questionInfo[0].id)}
+          style={{
+            position: "absolute",
+            top: "380px",
+            right: "calc(50% - 716px / 2 + 24px)", // BodyWrapper의 우측 경계 (width: 716px, padding-right: 24px)
+            padding: "12px 24px",
+            background: "var(--brown40)",
+            color: "white",
+            border: "none",
+            borderRadius: "24px",
+            fontSize: "16px",
+            cursor: "pointer",
+            "@media (max-width: 767px)": {
+              right: "calc(50% - 327px / 2 + 16px)", // 반응형: width 327px, padding-right 16px
+            },
+          }}
+          onMouseOver={(e) => (e.target.style.background = "var(--brown50)")}
+          onMouseOut={(e) => (e.target.style.background = "var(--brown40)")}
+        >
+          삭제하기
+        </button>
+      )}
+      <br />
       <BodyWrapper count={count}>
-        {questionInfo?.length > 0 ? (
-          <QuestionsWrapper>
-            <QuestionCount>
-              <img src={message} alt="질문 아이콘" />
-              <span>{count}개의 질문이 있습니다.</span>
-            </QuestionCount>
-            <QuestionsContainer>
-              {questionInfo.map((q) => (
-                <Answer
-                  key={q.id}
-                  questionId={q.id}
-                  question={q.content}
-                  answer={q.answer?.content || q.answer}
-                  profileImage={userInfo.imageSource}
-                  username={userInfo.name}
-                  timestamp={q.createdAt}
-                  likes={q.likes || 0}
-                  dislikes={q.dislikes || 0}
-                  isAnswered={q.isAnswered || false}
-                  onAnswerSubmit={handleAnswerSubmit}
-                  onAnswerDelete={handleAnswerDelete}
-                  onAnswerUpdate={handleAnswerUpdate}
-                />
-              ))}
-            </QuestionsContainer>
-          </QuestionsWrapper>
-        ) : (
+        <div className="questionNum">
+          <img src={message} alt="질문 아이콘" />
+          <span>
+            {count === 0
+              ? "아직 질문이 없습니다."
+              : `${count}개의 질문이 있습니다.`}
+          </span>
+        </div>
+        {loading ? (
           <>
-            <div className="questionNum">
-              <img src={message} alt="질문 아이콘" />
-              <span>아직 질문이 없습니다.</span>
-            </div>
-            <EmptyIcon src={emptyIcon} alt="질문 없을 때 이미지" />
+            {Array.from({ length: 5 }).map((_, index) => (
+              <Answer key={index} isPreview={true} />
+            ))}
           </>
+        ) : questionInfo?.length > 0 ? (
+          questionInfo.map((q, index) => (
+            <React.Fragment key={q.id}>
+              <Answer
+                questionId={q.id}
+                question={q.content}
+                answer={q.answer}
+                profileImage={userInfo?.imageSource || ""}
+                username={userInfo?.name || "Unknown"}
+                timestamp={q.createdAt}
+                isAnswered={q.isAnswered || !!q.answer}
+                setSend={setSend}
+                setOffset={setOffset}
+              />
+              {index < questionInfo.length - 1 && <br />}
+            </React.Fragment>
+          ))
+        ) : (
+          <EmptyIcon src={emptyIcon} alt="질문 없을 때 이미지" />
         )}
-        {moreData && questionInfo.length < count && <RotatingAnimation />}
+        {moreData && questionInfo && questionInfo.length < count && (
+          <RotatingAnimation />
+        )}
       </BodyWrapper>
+      {toastMessage && (
+        <div
+          style={{
+            position: "fixed",
+            bottom: "50px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 999,
+            padding: "12px 20px",
+            background: "#757575",
+            color: "#F5F5F5",
+            borderRadius: "8px",
+            boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+            fontSize: "14px",
+            fontWeight: 500,
+            lineHeight: "18px",
+          }}
+        >
+          {toastMessage}
+        </div>
+      )}
     </Wrapper>
   );
 };
