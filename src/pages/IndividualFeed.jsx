@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AddQuestion from "../components/AddQuestion";
-import { Wrapper } from "../styles/individualFeedStyle";
+import { Wrapper, Toast } from "../styles/individualFeedStyle"; // Toast 추가
 import { useSubjectInfo } from "../hooks/useSubjectInfo";
 import { useIndividualQuestions } from "../hooks/useIndividualQuestions";
 import { RotatingAnimation } from "../styles/rotatingAnimation";
@@ -17,6 +17,7 @@ const IndividualFeed = () => {
     offset,
     limit: LIMIT,
   });
+
   const { moreData } = useScroll({
     setOffset,
     questionInfo,
@@ -24,8 +25,18 @@ const IndividualFeed = () => {
     count,
     setSend,
   });
+
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [toast, setToast] = useState(false);
+
+  useEffect(() => {
+    // 5초 동안 보이다가 사라지는 토스트 팝업
+    if (toast) {
+      const timer = setTimeout(() => setToast(false), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [toast]);
 
   const handleModalOpen = () => {
     setIsModalOpen((prev) => !prev);
@@ -43,6 +54,7 @@ const IndividualFeed = () => {
 
   return (
     <Wrapper>
+
       <FeedHeader loading={loading} userInfo={userInfo} />
 
       <FeedBody
@@ -51,6 +63,8 @@ const IndividualFeed = () => {
         questionInfo={questionInfo}
         userInfo={userInfo}
       />
+
+      {toast && <Toast>URL이 복사되었습니다</Toast>}
 
       {moreData && questionInfo.length < count && <RotatingAnimation />}
 
