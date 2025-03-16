@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes } from "styled-components";
 
 const placeholderGlow = keyframes`
     50% {
@@ -29,6 +29,7 @@ export const Wrapper = styled.div`
 export const Logo = styled.img`
   position: absolute;
   top: 50px;
+  cursor: pointer;
 `;
 
 export const Profile = styled.img`
@@ -75,13 +76,13 @@ export const Icon = styled.a`
   height: 40px;
   border-radius: 50%;
   background-color: ${({ colorType }) =>
-    colorType === 'facebook'
-      ? 'var(--blue50)'
-      : colorType === 'kakao'
-      ? 'var(--yellow50)'
-      : colorType === 'link'
-      ? 'var(--brown50)'
-      : 'var(--gray50)'};
+    colorType === "facebook"
+      ? "var(--blue50)"
+      : colorType === "kakao"
+      ? "var(--yellow50)"
+      : colorType === "link"
+      ? "var(--brown50)"
+      : "var(--gray50)"};
   color: white;
   font-size: 1.5rem;
   text-decoration: none;
@@ -120,7 +121,6 @@ export const BodyWrapper = styled.div`
     justify-content: center;
     margin: 16px auto;
     gap: 8px;
-
 
     span {
       color: var(--brown40);

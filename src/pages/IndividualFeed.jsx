@@ -20,8 +20,10 @@ import { useScroll } from "../hooks/useScroll";
 import IconBox from "../components/IconBox";
 import Modal from "../components/Modal/Modal";
 import emptyIcon from "../assets/images/NoQuestion.svg";
+import { Link, useNavigate } from "react-router-dom";
 
 const IndividualFeed = () => {
+  const navigate = useNavigate();
   const [offset, setOffset] = useState(0);
   const LIMIT = 10;
   const { userInfo } = useSubjectInfo();
@@ -29,13 +31,23 @@ const IndividualFeed = () => {
     offset,
     limit: LIMIT,
   });
-  const { moreData } = useScroll({ setOffset, questionInfo, LIMIT, count, setSend });
+  const { moreData } = useScroll({
+    setOffset,
+    questionInfo,
+    LIMIT,
+    count,
+    setSend,
+  });
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleModalOpen = () => {
     setIsModalOpen((prev) => !prev);
     setSend(false);
+  };
+
+  const navigateToMain = () => {
+    navigate("/");
   };
 
   // 스켈리톤 ui를 위한 상태 변경
@@ -51,7 +63,7 @@ const IndividualFeed = () => {
     <Wrapper>
       {/* 배경사진, 사용자 이름은 userInfo에서 가져온다 */}
       <img src={backgroundImage} alt="배경사진" />
-      <Logo src={logo} alt="로고" />
+      <Logo src={logo} alt="로고" onClick={navigateToMain} />
       {loading ? (
         <ProfilePlaceholder />
       ) : (
