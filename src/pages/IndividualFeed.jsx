@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
-import backgroundImage from "../assets/images/IndividualFeed-BackgroundImage.png";
-import logo from "../assets/images/logo.png";
-import message from "../assets/images/Messages.png";
-import FeedCard from "../components/FeedCard";
-import AddQuestion from "../components/AddQuestion";
+import React, { useCallback, useEffect, useState } from 'react';
+import backgroundImage from '../assets/images/IndividualFeed-BackgroundImage.png';
+import logo from '../assets/images/logo.png';
+import message from '../assets/images/Messages.png';
+import FeedCard from '../components/FeedCard';
+import AddQuestion from '../components/AddQuestion';
 import {
   Wrapper,
   Logo,
@@ -11,15 +11,16 @@ import {
   BodyWrapper,
   ProfilePlaceholder,
   EmptyIcon,
-} from "../styles/individualFeedStyle";
-import { useSubjectInfo } from "../hooks/useSubjectInfo";
-import { useIndividualQuestions } from "../hooks/useIndividualQuestions";
-import FeedCardPlaceholder from "../components/FeedCardPlaceholder";
-import { RotatingAnimation } from "../styles/rotatingAnimation";
-import { useScroll } from "../hooks/useScroll";
-import IconBox from "../components/IconBox";
-import Modal from "../components/Modal/Modal";
-import emptyIcon from "../assets/images/NoQuestion.svg";
+  Toast,
+} from '../styles/individualFeedStyle';
+import { useSubjectInfo } from '../hooks/useSubjectInfo';
+import { useIndividualQuestions } from '../hooks/useIndividualQuestions';
+import FeedCardPlaceholder from '../components/FeedCardPlaceholder';
+import { RotatingAnimation } from '../styles/rotatingAnimation';
+import { useScroll } from '../hooks/useScroll';
+import IconBox from '../components/IconBox';
+import Modal from '../components/Modal/Modal';
+import emptyIcon from '../assets/images/NoQuestion.svg';
 
 const IndividualFeed = () => {
   const [offset, setOffset] = useState(0);
@@ -32,6 +33,15 @@ const IndividualFeed = () => {
   const { moreData } = useScroll({ setOffset, questionInfo, LIMIT, count });
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [toast, setToast] = useState(false);
+
+  useEffect(() => {
+    // 5초 동안 보이다가 사라지는 토스트 팝업
+    if (toast) {
+      const timer = setTimeout(() => setToast(false), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [toast]);
 
   const handleModalOpen = () => {
     setIsModalOpen((prev) => !prev);
@@ -59,7 +69,7 @@ const IndividualFeed = () => {
       <span className="profileName">{userInfo?.name}</span>
 
       {/* 아이콘 컴포넌트 */}
-      <IconBox />
+      <IconBox setToast={setToast} />
 
       {/* 질문을 보여주는 부분 */}
       <BodyWrapper count={count}>
@@ -67,7 +77,7 @@ const IndividualFeed = () => {
           <img src={message} alt="질문 아이콘" />
           <span>
             {count === 0
-              ? "아직 질문이 없습니다."
+              ? '아직 질문이 없습니다.'
               : `${count}개의 질문이 있습니다.`}
           </span>
         </div>
@@ -91,6 +101,8 @@ const IndividualFeed = () => {
           <EmptyIcon src={emptyIcon} alt="질문 없을 때 이미지" />
         )}
       </BodyWrapper>
+
+      {toast && <Toast>URL이 복사되었습니다</Toast>}
 
       {moreData && questionInfo.length < count && <RotatingAnimation />}
 
