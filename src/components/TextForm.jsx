@@ -53,6 +53,7 @@ const TextForm = ({
   mode,
   onClose,
   setSend,
+  setOffset,
 }) => {
   const [textValue, setTextValue] = useState("");
   const [isValid, setIsValid] = useState(false);
@@ -73,6 +74,7 @@ const TextForm = ({
         console.log("질문 등록 완료!");
         onClose();
         setSend(true);
+        setOffset(0);
       }
       //답변 부분 (mode == "answer")
     } catch (error) {

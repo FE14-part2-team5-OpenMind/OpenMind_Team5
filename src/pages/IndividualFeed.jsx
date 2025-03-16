@@ -61,6 +61,7 @@ const IndividualFeed = () => {
           onClose={handleModalOpen}
           userInfo={userInfo}
           setSend={setSend}
+          setOffset={setOffset}
         />
       )}
     </Wrapper>

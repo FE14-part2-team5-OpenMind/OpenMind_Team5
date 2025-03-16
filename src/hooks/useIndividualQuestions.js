@@ -16,7 +16,10 @@ export const useIndividualQuestions = ({ offset, limit = 10 }) => {
         setQuestionInfo(response.results);
         setCount(response.count);
         return;
-      } else if (offset > 0) {
+      } else if (send === true && offset > 0) {
+        setQuestionInfo(response.results);
+        setCount(response.count);
+      } else if (send === false && offset > 0) {
         setQuestionInfo((prev) => [...prev, ...response.results]);
       }
       setCount(response.count);
