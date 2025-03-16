@@ -66,6 +66,7 @@ export const Icons = styled.div`
   display: flex;
   flex-direction: row;
   gap: 12px;
+  z-index: 9999;
 `;
 
 export const Icon = styled.a`
@@ -161,4 +162,5 @@ export const Toast = styled.div`
   font-style: normal;
   font-weight: 500;
   line-height: 18px;
+  font: var(--caption1-medium);
 `;

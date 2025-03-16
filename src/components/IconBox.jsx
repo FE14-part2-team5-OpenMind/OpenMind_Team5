@@ -1,9 +1,9 @@
-import React from 'react';
-import { Icons, Icon } from '../styles/individualFeedStyle';
-import { useKakaoShare } from '../hooks/useKakaoShare';
-import link from '../assets/images/Link.png';
-import facebook from '../assets/images/Facebook.png';
-import kakao from '../assets/images/Kakaotalk.png';
+import React from "react";
+import { Icons, Icon } from "../styles/individualFeedStyle";
+import { useKakaoShare } from "../hooks/useKakaoShare";
+import link from "../assets/images/Link.png";
+import facebook from "../assets/images/Facebook.png";
+import kakao from "../assets/images/Kakaotalk.png";
 
 const IconBox = ({ setToast }) => {
   const { shareKakao } = useKakaoShare();
@@ -14,6 +14,7 @@ const IconBox = ({ setToast }) => {
   // clipboard에 현재 url 복사
   const copyUrl = () => {
     navigator.clipboard.writeText(window.location.href);
+    console.log("복사");
     setToast(true);
   };
 
