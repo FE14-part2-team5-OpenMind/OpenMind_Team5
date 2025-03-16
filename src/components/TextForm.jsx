@@ -1,6 +1,5 @@
-import { useState } from "react";
 import styled from "styled-components";
-import { postQuestion } from "../services/postQuestion";
+import useTextForm from "../hooks/useTextForm";
 
 export const TextArea = styled.textarea`
   display: flex;
@@ -49,39 +48,46 @@ export const SendingButton = styled.button`
 const TextForm = ({
   placeholder,
   buttonText,
-  subject_id,
+  id,
   mode,
   onClose,
   setSend,
   setOffset,
 }) => {
-  const [textValue, setTextValue] = useState("");
-  const [isValid, setIsValid] = useState(false);
+  const { textValue, isValid, handleTextChange, handleSubmit } = useTextForm({
+    mode,
+    id,
+    onClose,
+    setSend,
+    setOffset,
+  });
+  // const [textValue, setTextValue] = useState("");
+  // const [isValid, setIsValid] = useState(false);
 
-  const handleTextChange = (e) => {
-    // TextArea 상태 변화
-    const nextValue = e.target.value;
-    setTextValue(nextValue);
-    // 공백 or 빈 문자열인 경우
-    setIsValid(nextValue.trim() !== "");
-  };
+  // const handleTextChange = (e) => {
+  //   // TextArea 상태 변화
+  //   const nextValue = e.target.value;
+  //   setTextValue(nextValue);
+  //   // 공백 or 빈 문자열인 경우
+  //   setIsValid(nextValue.trim() !== "");
+  // };
 
-  const handleSubmit = async () => {
-    if (!isValid) return;
-    try {
-      if (mode === "question") {
-        await postQuestion({ subject_id, content: textValue });
-        console.log("질문 등록 완료!");
-        onClose();
-        setSend(true);
-        setOffset(0);
-      }
-      //답변 부분 (mode == "answer")
-    } catch (error) {
-      console.log("질문 등록 실패");
-      console.error(error);
-    }
-  };
+  // const handleSubmit = async () => {
+  //   if (!isValid) return;
+  //   try {
+  //     if (mode === "question") {
+  //       await postQuestion({ subject_id, content: textValue });
+  //       console.log("질문 등록 완료!");
+  //       onClose();
+  //       setSend(true);
+  //       setOffset(0);
+  //     }
+  //     //답변 부분 (mode == "answer")
+  //   } catch (error) {
+  //     console.log("질문 등록 실패");
+  //     console.error(error);
+  //   }
+  // };
 
   return (
     <>
