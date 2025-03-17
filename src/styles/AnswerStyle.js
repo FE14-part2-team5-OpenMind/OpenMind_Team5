@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { StyledButton } from "./buttonStyle";
 
+// variant prop을 필터링하기 위한 shouldForwardProp 설정
+const filterProps = (prop) => prop !== "variant";
+
 export const Container = styled.div`
   width: 100%;
   background-color: var(--gray10);
@@ -45,48 +48,6 @@ export const TimeInfo = styled.div`
   }
 `;
 
-export const OptionsButton = styled.div`
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--gray40);
-
-  &:hover {
-    color: var(--gray60);
-  }
-`;
-
-export const OptionsMenu = styled.div`
-  position: absolute;
-  top: 60px;
-  right: 24px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 10;
-  overflow: hidden;
-`;
-
-export const MenuItem = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 12px 16px;
-  font-size: 14px;
-  color: var(--gray60);
-  cursor: pointer;
-
-  &:hover {
-    background-color: var(--gray10);
-  }
-
-  svg {
-    margin-right: 8px;
-  }
-`;
-
 export const QuestionContent = styled.div`
   margin-bottom: 24px;
 
@@ -101,6 +62,13 @@ export const QuestionContent = styled.div`
     font-weight: 500;
     color: var(--gray60);
   }
+`;
+
+export const UsernameHeader = styled.div`
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--gray60);
 `;
 
 export const AnswerContent = styled.div`
@@ -161,10 +129,16 @@ export const AnswerForm = styled.div`
   }
 `;
 
-export const SubmitButton = styled(StyledButton)`
+export const SubmitButton = styled(StyledButton).withConfig({
+  shouldForwardProp: filterProps,
+})`
   width: 100%;
   opacity: ${(props) => (props.disabled ? 0.5 : 1)};
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+
+  &:hover {
+    background: var(--brown50);
+  }
 `;
 
 export const Footer = styled.div`

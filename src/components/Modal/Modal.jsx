@@ -21,6 +21,9 @@ const Modal = ({ onClose, userInfo, setSend, setOffset }) => {
     }
   };
 
+  // 수정: userInfo가 없으면 렌더링 중단
+  if (!userInfo) return null;
+
   return (
     <Background onClick={handleModalClose}>
       <Container>
@@ -34,15 +37,13 @@ const Modal = ({ onClose, userInfo, setSend, setOffset }) => {
         <Receiver>
           <To>To.</To>
           <Profile src={userInfo.imageSource} alt="프로필 이미지" />
-          {/* userName 연결 */}
-          {/* 아초는 고양이  */}
           {userInfo.name}
         </Receiver>
         <TextForm
           placeholder="질문을 입력해주세요"
           buttonText="질문 보내기"
-          id={userInfo.id}
-          mode="question"
+          id={userInfo.id} // subject_id -> id로 변경
+          mode="question" // 질문 모드 유지
           onClose={onClose}
           setSend={setSend}
           setOffset={setOffset}
