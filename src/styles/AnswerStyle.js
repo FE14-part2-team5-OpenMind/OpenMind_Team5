@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { StyledButton } from "./buttonStyle";
 
+const filterProps = (prop) => prop !== "variant";
+
 export const Container = styled.div`
   width: 100%;
   background-color: var(--gray10);
@@ -45,48 +47,6 @@ export const TimeInfo = styled.div`
   }
 `;
 
-export const OptionsButton = styled.div`
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--gray40);
-
-  &:hover {
-    color: var(--gray60);
-  }
-`;
-
-export const OptionsMenu = styled.div`
-  position: absolute;
-  top: 60px;
-  right: 24px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 10;
-  overflow: hidden;
-`;
-
-export const MenuItem = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 12px 16px;
-  font-size: 14px;
-  color: var(--gray60);
-  cursor: pointer;
-
-  &:hover {
-    background-color: var(--gray10);
-  }
-
-  svg {
-    margin-right: 8px;
-  }
-`;
-
 export const QuestionContent = styled.div`
   margin-bottom: 24px;
 
@@ -101,6 +61,13 @@ export const QuestionContent = styled.div`
     font-weight: 500;
     color: var(--gray60);
   }
+`;
+
+export const UsernameHeader = styled.div`
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--gray60);
 `;
 
 export const AnswerContent = styled.div`
@@ -127,7 +94,7 @@ export const AnswerContent = styled.div`
 
   .answer-text {
     font-size: 16px;
-    color: var(--gray60);
+    color: ${(props) => (props.isRejected ? "var(--red50)" : "var(--gray60)")};
     line-height: 1.6;
   }
 `;
@@ -161,10 +128,16 @@ export const AnswerForm = styled.div`
   }
 `;
 
-export const SubmitButton = styled(StyledButton)`
+export const SubmitButton = styled(StyledButton).withConfig({
+  shouldForwardProp: filterProps,
+})`
   width: 100%;
   opacity: ${(props) => (props.disabled ? 0.5 : 1)};
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+
+  &:hover {
+    background: var(--brown50);
+  }
 `;
 
 export const Footer = styled.div`
@@ -185,5 +158,35 @@ export const ReactionButton = styled.div`
 
   &:hover {
     color: var(--brown40);
+  }
+`;
+
+// 수정: KebabMenu 스타일 추가
+export const KebabContainer = styled.div`
+  position: relative;
+`;
+
+export const KebabMenuWrapper = styled.div`
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+`;
+
+export const KebabButton = styled.button`
+  padding: 8px 16px;
+  min-width: 80px;
+  text-align: left;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+  white-space: nowrap;
+  &:hover {
+    background: #f5f5f5;
   }
 `;

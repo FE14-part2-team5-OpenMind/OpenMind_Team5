@@ -21,6 +21,13 @@ const Modal = ({ onClose, userInfo, setSend, setOffset }) => {
     }
   };
 
+  // 수정: 질문 제출 후 응답을 부모로 전달
+  const handleQuestionSubmit = (response) => {
+    onClose(response); // 응답이 있으면 전달, 없으면 undefined
+  };
+
+  if (!userInfo) return null;
+
   return (
     <Background onClick={handleModalClose}>
       <Container>
@@ -34,8 +41,6 @@ const Modal = ({ onClose, userInfo, setSend, setOffset }) => {
         <Receiver>
           <To>To.</To>
           <Profile src={userInfo.imageSource} alt="프로필 이미지" />
-          {/* userName 연결 */}
-          {/* 아초는 고양이  */}
           {userInfo.name}
         </Receiver>
         <TextForm
@@ -43,7 +48,7 @@ const Modal = ({ onClose, userInfo, setSend, setOffset }) => {
           buttonText="질문 보내기"
           id={userInfo.id}
           mode="question"
-          onClose={onClose}
+          onClose={handleQuestionSubmit} // 수정: handleQuestionSubmit 전달
           setSend={setSend}
           setOffset={setOffset}
         />

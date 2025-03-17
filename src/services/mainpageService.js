@@ -1,6 +1,7 @@
-import axios from 'axios';
+import axios from "axios";
 
-const BASE_URL = 'https://openmind-api.vercel.app/14-5';
+const BASE_URL = "https://openmind-api.vercel.app/14-5";
+
 const ENDPOINTS = {
   mypage: `${BASE_URL}/subjects/`,
 };
@@ -13,7 +14,7 @@ export const sendUserName = async (name) => {
       { name },
       {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
     );
