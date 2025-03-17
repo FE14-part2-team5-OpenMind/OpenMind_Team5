@@ -14,10 +14,10 @@ import ArrowUpIcon from "../assets/icons/Arrow-up.svg";
 const QuestionList = () => {
   const [sortOrder, setSortOrder] = useState("이름순");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
   const [profiles, setProfiles] = useState(null);
   const [dataErrorMessage, setDataErrorMessage] = useState("");
 
+  // api 호출 함수
   const handleSubjectsData = async () => {
     try {
       const profiles = await getAllDataSubjects();
@@ -26,6 +26,20 @@ const QuestionList = () => {
       setDataErrorMessage(error.message);
     }
   };
+
+  // 정렬 기준에 따라 정렬하기
+  const sortProfiles = (profiles, sortOrder) => {
+    if (sortOrder === "이름순") {
+      return profiles?.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortOrder === "최신순") {
+      return profiles?.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
+    }
+    return profiles;
+  };
+
+  const sortedProfiles = sortProfiles(profiles?.results || [], sortOrder);
 
   useEffect(() => {
     handleSubjectsData();
@@ -76,7 +90,10 @@ const QuestionList = () => {
         </SortDropdown>
       </TitleContainer>
 
-      <ProfileCard profiles={profiles} message={dataErrorMessage} />
+      <ProfileCard
+        profiles={{ results: sortedProfiles }}
+        message={dataErrorMessage}
+      />
     </Container>
   );
 };
