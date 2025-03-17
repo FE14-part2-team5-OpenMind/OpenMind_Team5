@@ -1,23 +1,22 @@
 import styled from "styled-components";
 import useTextForm from "../hooks/useTextForm";
 
-// 우측 정렬을 위한 컨테이너
 const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-end; /* 우측 정렬 (기존 유지) */
+  align-items: flex-end;
   width: 100%;
 `;
 
 export const TextArea = styled.textarea`
   display: flex;
   width: 100%;
-  max-width: 612px; /* 기존 532px에서 15% 증가 */
+  max-width: 612px;
   height: 180px;
   padding: 16px;
   border: none;
   border-radius: 8px;
-  background: var(--gray20); /* "질문을 입력해주세요"와 동일 */
+  background: var(--gray20);
   white-space: pre-wrap;
   resize: none;
   &::placeholder {
@@ -27,14 +26,14 @@ export const TextArea = styled.textarea`
     outline: 1px solid var(--brown40);
   }
   @media (max-width: 480px) {
-    max-width: 321px; /* 기존 279px에서 15% 증가 */
+    max-width: 321px;
     height: 358px;
   }
 `;
 
 export const SendingButton = styled.button`
   width: 100%;
-  max-width: 612px; /* 기존 532px에서 15% 증가 */
+  max-width: 612px;
   background: var(--brown30);
   color: var(--gray10);
   border-radius: 8px;
@@ -42,13 +41,13 @@ export const SendingButton = styled.button`
   margin-top: 8px;
   padding: 12px 24px;
   cursor: pointer;
-  min-height: 48px; /* 텍스트 유무와 상관없이 최소 높이 유지 */
-  line-height: 24px; /* 텍스트 높이 조정 */
-  text-align: center; /* 텍스트 중앙 정렬 */
+  min-height: 48px;
+  line-height: 24px;
+  text-align: center;
 
   @media (max-width: 480px) {
-    max-width: 321px; /* 기존 279px에서 15% 증가 */
-    min-height: 48px; /* 반응형에서도 최소 높이 유지 */
+    max-width: 321px;
+    min-height: 48px;
   }
 
   ${({ isValid }) =>
@@ -66,8 +65,8 @@ const TextForm = ({
   setSend,
   setOffset,
   initialContent = "",
-  answerId, // 수정 시 사용할 answerId
-  isEditing, // 수정 모드 플래그
+  answerId,
+  isEditing,
 }) => {
   const { textValue, isValid, handleTextChange, handleSubmit } = useTextForm({
     mode,
@@ -80,6 +79,14 @@ const TextForm = ({
     isEditing,
   });
 
+  // 수정: 제출 후 응답 데이터를 onClose로 전달
+  const onSubmit = async () => {
+    const response = await handleSubmit(); // handleSubmit이 응답을 반환하도록 가정
+    if (response) {
+      onClose(response); // 응답 데이터를 부모로 전달
+    }
+  };
+
   return (
     <FormContainer>
       <TextArea
@@ -87,7 +94,7 @@ const TextForm = ({
         value={textValue}
         onChange={handleTextChange}
       />
-      <SendingButton isValid={isValid} onClick={handleSubmit}>
+      <SendingButton isValid={isValid} onClick={onSubmit}>
         {isValid ? (
           buttonText
         ) : (

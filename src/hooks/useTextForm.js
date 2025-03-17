@@ -1,5 +1,9 @@
-import { useState, useEffect } from "react";
-import * as answerService from "../services/answerService";
+import { useState } from "react";
+import {
+  submitAnswer,
+  updateAnswer,
+  postQuestion,
+} from "../services/answerService";
 
 const useTextForm = ({
   mode,
@@ -7,83 +11,50 @@ const useTextForm = ({
   onClose,
   setSend,
   setOffset,
-  initialContent,
+  initialContent = "",
   answerId,
   isEditing,
 }) => {
-  const [textValue, setTextValue] = useState(initialContent || "");
-  const [isValid, setIsValid] = useState(
-    initialContent?.trim() !== "" || false
-  );
-
-  useEffect(() => {
-    setTextValue(initialContent || "");
-    setIsValid(initialContent?.trim() !== "" || false);
-  }, [initialContent]);
+  const [textValue, setTextValue] = useState(initialContent);
+  const isValid = textValue.trim().length > 0;
 
   const handleTextChange = (e) => {
-    const nextValue = e.target.value;
-    setTextValue(nextValue);
-    setIsValid(nextValue.trim() !== "");
+    setTextValue(e.target.value);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     if (!isValid) return;
+
     try {
+      let response;
       if (mode === "question") {
-        console.log("질문 제출 시도:", { subject_id: id, content: textValue });
-        const response = await answerService.postQuestion({
-          subject_id: id,
-          content: textValue,
-        });
-        console.log("질문 등록 응답:", response);
-        onClose();
+        response = await postQuestion({ subject_id: id, content: textValue });
         setSend(true);
         setOffset(0);
       } else if (mode === "answer") {
-        if (isEditing && answerId) {
-          const response = await answerService.updateAnswer({
+        if (isEditing) {
+          response = await updateAnswer({
             answerId,
             answerText: textValue,
             isRejected: false,
           });
-          console.log("답변 수정 응답:", response);
-          if (!response || !response.id) {
-            throw new Error("답변 수정 응답이 올바르지 않습니다.");
-          }
         } else {
-          const response = await answerService.submitAnswer({
+          response = await submitAnswer({
             questionId: id,
             answerText: textValue,
             isRejected: false,
           });
-          console.log("답변 등록 응답:", response);
-          if (!response || !response.id) {
-            throw new Error("답변 등록 응답이 올바르지 않습니다.");
-          }
         }
-        onClose();
         setSend(true);
-        setOffset(0);
       }
+      setTextValue("");
+      return response; // 수정: 서버 응답 반환
     } catch (error) {
-      console.error(
-        `${mode === "question" ? "질문" : "답변"} ${
-          isEditing ? "수정" : "등록"
-        } 실패:`,
-        error.message
-      );
-      throw error;
+      console.error(`${mode} 제출 실패:`, error);
     }
   };
 
-  return {
-    textValue,
-    isValid,
-    handleTextChange,
-    handleSubmit,
-  };
+  return { textValue, isValid, handleTextChange, handleSubmit };
 };
 
 export default useTextForm;
