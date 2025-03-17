@@ -47,7 +47,7 @@ export const QuestionsWrapper = styled.div`
   border-radius: 16px;
   padding: 24px;
   margin-bottom: 24px;
-  position: relative;
+  position: relative; /* DeleteButton의 부모로 사용 */
 
   @media (max-width: 767px) {
     padding: 16px;
@@ -87,5 +87,23 @@ export const QuestionCount = styled.div`
     span {
       font-size: 14px;
     }
+  }
+`;
+
+// "삭제하기" 버튼 스타일 추가
+export const DeleteButton = styled.button`
+  position: absolute;
+  top: 0;
+  right: 0; /* QuestionsWrapper의 우측 경계에 맞춤 */
+  padding: 12px 24px;
+  background: var(--brown40);
+  color: white;
+  border: none;
+  border-radius: 24px;
+  font-size: 16px;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--brown50);
   }
 `;

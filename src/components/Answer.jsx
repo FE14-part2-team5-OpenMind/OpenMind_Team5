@@ -1,21 +1,15 @@
-import React, { useState, useRef, useEffect } from "react";
-import {
-  BiLike,
-  BiDislike,
-  BiDotsHorizontalRounded,
-  BiEdit,
-  BiTrash,
-} from "react-icons/bi";
+import React, { useState } from "react";
+import { BiLike, BiDislike, BiDotsVerticalRounded } from "react-icons/bi";
+import { postLikeDislike } from "../services/postLikeDislike";
+import TextForm from "./TextForm.jsx";
 import {
   Container,
   Header,
   BadgeContainer,
   Badge,
   TimeInfo,
-  OptionsButton,
-  OptionsMenu,
-  MenuItem,
   QuestionContent,
+  UsernameHeader,
   AnswerContent,
   AnswerForm,
   SubmitButton,
@@ -23,152 +17,165 @@ import {
   ReactionButton,
 } from "../styles/AnswerStyle";
 
+// 상대적 시간 계산 함수
+const formatTime = (timestamp) => {
+  if (!timestamp) return "방금 전";
+
+  const now = new Date();
+  const date = new Date(timestamp);
+  const diffInSeconds = Math.floor((now - date) / 1000);
+
+  if (diffInSeconds < 60) return "방금 전";
+  if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}분 전`;
+  if (diffInSeconds < 86400)
+    return `${Math.floor(diffInSeconds / 3600)}시간 전`;
+  if (diffInSeconds < 604800)
+    return `${Math.floor(diffInSeconds / 86400)}일 전`;
+  return `${Math.floor(diffInSeconds / 604800)}주 전`;
+};
+
+// 드롭다운 메뉴 컴포넌트
+const KebabMenu = ({ onEdit }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div style={{ position: "relative" }}>
+      <BiDotsVerticalRounded
+        size={20}
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsOpen(!isOpen);
+        }}
+        style={{ cursor: "pointer" }}
+      />
+      {isOpen && (
+        <div
+          style={{
+            position: "absolute",
+            top: "100%",
+            right: 0,
+            background: "#fff",
+            border: "1px solid #ccc",
+            borderRadius: "4px",
+            boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+            zIndex: 1000,
+          }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <button
+            onClick={() => {
+              onEdit();
+              setIsOpen(false);
+            }}
+            style={{
+              padding: "8px 16px",
+              width: "100%",
+              textAlign: "left",
+              border: "none",
+              background: "none",
+              cursor: "pointer",
+              fontSize: "14px",
+            }}
+          >
+            수정하기
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Answer = ({
   question,
   answer,
   profileImage,
   username,
   timestamp,
-  likes,
-  dislikes = 0,
-  isAnswered = false,
-  onAnswerSubmit,
-  onAnswerDelete,
-  onAnswerUpdate,
+  isAnswered,
   questionId,
   isPreview = false,
+  setSend,
+  setOffset,
 }) => {
-  const [answerText, setAnswerText] = useState("");
   const [isLiked, setIsLiked] = useState(false);
   const [isDisliked, setIsDisliked] = useState(false);
-  const [likeCount, setLikeCount] = useState(likes || 0);
-  const [dislikeCount, setDislikeCount] = useState(dislikes || 0);
-  const [showOptions, setShowOptions] = useState(false);
+  const [likeCount, setLikeCount] = useState(answer?.likes || 0);
+  const [dislikeCount, setDislikeCount] = useState(answer?.dislikes || 0);
   const [isEditing, setIsEditing] = useState(false);
-  const [editText, setEditText] = useState("");
 
-  const optionsRef = useRef(null);
-
-  // 옵션 메뉴 외부 클릭 시 닫기
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (optionsRef.current && !optionsRef.current.contains(event.target)) {
-        setShowOptions(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  // 수정 모드 진입 시 기존 답변 텍스트 설정
-  useEffect(() => {
-    if (isEditing && answer) {
-      setEditText(answer);
-    }
-  }, [isEditing, answer]);
-
-  // 시간 포맷팅 함수
-  const formatTime = (timestamp) => {
-    // 실제 구현에서는 날짜 라이브러리를 사용하여 포맷팅
-    return timestamp || "2주전";
-  };
-
-  const handleAnswerChange = (e) => {
-    setAnswerText(e.target.value);
-  };
-
-  const handleEditChange = (e) => {
-    setEditText(e.target.value);
-  };
-
-  const handleSubmit = () => {
-    if (answerText.trim() && onAnswerSubmit) {
-      onAnswerSubmit(questionId, answerText);
-      setAnswerText("");
-    }
-  };
-
-  const handleUpdateSubmit = () => {
-    if (editText.trim() && onAnswerUpdate) {
-      onAnswerUpdate(questionId, editText);
-      setIsEditing(false);
-    }
-  };
-
-  const handleLike = () => {
-    if (!isLiked) {
-      setLikeCount((prev) => prev + 1);
-      if (isDisliked) {
-        setDislikeCount((prev) => prev - 1);
-        setIsDisliked(false);
-      }
-      setIsLiked(true);
-    } else {
-      setLikeCount((prev) => prev - 1);
-      setIsLiked(false);
-    }
-  };
-
-  const handleDislike = () => {
-    if (!isDisliked) {
-      setDislikeCount((prev) => prev + 1);
-      if (isLiked) {
-        setLikeCount((prev) => prev - 1);
+  const handleLike = async () => {
+    try {
+      if (!isLiked) {
+        const response = await postLikeDislike({
+          id: questionId,
+          type: "like",
+        });
+        setLikeCount(response.like);
+        if (isDisliked) {
+          setDislikeCount((prev) => prev - 1);
+          setIsDisliked(false);
+        }
+        setIsLiked(true);
+      } else {
+        setLikeCount((prev) => prev - 1); // 취소 API 없음, 로컬 처리
         setIsLiked(false);
       }
-      setIsDisliked(true);
-    } else {
-      setDislikeCount((prev) => prev - 1);
-      setIsDisliked(false);
+    } catch (error) {
+      console.error("좋아요 처리 실패:", error);
     }
   };
 
-  const handleOptionsClick = () => {
-    setShowOptions(!showOptions);
+  const handleDislike = async () => {
+    try {
+      if (!isDisliked) {
+        const response = await postLikeDislike({
+          id: questionId,
+          type: "dislike",
+        });
+        setDislikeCount(response.dislike);
+        if (isLiked) {
+          setLikeCount((prev) => prev - 1);
+          setIsLiked(false);
+        }
+        setIsDisliked(true);
+      } else {
+        setDislikeCount((prev) => prev - 1); // 취소 API 없음, 로컬 처리
+        setIsDisliked(false);
+      }
+    } catch (error) {
+      console.error("싫어요 처리 실패:", error);
+    }
   };
 
   const handleEdit = () => {
+    if (!answer?.id) {
+      console.error("수정할 답변 ID가 없습니다.");
+      return;
+    }
     setIsEditing(true);
-    setShowOptions(false);
   };
 
-  const handleDelete = () => {
-    if (onAnswerDelete) {
-      onAnswerDelete(questionId);
-    }
-    setShowOptions(false);
+  const handleClose = () => {
+    setIsEditing(false);
   };
 
   return (
     <Container>
       <Header>
-        <BadgeContainer>
+        <BadgeContainer
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            width: "100%",
+          }}
+        >
           <Badge isAnswered={isAnswered || isPreview}>
             {isAnswered || isPreview ? "답변 완료" : "미답변"}
           </Badge>
+          {isAnswered && !isEditing && !isPreview && (
+            <KebabMenu onEdit={handleEdit} />
+          )}
         </BadgeContainer>
-        {!isPreview && (
-          <OptionsButton onClick={handleOptionsClick}>
-            <BiDotsHorizontalRounded size={24} />
-          </OptionsButton>
-        )}
-        {showOptions && (
-          <OptionsMenu ref={optionsRef}>
-            {isAnswered && (
-              <MenuItem onClick={handleEdit}>
-                <BiEdit size={16} />
-                수정하기
-              </MenuItem>
-            )}
-            <MenuItem onClick={handleDelete}>
-              <BiTrash size={16} />
-              삭제하기
-            </MenuItem>
-          </OptionsMenu>
-        )}
       </Header>
 
       <QuestionContent>
@@ -184,65 +191,48 @@ const Answer = ({
         <div className="content">{question}</div>
       </QuestionContent>
 
-      {/* 답변이 있고 수정 중이 아닐 경우 답변 내용 표시 */}
-      {(isAnswered || isPreview) && !isEditing && (
+      {isAnswered && !isEditing && (
         <AnswerContent>
           <div className="profile-section">
             <img src={profileImage} alt="프로필 이미지" />
             <div className="username">{username}</div>
           </div>
-          <div className="answer-text">{answer}</div>
+          <div className="answer-text">{answer?.content}</div>
         </AnswerContent>
       )}
 
-      {/* 수정 모드일 경우 수정 폼 표시 */}
-      {isEditing && (
-        <AnswerForm>
-          <textarea
-            placeholder="답변을 수정해주세요"
-            value={editText}
-            onChange={handleEditChange}
+      {(isEditing || !isAnswered) && !isPreview && (
+        <>
+          <UsernameHeader>{username}</UsernameHeader>
+          <TextForm
+            placeholder={
+              isEditing ? "답변을 수정해주세요" : "답변을 입력해주세요"
+            }
+            buttonText={isEditing ? "수정 완료" : "답변 완료"}
+            id={questionId}
+            mode="answer"
+            onClose={handleClose}
+            setSend={setSend}
+            setOffset={setOffset}
+            initialContent={isEditing ? answer?.content : ""}
+            answerId={isEditing ? answer?.id : null}
+            isEditing={isEditing}
           />
-          <div className="button-container">
-            <SubmitButton
-              variant="submit"
-              onClick={handleUpdateSubmit}
-              disabled={!editText.trim()}
-            >
-              수정 완료
-            </SubmitButton>
-          </div>
-        </AnswerForm>
-      )}
-
-      {/* 답변이 없고 미리보기 모드가 아닐 경우 답변 입력 폼 표시 */}
-      {!isAnswered && !isPreview && !isEditing && (
-        <AnswerForm>
-          <textarea
-            placeholder="답변을 입력해주세요"
-            value={answerText}
-            onChange={handleAnswerChange}
-          />
-          <div className="button-container">
-            <SubmitButton
-              variant="submit"
-              onClick={handleSubmit}
-              disabled={!answerText.trim()}
-            >
-              답변 완료
-            </SubmitButton>
-          </div>
-        </AnswerForm>
+        </>
       )}
 
       <Footer>
         <ReactionButton active={isLiked} onClick={handleLike}>
           <BiLike size={18} />
-          <span>좋아요 {likeCount}</span>
+          <span>좋아요</span>
+          {!isPreview && (isAnswered || isEditing) && <span> {likeCount}</span>}
         </ReactionButton>
         <ReactionButton active={isDisliked} onClick={handleDislike}>
           <BiDislike size={18} />
-          <span>싫어요 {dislikeCount}</span>
+          <span>싫어요</span>
+          {!isPreview && (isAnswered || isEditing) && (
+            <span> {dislikeCount}</span>
+          )}
         </ReactionButton>
       </Footer>
     </Container>
