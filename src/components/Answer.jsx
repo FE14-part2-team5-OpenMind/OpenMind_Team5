@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { BiLike, BiDislike, BiDotsVerticalRounded } from "react-icons/bi";
+import { BiLike, BiDislike } from "react-icons/bi"; // BiDotsVerticalRounded 제거
 import {
   postLikeDislike,
   submitAnswer,
   updateAnswer,
 } from "../services/answerService";
 import TextForm from "./TextForm.jsx";
+import More from "../assets/icons/More.png"; // More 아이콘 추가
 import {
   Container,
   Header,
@@ -19,9 +20,9 @@ import {
   SubmitButton,
   Footer,
   ReactionButton,
-  KebabContainer, // 추가: 스타일 가져오기
-  KebabMenuWrapper, // 추가
-  KebabButton, // 추가
+  KebabContainer,
+  KebabMenuWrapper,
+  KebabButton,
 } from "../styles/AnswerStyle";
 
 const formatTime = (timestamp) => {
@@ -44,8 +45,9 @@ const KebabMenu = ({ onEdit, onReject, showReject }) => {
 
   return (
     <KebabContainer>
-      <BiDotsVerticalRounded
-        size={20}
+      <img
+        src={More}
+        alt="more 아이콘"
         onClick={(e) => {
           e.stopPropagation();
           setIsOpen(!isOpen);
@@ -225,12 +227,18 @@ const Answer = ({
       </QuestionContent>
 
       {isAnswered && !isEditing && (
-        <AnswerContent isRejected={answer?.content === "답변 거절"}>
+        <AnswerContent>
           <div className="profile-section">
             <img src={profileImage} alt="프로필 이미지" />
             <div className="username">{username}</div>
           </div>
-          <div className="answer-text">{answer?.content}</div>
+          <p
+            className={
+              answer?.isRejected ? "answer-rejected" : "content-answer"
+            }
+          >
+            {answer?.isRejected ? "답변 거절" : answer?.content}
+          </p>
         </AnswerContent>
       )}
 
