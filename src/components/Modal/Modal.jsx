@@ -21,6 +21,9 @@ const Modal = ({ onClose, userInfo, setSend, setOffset }) => {
     }
   };
 
+  // 수정: userInfo가 없으면 렌더링 중단
+  if (!userInfo) return null;
+
   return (
     <Background onClick={handleModalClose}>
       <Container>
@@ -39,8 +42,8 @@ const Modal = ({ onClose, userInfo, setSend, setOffset }) => {
         <TextForm
           placeholder="질문을 입력해주세요"
           buttonText="질문 보내기"
-          id={userInfo.id} // subject_id -> id로 변경
-          mode="question" // 질문 모드 유지
+          id={userInfo.id}
+          mode="question"
           onClose={onClose}
           setSend={setSend}
           setOffset={setOffset}

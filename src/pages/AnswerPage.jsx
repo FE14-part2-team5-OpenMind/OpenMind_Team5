@@ -7,7 +7,7 @@ import emptyIcon from "../assets/images/NoQuestion.svg";
 import Answer from "../components/Answer";
 import IconBox from "../components/IconBox";
 import AddQuestion from "../components/AddQuestion";
-import Modal from "../components/Modal/Modal"; // 수정: 사용자가 제공한 Modal.jsx 사용
+import Modal from "../components/Modal/Modal";
 import {
   Wrapper,
   Logo,
@@ -73,7 +73,6 @@ const AnswerPage = () => {
     }
   };
 
-  // 수정: 모달에서 질문 제출 후 questionInfo 업데이트
   const handleQuestionSubmit = (response) => {
     setShowQuestionForm(false);
     if (response) {
@@ -84,17 +83,14 @@ const AnswerPage = () => {
   };
 
   const handleAddQuestionClick = () => {
-    setShowQuestionForm(true);
+    if (!loading && userInfo) {
+      // 수정: 로딩 중이거나 userInfo 없으면 모달 열리지 않음
+      setShowQuestionForm(true);
+    }
   };
 
-  // 수정: 모달 닫기 핸들러
-  const handleModalClose = (response) => {
+  const handleModalClose = () => {
     setShowQuestionForm(false);
-    if (response) {
-      setQuestionInfo((prev) => [response, ...prev]);
-      setSend(true);
-      setOffset(0);
-    }
   };
 
   return (
@@ -156,7 +152,6 @@ const AnswerPage = () => {
           <RotatingAnimation />
         )}
         <AddQuestion onClick={handleAddQuestionClick} />
-        {/* 수정: 제공된 Modal.jsx 사용 */}
         {showQuestionForm && (
           <Modal
             onClose={handleModalClose}
