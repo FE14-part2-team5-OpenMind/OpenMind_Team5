@@ -6,6 +6,7 @@ import message from "../assets/images/Messages.png";
 import emptyIcon from "../assets/images/NoQuestion.svg";
 import Answer from "../components/Answer";
 import IconBox from "../components/IconBox";
+import TextForm from "../components/TextForm";
 import {
   Wrapper,
   Logo,
@@ -24,6 +25,7 @@ const AnswerPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [offset, setOffset] = useState(0);
+  const [showQuestionForm, setShowQuestionForm] = useState(false);
   const LIMIT = 10;
 
   const { userInfo } = useSubjectInfo();
@@ -53,7 +55,7 @@ const AnswerPage = () => {
 
   const handleQuestionDelete = async (questionId) => {
     try {
-      await deleteQuestion(questionId);
+      await deleteQuestion({ questionId }); // 객체로 변경
       setSend(true);
       setToastMessage("질문이 삭제되었습니다.");
       setTimeout(() => setToastMessage(""), 3000);
@@ -62,6 +64,12 @@ const AnswerPage = () => {
       setToastMessage("질문 삭제에 실패했습니다.");
       setTimeout(() => setToastMessage(""), 3000);
     }
+  };
+
+  const handleQuestionSubmit = () => {
+    setShowQuestionForm(false);
+    setSend(true);
+    setOffset(0);
   };
 
   return (
@@ -83,7 +91,7 @@ const AnswerPage = () => {
           style={{
             position: "absolute",
             top: "380px",
-            right: "calc(50% - 716px / 2 + 24px)", // BodyWrapper의 우측 경계 (width: 716px, padding-right: 24px)
+            right: "calc(50% - 716px / 2 + 24px)",
             padding: "12px 24px",
             background: "var(--brown40)",
             color: "white",
@@ -92,7 +100,7 @@ const AnswerPage = () => {
             fontSize: "16px",
             cursor: "pointer",
             "@media (max-width: 767px)": {
-              right: "calc(50% - 327px / 2 + 16px)", // 반응형: width 327px, padding-right 16px
+              right: "calc(50% - 327px / 2 + 16px)",
             },
           }}
           onMouseOver={(e) => (e.target.style.background = "var(--brown50)")}
@@ -139,6 +147,31 @@ const AnswerPage = () => {
         )}
         {moreData && questionInfo && questionInfo.length < count && (
           <RotatingAnimation />
+        )}
+        <button
+          onClick={() => setShowQuestionForm(true)}
+          style={{
+            marginTop: "20px",
+            padding: "12px 24px",
+            background: "var(--brown40)",
+            color: "white",
+            border: "none",
+            borderRadius: "24px",
+            cursor: "pointer",
+          }}
+        >
+          질문 작성하기
+        </button>
+        {showQuestionForm && (
+          <TextForm
+            placeholder="질문을 입력해주세요"
+            buttonText="질문 보내기"
+            id={id}
+            mode="question"
+            onClose={handleQuestionSubmit}
+            setSend={setSend}
+            setOffset={setOffset}
+          />
         )}
       </BodyWrapper>
       {toastMessage && (

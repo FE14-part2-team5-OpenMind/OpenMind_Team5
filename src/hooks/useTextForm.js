@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import * as answerService from "../services/answerService"; // 모듈 임포트
+import * as answerService from "../services/answerService";
 
 const useTextForm = ({
   mode,
@@ -27,37 +27,37 @@ const useTextForm = ({
     setIsValid(nextValue.trim() !== "");
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     if (!isValid) return;
     try {
       if (mode === "question") {
-        await answerService.postQuestion({
+        console.log("질문 제출 시도:", { subject_id: id, content: textValue });
+        const response = await answerService.postQuestion({
           subject_id: id,
           content: textValue,
         });
-        console.log("질문 등록 완료!");
+        console.log("질문 등록 응답:", response);
         onClose();
         setSend(true);
         setOffset(0);
       } else if (mode === "answer") {
         if (isEditing && answerId) {
-          // 수정 모드
-          const response = await answerService.updateAnswer(
+          const response = await answerService.updateAnswer({
             answerId,
-            textValue,
-            false
-          );
-          console.log("답변 수정 응답:", response); // 응답 디버깅
+            answerText: textValue,
+            isRejected: false,
+          });
+          console.log("답변 수정 응답:", response);
           if (!response || !response.id) {
             throw new Error("답변 수정 응답이 올바르지 않습니다.");
           }
         } else {
-          // 답변 추가 모드
-          const response = await answerService.submitAnswer(
-            id,
-            textValue,
-            false
-          );
+          const response = await answerService.submitAnswer({
+            questionId: id,
+            answerText: textValue,
+            isRejected: false,
+          });
           console.log("답변 등록 응답:", response);
           if (!response || !response.id) {
             throw new Error("답변 등록 응답이 올바르지 않습니다.");
