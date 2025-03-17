@@ -5,7 +5,7 @@ import getIndividualQuestions from "../services/getIndividualQuestions";
 // 개별 피드의 카드 질문과 질문에 대한 답변 가져오기
 export const useIndividualQuestions = ({ offset, limit = 10 }) => {
   const { id } = useParams();
-  const [questionInfo, setQuestionInfo] = useState([]);
+  const [questionInfo, setQuestionInfo] = useState(null);
   const [count, setCount] = useState(0);
   const [send, setSend] = useState(false);
 
@@ -20,7 +20,9 @@ export const useIndividualQuestions = ({ offset, limit = 10 }) => {
         setQuestionInfo(response.results);
         setCount(response.count);
       } else if (send === false && offset > 0) {
-        setQuestionInfo((prev) => [...prev, ...response.results]);
+        setQuestionInfo((prev) =>
+          prev ? [...prev, ...response.results] : response.results
+        );
       }
       setCount(response.count);
       console.log(`offset : ${offset}`);
