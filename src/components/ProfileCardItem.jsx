@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
+
 import messages from "../assets/icons/Messages.svg";
 import styled from "styled-components";
 
@@ -49,6 +51,7 @@ const ProfileImage = styled.img`
 const Username = styled.h3`
   font-size: 20px;
   font-weight: 400;
+  color: black;
 `;
 
 const QuestionContainer = styled.div`
@@ -79,19 +82,21 @@ const QuestionCount = styled.span`
 const ProfileCardItem = ({ profile }) => {
   const { id, name, imageSource, questionCount } = profile;
   return (
-    <Card key={id}>
-      <UserNameContainer>
-        <ProfileImage src={imageSource} alt="profile" />
-        <Username>{name}</Username>
-      </UserNameContainer>
-      <QuestionContainer>
-        <QuestionIcon>
-          <img src={messages} alt="messages" />
-          <div>받은 질문</div>
-        </QuestionIcon>
-        <QuestionCount>{questionCount}개</QuestionCount>
-      </QuestionContainer>
-    </Card>
+    <Link to={`/post/${id}`}>
+      <Card key={id}>
+        <UserNameContainer>
+          <ProfileImage src={imageSource} alt="profile" />
+          <Username>{name}</Username>
+        </UserNameContainer>
+        <QuestionContainer>
+          <QuestionIcon>
+            <img src={messages} alt="messages" />
+            <div>받은 질문</div>
+          </QuestionIcon>
+          <QuestionCount>{questionCount}개</QuestionCount>
+        </QuestionContainer>
+      </Card>
+    </Link>
   );
 };
 
