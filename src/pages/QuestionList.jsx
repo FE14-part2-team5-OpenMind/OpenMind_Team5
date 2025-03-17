@@ -113,9 +113,11 @@ const Container = styled.div`
 `;
 
 const Header = styled.nav`
+  width: 80%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin: 0 auto;
   padding: 20px 0;
 
   @media (max-width: 600px) {
