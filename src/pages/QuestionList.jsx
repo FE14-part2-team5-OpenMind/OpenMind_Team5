@@ -1,16 +1,35 @@
 import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+
+import Button from "../components/Button";
+import ProfileCard from "../components/ProfileCard";
+
+import { getAllDataSubjects } from "../api/apiSubjects";
+
 import openMindLogo from "../assets/images/Openmind.svg";
 import ArrowRightIcon from "../assets/images/arrow-right.svg";
 import ArrowDownIcon from "../assets/icons/Arrow-down.svg";
 import ArrowUpIcon from "../assets/icons/Arrow-up.svg";
-import React, { useState } from "react";
-import Button from "../components/Button";
-import ProfileCard from "../components/ProfileCard";
-import Pagination from "../components/Pagination";
 
 const QuestionList = () => {
   const [sortOrder, setSortOrder] = useState("이름순");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const [profiles, setProfiles] = useState(null);
+  const [dataErrorMessage, setDataErrorMessage] = useState("");
+
+  const handleSubjectsData = async () => {
+    try {
+      const profiles = await getAllDataSubjects();
+      setProfiles(profiles);
+    } catch (error) {
+      setDataErrorMessage(error.message);
+    }
+  };
+
+  useEffect(() => {
+    handleSubjectsData();
+  }, []);
 
   return (
     <Container>
@@ -57,12 +76,7 @@ const QuestionList = () => {
         </SortDropdown>
       </TitleContainer>
 
-      <ProfileContainer>
-        <ProfileCardContainer>
-          <ProfileCard />
-        </ProfileCardContainer>
-        <Pagination />
-      </ProfileContainer>
+      <ProfileCard profiles={profiles} message={dataErrorMessage} />
     </Container>
   );
 };
@@ -162,18 +176,4 @@ const DropdownItem = styled.li`
   &:hover {
     background: #f0f0f0;
   }
-`;
-
-const ProfileContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 45px;
-`;
-
-const ProfileCardContainer = styled.div`
-  width: 940px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
 `;
