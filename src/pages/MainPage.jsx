@@ -25,6 +25,16 @@ function MainPage() {
     setName(e.target.value);
   };
 
+  const addUser = (name, id) => {
+    let feeds = JSON.parse(localStorage.getItem('feeds')) || {};
+
+    const newUser = { 이름: name, id: id };
+
+    feeds[id] = newUser;
+
+    localStorage.setItem('feeds', JSON.stringify(feeds));
+  };
+
   const handleSubmit = async () => {
     //질문받기 버튼을 클릭하면 피드 생성 후 id를 가지고 응답 페이지로 이동
     try {
@@ -32,6 +42,8 @@ function MainPage() {
       console.log(response);
 
       if (response?.id) {
+        addUser(name, response.id);
+        console.log(JSON.parse(localStorage.getItem('feeds')));
         navigate(`/post/${response.id}/answer`);
       } else {
         console.error('응답에 ID가 없습니다.');
