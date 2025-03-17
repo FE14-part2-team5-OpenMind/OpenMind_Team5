@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { BiLike, BiDislike, BiDotsVerticalRounded } from "react-icons/bi";
-import { postLikeDislike } from "../services/answerService";
+import {
+  postLikeDislike,
+  submitAnswer,
+  updateAnswer,
+} from "../services/answerService";
 import TextForm from "./TextForm.jsx";
-import styled from "styled-components";
 import {
   Container,
   Header,
@@ -16,37 +19,10 @@ import {
   SubmitButton,
   Footer,
   ReactionButton,
+  KebabContainer, // 추가: 스타일 가져오기
+  KebabMenuWrapper, // 추가
+  KebabButton, // 추가
 } from "../styles/AnswerStyle";
-
-// KebabMenu 스타일 정의
-const KebabContainer = styled.div`
-  position: relative;
-`;
-
-const KebabMenuWrapper = styled.div`
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-`;
-
-const KebabButton = styled.button`
-  padding: 8px 16px;
-  min-width: 80px; /* 최소 너비 설정으로 가로 표시 보장 */
-  text-align: left;
-  border: none;
-  background: none;
-  cursor: pointer;
-  font-size: 14px;
-  white-space: nowrap; /* 줄바꿈 방지 */
-  &:hover {
-    background: #f5f5f5; /* 호버 효과 추가 */
-  }
-`;
 
 const formatTime = (timestamp) => {
   if (!timestamp) return "방금 전";
@@ -63,7 +39,7 @@ const formatTime = (timestamp) => {
   return `${Math.floor(diffInSeconds / 604800)}주 전`;
 };
 
-const KebabMenu = ({ onEdit }) => {
+const KebabMenu = ({ onEdit, onReject, showReject }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -78,14 +54,26 @@ const KebabMenu = ({ onEdit }) => {
       />
       {isOpen && (
         <KebabMenuWrapper onClick={(e) => e.stopPropagation()}>
-          <KebabButton
-            onClick={() => {
-              onEdit();
-              setIsOpen(false);
-            }}
-          >
-            수정하기
-          </KebabButton>
+          {onEdit && (
+            <KebabButton
+              onClick={() => {
+                onEdit();
+                setIsOpen(false);
+              }}
+            >
+              수정하기
+            </KebabButton>
+          )}
+          {showReject && (
+            <KebabButton
+              onClick={() => {
+                onReject();
+                setIsOpen(false);
+              }}
+            >
+              답변거절
+            </KebabButton>
+          )}
         </KebabMenuWrapper>
       )}
     </KebabContainer>
@@ -175,6 +163,33 @@ const Answer = ({
     }
   };
 
+  const handleReject = async () => {
+    try {
+      let response;
+      if (answer?.id) {
+        response = await updateAnswer({
+          answerId: answer.id,
+          answerText: "답변 거절",
+          isRejected: true,
+        });
+      } else {
+        response = await submitAnswer({
+          questionId: questionId,
+          answerText: "답변 거절",
+          isRejected: true,
+        });
+      }
+      setQuestionInfo((prev) =>
+        prev.map((q) =>
+          q.id === questionId ? { ...q, answer: response, isAnswered: true } : q
+        )
+      );
+      setSend(true);
+    } catch (error) {
+      console.error("답변 거절 실패:", error);
+    }
+  };
+
   return (
     <Container>
       <Header>
@@ -188,9 +203,11 @@ const Answer = ({
           <Badge isAnswered={isAnswered || isPreview}>
             {isAnswered || isPreview ? "답변 완료" : "미답변"}
           </Badge>
-          {isAnswered && !isEditing && !isPreview && (
-            <KebabMenu onEdit={handleEdit} />
-          )}
+          <KebabMenu
+            onEdit={isAnswered && !isEditing ? handleEdit : null}
+            onReject={!isAnswered && !isEditing ? handleReject : null}
+            showReject={!isAnswered && !isEditing}
+          />
         </BadgeContainer>
       </Header>
 
@@ -208,7 +225,7 @@ const Answer = ({
       </QuestionContent>
 
       {isAnswered && !isEditing && (
-        <AnswerContent>
+        <AnswerContent isRejected={answer?.content === "답변 거절"}>
           <div className="profile-section">
             <img src={profileImage} alt="프로필 이미지" />
             <div className="username">{username}</div>
