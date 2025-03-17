@@ -73,24 +73,20 @@ const AnswerPage = () => {
     }
   };
 
-  const handleQuestionSubmit = (response) => {
-    setShowQuestionForm(false);
-    if (response) {
-      setQuestionInfo((prev) => [response, ...prev]);
-      setSend(true);
-      setOffset(0);
-    }
-  };
-
   const handleAddQuestionClick = () => {
     if (!loading && userInfo) {
-      // 수정: 로딩 중이거나 userInfo 없으면 모달 열리지 않음
       setShowQuestionForm(true);
     }
   };
 
-  const handleModalClose = () => {
+  // 수정: 모달 닫기 시 응답 처리
+  const handleModalClose = (response) => {
     setShowQuestionForm(false);
+    if (response) {
+      setQuestionInfo((prev) => [response, ...prev]); // 새 질문 즉시 추가
+      setSend(true);
+      setOffset(0);
+    }
   };
 
   return (
@@ -154,7 +150,7 @@ const AnswerPage = () => {
         <AddQuestion onClick={handleAddQuestionClick} />
         {showQuestionForm && (
           <Modal
-            onClose={handleModalClose}
+            onClose={handleModalClose} // 수정: 응답을 처리하는 handleModalClose 전달
             userInfo={userInfo}
             setSend={setSend}
             setOffset={setOffset}
