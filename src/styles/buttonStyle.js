@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const StyledButton = styled.button`
   display: flex;
@@ -12,7 +12,7 @@ export const StyledButton = styled.button`
   line-height: 22px;
 
   ${(props) =>
-    props.variant === 'ask' &&
+    props.variant === "ask" &&
     `
     padding: 12px 24px;
     gap: 8px;
@@ -22,7 +22,7 @@ export const StyledButton = styled.button`
     border: 1px solid var(--brown40);
     font-size: 16px;
 
-    @media (max-width: 480px) {
+    @media (max-width: 600px) {
       padding: 8px 12px;
       font-size: 14px;
       line-height: 18px;
@@ -30,7 +30,7 @@ export const StyledButton = styled.button`
   `}
 
   ${(props) =>
-    props.variant === 'submit' &&
+    props.variant === "submit" &&
     `
     width: 336px;
     height: 46px;

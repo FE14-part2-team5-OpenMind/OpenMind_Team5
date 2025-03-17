@@ -105,6 +105,11 @@ const Container = styled.div`
   margin: 0 auto;
   padding: 20px;
   text-align: center;
+
+  @media (max-width: 600px) {
+    max-width: 100%;
+    padding: 16px;
+  }
 `;
 
 const Header = styled.nav`
@@ -112,6 +117,12 @@ const Header = styled.nav`
   justify-content: space-between;
   align-items: center;
   padding: 20px 0;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
 `;
 
 const Logo = styled.a`
@@ -124,6 +135,11 @@ const Logo = styled.a`
     height: 100%;
     object-fit: cover;
   }
+
+  @media (max-width: 600px) {
+    width: 145px;
+    height: auto;
+  }
 `;
 
 const TitleContainer = styled.div`
@@ -131,12 +147,23 @@ const TitleContainer = styled.div`
   flex-direction: column;
   align-items: center;
   margin: 25px auto;
+
+  @media (max-width: 600px) {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 370px;
+  }
 `;
 
 const Title = styled.h1`
   font-size: 40px;
   font-weight: 400;
   margin-bottom: 25px;
+
+  @media (max-width: 600px) {
+    font-size: 24px;
+    margin-bottom: 0;
+  }
 `;
 
 const SortDropdown = styled.div`
@@ -166,6 +193,12 @@ const SortButton = styled.button`
     filter: ${({ active }) => (active ? "none" : "grayscale(100%)")};
     opacity: ${({ active }) => (active ? "1" : "0.6")};
   }
+
+  @media (max-width: 600px) {
+    width: 80px;
+    height: 30px;
+    font-size: 12px;
+  }
 `;
 
 const DropdownMenu = styled.ul`
@@ -180,6 +213,10 @@ const DropdownMenu = styled.ul`
   list-style: none;
   padding: 5px 0;
   z-index: 1000;
+
+  @media (max-width: 600px) {
+    width: 80px;
+  }
 `;
 
 const DropdownItem = styled.li`
@@ -192,5 +229,10 @@ const DropdownItem = styled.li`
 
   &:hover {
     background: #f0f0f0;
+  }
+
+  @media (max-width: 600px) {
+    font-size: 12px;
+    padding: 8px;
   }
 `;

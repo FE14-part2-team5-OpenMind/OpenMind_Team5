@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-
 import ProfileCardItem from "./ProfilecardItem";
 import Pagination from "./Pagination";
 
@@ -8,20 +7,49 @@ const ProfileContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 45px;
-  width: 940px;
+  max-width: 1200px;
+  width: 90%;
   margin: 0 auto;
 `;
 
 const ProfileCardContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(4, minmax(186px, 220px));
+  gap: 2rem;
+  justify-content: center;
+
+  @media screen and (max-width: 865px) {
+    grid-template-columns: repeat(3, minmax(186px, 220px));
+  }
+  @media screen and (max-width: 600px) {
+    grid-template-columns: repeat(2, minmax(155px, 220px));
+    gap: 1.6rem;
+  }
 `;
 
 function ProfileCard({ profiles }) {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태
+  const [cardsPerPage, setCardsPerPage] = useState(8); // 기본적으로 8개 카드 표시
 
-  // 프로필 데이터를 8개씩 나누는 함수
+  // 화면 크기에 따라 페이지당 카드 수를 동적으로 조정
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 865) {
+        setCardsPerPage(6); // 화면 너비가 865px 이하일 경우 6개 카드로 변경
+      } else {
+        setCardsPerPage(8); // 기본적으로 8개 카드 표시
+      }
+    };
+
+    handleResize(); // 초기 로드 시 체크
+    window.addEventListener("resize", handleResize); // 리사이즈 시 카드 수 업데이트
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  // 프로필 데이터를 `cardsPerPage`만큼 나누는 함수
   const groupProfiles = (profilesArray, groupSize) => {
     const grouped = [];
     for (let i = 0; i < profilesArray.length; i += groupSize) {
@@ -30,7 +58,7 @@ function ProfileCard({ profiles }) {
     return grouped;
   };
 
-  const groupedProfiles = groupProfiles(profiles?.results || [], 8);
+  const groupedProfiles = groupProfiles(profiles?.results || [], cardsPerPage); // 페이지당 카드 수에 맞게 그룹화
   const totalPages = groupedProfiles.length; // 총 페이지 수
 
   // 페이지 변경 함수
