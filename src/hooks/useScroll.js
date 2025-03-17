@@ -2,9 +2,6 @@ import { useCallback, useEffect, useState } from "react";
 
 export const useScroll = ({ setOffset, questionInfo, LIMIT, count, setSend }) => {
   const [moreData, setMoreData] = useState(false);
-  console.log(`count: ${count}`);
-  console.log(`questionInfo 길이: ${questionInfo.length}`);
-  console.log(moreData);
 
   const handleScroll = useCallback(() => {
     if (

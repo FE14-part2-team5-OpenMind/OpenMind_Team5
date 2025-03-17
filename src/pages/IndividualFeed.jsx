@@ -24,7 +24,6 @@ const IndividualFeed = () => {
     count,
     setSend,
   });
-  const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [toast, setToast] = useState(false);
 
@@ -41,25 +40,11 @@ const IndividualFeed = () => {
     setSend(false);
   };
 
-  // 스켈리톤 ui를 위한 상태 변경
-  useEffect(() => {
-    if (userInfo) {
-      setLoading(false);
-    } else {
-      setLoading(true);
-    }
-  }, [userInfo, questionInfo]);
-
   return (
     <Wrapper>
-      <FeedHeader loading={loading} userInfo={userInfo} setToast={setToast} />
+      <FeedHeader userInfo={userInfo} setToast={setToast} />
 
-      <FeedBody
-        count={count}
-        loading={loading}
-        questionInfo={questionInfo}
-        userInfo={userInfo}
-      />
+      <FeedBody count={count} questionInfo={questionInfo} userInfo={userInfo} />
 
       {toast && <Toast>URL이 복사되었습니다</Toast>}
 
