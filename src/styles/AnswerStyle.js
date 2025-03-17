@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { StyledButton } from "./buttonStyle";
 
-// variant prop을 필터링하기 위한 shouldForwardProp 설정
 const filterProps = (prop) => prop !== "variant";
 
 export const Container = styled.div`
@@ -95,7 +94,7 @@ export const AnswerContent = styled.div`
 
   .answer-text {
     font-size: 16px;
-    color: var(--gray60);
+    color: ${(props) => (props.isRejected ? "var(--red50)" : "var(--gray60)")};
     line-height: 1.6;
   }
 `;
@@ -159,5 +158,35 @@ export const ReactionButton = styled.div`
 
   &:hover {
     color: var(--brown40);
+  }
+`;
+
+// 수정: KebabMenu 스타일 추가
+export const KebabContainer = styled.div`
+  position: relative;
+`;
+
+export const KebabMenuWrapper = styled.div`
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+`;
+
+export const KebabButton = styled.button`
+  padding: 8px 16px;
+  min-width: 80px;
+  text-align: left;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+  white-space: nowrap;
+  &:hover {
+    background: #f5f5f5;
   }
 `;

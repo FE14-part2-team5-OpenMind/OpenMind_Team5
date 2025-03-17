@@ -21,7 +21,11 @@ const Modal = ({ onClose, userInfo, setSend, setOffset }) => {
     }
   };
 
-  // 수정: userInfo가 없으면 렌더링 중단
+  // 수정: 질문 제출 후 응답을 부모로 전달
+  const handleQuestionSubmit = (response) => {
+    onClose(response); // 응답이 있으면 전달, 없으면 undefined
+  };
+
   if (!userInfo) return null;
 
   return (
@@ -42,9 +46,9 @@ const Modal = ({ onClose, userInfo, setSend, setOffset }) => {
         <TextForm
           placeholder="질문을 입력해주세요"
           buttonText="질문 보내기"
-          id={userInfo.id} // subject_id -> id로 변경
-          mode="question" // 질문 모드 유지
-          onClose={onClose}
+          id={userInfo.id}
+          mode="question"
+          onClose={handleQuestionSubmit} // 수정: handleQuestionSubmit 전달
           setSend={setSend}
           setOffset={setOffset}
         />
