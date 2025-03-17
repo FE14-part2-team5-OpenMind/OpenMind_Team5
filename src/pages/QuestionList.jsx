@@ -5,6 +5,8 @@ import ArrowDownIcon from "../assets/icons/Arrow-down.svg";
 import ArrowUpIcon from "../assets/icons/Arrow-up.svg";
 import React, { useState } from "react";
 import Button from "../components/Button";
+import ProfileCard from "../components/ProfileCard";
+import Pagination from "../components/Pagination";
 
 const QuestionList = () => {
   const [sortOrder, setSortOrder] = useState("이름순");
@@ -54,6 +56,13 @@ const QuestionList = () => {
           )}
         </SortDropdown>
       </TitleContainer>
+
+      <ProfileContainer>
+        <ProfileCardContainer>
+          <ProfileCard />
+        </ProfileCardContainer>
+        <Pagination />
+      </ProfileContainer>
     </Container>
   );
 };
@@ -90,7 +99,7 @@ const TitleContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 20px auto;
+  margin: 25px auto;
 `;
 
 const Title = styled.h1`
@@ -153,4 +162,18 @@ const DropdownItem = styled.li`
   &:hover {
     background: #f0f0f0;
   }
+`;
+
+const ProfileContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 45px;
+`;
+
+const ProfileCardContainer = styled.div`
+  width: 940px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
 `;
