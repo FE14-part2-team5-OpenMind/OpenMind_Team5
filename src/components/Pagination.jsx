@@ -46,6 +46,10 @@ const Icon = styled.img`
 `;
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+  // 페이지네이션 범위 계산 (5개씩)
+  const rangeStart = Math.floor((currentPage - 1) / 5) * 5 + 1;
+  const rangeEnd = Math.min(rangeStart + 4, totalPages); // 최대 5개의 페이지 번호만 보여주기
+
   const handleClick = (page) => {
     if (page >= 1 && page <= totalPages && page !== currentPage) {
       onPageChange(page);
@@ -60,12 +64,12 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         <Icon src={ArrowLeftIcon} alt="Previous" />
       </ArrowButton>
 
-      {Array.from({ length: totalPages }, (_, i) => (
+      {Array.from({ length: rangeEnd - rangeStart + 1 }, (_, i) => (
         <PageNumber
-          key={i + 1}
-          active={currentPage === i + 1}
-          onClick={() => handleClick(i + 1)}>
-          1{i + 1}
+          key={rangeStart + i}
+          active={currentPage === rangeStart + i}
+          onClick={() => handleClick(rangeStart + i)}>
+          {rangeStart + i}
         </PageNumber>
       ))}
 

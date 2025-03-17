@@ -12,7 +12,7 @@ import ArrowDownIcon from "../assets/icons/Arrow-down.svg";
 import ArrowUpIcon from "../assets/icons/Arrow-up.svg";
 
 const QuestionList = () => {
-  const [sortOrder, setSortOrder] = useState("이름순");
+  const [sortOrder, setSortOrder] = useState("최신순");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [profiles, setProfiles] = useState(null);
   const [dataErrorMessage, setDataErrorMessage] = useState("");
@@ -43,7 +43,7 @@ const QuestionList = () => {
 
   useEffect(() => {
     handleSubjectsData();
-  }, []);
+  }, [sortOrder]);
 
   return (
     <Container>

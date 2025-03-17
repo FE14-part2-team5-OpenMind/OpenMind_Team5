@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 import ProfileCardItem from "./ProfilecardItem";
@@ -19,6 +19,8 @@ const ProfileCardContainer = styled.div`
 `;
 
 function ProfileCard({ profiles }) {
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태
+
   // 프로필 데이터를 8개씩 나누는 함수
   const groupProfiles = (profilesArray, groupSize) => {
     const grouped = [];
@@ -29,19 +31,31 @@ function ProfileCard({ profiles }) {
   };
 
   const groupedProfiles = groupProfiles(profiles?.results || [], 8);
+  const totalPages = groupedProfiles.length; // 총 페이지 수
+
+  // 페이지 변경 함수
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   return (
     <>
       <ProfileContainer>
-        {groupedProfiles.map((group, index) => (
-          <ProfileCardContainer key={index}>
-            {group.map((profile) => (
+        {/* 현재 페이지에 해당하는 프로필 그룹만 표시 */}
+        {groupedProfiles[currentPage - 1]?.length > 0 && (
+          <ProfileCardContainer>
+            {groupedProfiles[currentPage - 1].map((profile) => (
               <ProfileCardItem key={profile.id} profile={profile} />
             ))}
           </ProfileCardContainer>
-        ))}
+        )}
+        {/* 페이지네이션 추가 */}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
       </ProfileContainer>
-      <Pagination />
     </>
   );
 }
