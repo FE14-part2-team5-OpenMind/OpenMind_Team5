@@ -92,10 +92,16 @@ export const AnswerContent = styled.div`
     }
   }
 
-  .answer-text {
-    font-size: 16px;
-    color: ${(props) => (props.isRejected ? "var(--red50)" : "var(--gray60)")};
-    line-height: 1.6;
+  .content-answer {
+    color: var(--gray60); /* feedcardstyle.js 재사용 */
+    font: var(--body3-regular);
+    margin-top: 4px;
+  }
+
+  .answer-rejected {
+    color: var(--red50); /* feedcardstyle.js 재사용 */
+    font: var(--body3-regular);
+    margin-top: 4px;
   }
 `;
 
@@ -161,7 +167,6 @@ export const ReactionButton = styled.div`
   }
 `;
 
-// 수정: KebabMenu 스타일 추가
 export const KebabContainer = styled.div`
   position: relative;
 `;
@@ -175,6 +180,9 @@ export const KebabMenuWrapper = styled.div`
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 1000;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
 `;
 
 export const KebabButton = styled.button`
@@ -186,6 +194,7 @@ export const KebabButton = styled.button`
   cursor: pointer;
   font-size: 14px;
   white-space: nowrap;
+  border-radius: 200px;
   &:hover {
     background: #f5f5f5;
   }
