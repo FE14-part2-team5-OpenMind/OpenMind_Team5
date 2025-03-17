@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Card } from "../styles/feedCardStyle";
 import Badge from "./Badge";
-import More from "../assets/icons/More.png";
 import { BiLike } from "react-icons/bi";
 import { BiDislike } from "react-icons/bi";
 import { postLikeDislike } from "../services/postLikeDislike";
@@ -44,7 +43,6 @@ const FeedCard = ({ question, userName, profileImage }) => {
     <Card>
       <div className="head">
         <Badge finished={done} />
-        <img src={More} alt="more 아이콘" />
       </div>
 
       {/* 질문 */}
