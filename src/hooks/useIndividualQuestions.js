@@ -15,7 +15,6 @@ export const useIndividualQuestions = ({ offset, limit = 10 }) => {
       if (send || offset === 0) {
         setQuestionInfo(response.results);
         setCount(response.count);
-        return;
       } else if (send === true && offset > 0) {
         setQuestionInfo(response.results);
         setCount(response.count);
@@ -27,11 +26,12 @@ export const useIndividualQuestions = ({ offset, limit = 10 }) => {
     };
 
     fetchIndividualQuestions();
-  }, [offset, send]);
+  }, [offset, send, id, limit]);
 
   return {
     questionInfo,
     count,
     setSend,
+    setQuestionInfo, // 수정: questionInfo를 외부에서 업데이트 가능하도록 추가
   };
 };

@@ -6,6 +6,8 @@ import message from "../assets/images/Messages.png";
 import emptyIcon from "../assets/images/NoQuestion.svg";
 import Answer from "../components/Answer";
 import IconBox from "../components/IconBox";
+import AddQuestion from "../components/AddQuestion";
+import Modal from "../components/Modal/Modal";
 import {
   Wrapper,
   Logo,
@@ -14,23 +16,29 @@ import {
   BodyWrapper,
   EmptyIcon,
 } from "../styles/individualFeedStyle";
+import {
+  DeleteButton,
+  Toast,
+  RotatingAnimation,
+} from "../styles/AnswerPageStyle";
 import { useSubjectInfo } from "../hooks/useSubjectInfo";
 import { useIndividualQuestions } from "../hooks/useIndividualQuestions";
 import { useScroll } from "../hooks/useScroll";
-import { RotatingAnimation } from "../styles/rotatingAnimation";
 import { deleteQuestion } from "../services/answerService";
 
 const AnswerPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [offset, setOffset] = useState(0);
+  const [showQuestionForm, setShowQuestionForm] = useState(false);
   const LIMIT = 10;
 
   const { userInfo } = useSubjectInfo();
-  const { questionInfo, count, setSend } = useIndividualQuestions({
-    offset,
-    limit: LIMIT,
-  });
+  const { questionInfo, count, setSend, setQuestionInfo } =
+    useIndividualQuestions({
+      offset,
+      limit: LIMIT,
+    });
   const { moreData } = useScroll({ setOffset, questionInfo, LIMIT, count });
   const [loading, setLoading] = useState(true);
   const [toastMessage, setToastMessage] = useState("");
@@ -53,15 +61,36 @@ const AnswerPage = () => {
 
   const handleQuestionDelete = async (questionId) => {
     try {
-      await deleteQuestion(questionId);
+      await deleteQuestion({ questionId });
+      setQuestionInfo((prev) => prev.filter((q) => q.id !== questionId));
       setSend(true);
       setToastMessage("질문이 삭제되었습니다.");
       setTimeout(() => setToastMessage(""), 3000);
     } catch (error) {
-      console.error("질문 삭제 실패:", error);
+      console.error("질문 삭제 실패:", error.message || error);
       setToastMessage("질문 삭제에 실패했습니다.");
       setTimeout(() => setToastMessage(""), 3000);
     }
+  };
+
+  const handleQuestionSubmit = (response) => {
+    setShowQuestionForm(false);
+    if (response) {
+      setQuestionInfo((prev) => [response, ...prev]);
+      setSend(true);
+      setOffset(0);
+    }
+  };
+
+  const handleAddQuestionClick = () => {
+    if (!loading && userInfo) {
+      // 수정: 로딩 중이거나 userInfo 없으면 모달 열리지 않음
+      setShowQuestionForm(true);
+    }
+  };
+
+  const handleModalClose = () => {
+    setShowQuestionForm(false);
   };
 
   return (
@@ -77,29 +106,10 @@ const AnswerPage = () => {
         {loading || !userInfo ? "로딩 중..." : userInfo.name}
       </span>
       <IconBox />
-      {questionInfo.length > 0 && (
-        <button
-          onClick={() => handleQuestionDelete(questionInfo[0].id)}
-          style={{
-            position: "absolute",
-            top: "380px",
-            right: "calc(50% - 716px / 2 + 24px)", // BodyWrapper의 우측 경계 (width: 716px, padding-right: 24px)
-            padding: "12px 24px",
-            background: "var(--brown40)",
-            color: "white",
-            border: "none",
-            borderRadius: "24px",
-            fontSize: "16px",
-            cursor: "pointer",
-            "@media (max-width: 767px)": {
-              right: "calc(50% - 327px / 2 + 16px)", // 반응형: width 327px, padding-right 16px
-            },
-          }}
-          onMouseOver={(e) => (e.target.style.background = "var(--brown50)")}
-          onMouseOut={(e) => (e.target.style.background = "var(--brown40)")}
-        >
+      {questionInfo?.length > 0 && (
+        <DeleteButton onClick={() => handleQuestionDelete(questionInfo[0].id)}>
           삭제하기
-        </button>
+        </DeleteButton>
       )}
       <br />
       <BodyWrapper count={count}>
@@ -130,6 +140,7 @@ const AnswerPage = () => {
                 isAnswered={q.isAnswered || !!q.answer}
                 setSend={setSend}
                 setOffset={setOffset}
+                setQuestionInfo={setQuestionInfo}
               />
               {index < questionInfo.length - 1 && <br />}
             </React.Fragment>
@@ -140,28 +151,17 @@ const AnswerPage = () => {
         {moreData && questionInfo && questionInfo.length < count && (
           <RotatingAnimation />
         )}
+        <AddQuestion onClick={handleAddQuestionClick} />
+        {showQuestionForm && (
+          <Modal
+            onClose={handleModalClose}
+            userInfo={userInfo}
+            setSend={setSend}
+            setOffset={setOffset}
+          />
+        )}
       </BodyWrapper>
-      {toastMessage && (
-        <div
-          style={{
-            position: "fixed",
-            bottom: "50px",
-            left: "50%",
-            transform: "translateX(-50%)",
-            zIndex: 999,
-            padding: "12px 20px",
-            background: "#757575",
-            color: "#F5F5F5",
-            borderRadius: "8px",
-            boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
-            fontSize: "14px",
-            fontWeight: 500,
-            lineHeight: "18px",
-          }}
-        >
-          {toastMessage}
-        </div>
-      )}
+      {toastMessage && <Toast>{toastMessage}</Toast>}
     </Wrapper>
   );
 };

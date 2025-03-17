@@ -1,5 +1,9 @@
-import { useState, useEffect } from "react";
-import * as answerService from "../services/answerService"; // 모듈 임포트
+import { useState } from "react";
+import {
+  submitAnswer,
+  updateAnswer,
+  postQuestion,
+} from "../services/answerService";
 
 const useTextForm = ({
   mode,
@@ -7,83 +11,50 @@ const useTextForm = ({
   onClose,
   setSend,
   setOffset,
-  initialContent,
+  initialContent = "",
   answerId,
   isEditing,
 }) => {
-  const [textValue, setTextValue] = useState(initialContent || "");
-  const [isValid, setIsValid] = useState(
-    initialContent?.trim() !== "" || false
-  );
-
-  useEffect(() => {
-    setTextValue(initialContent || "");
-    setIsValid(initialContent?.trim() !== "" || false);
-  }, [initialContent]);
+  const [textValue, setTextValue] = useState(initialContent);
+  const isValid = textValue.trim().length > 0;
 
   const handleTextChange = (e) => {
-    const nextValue = e.target.value;
-    setTextValue(nextValue);
-    setIsValid(nextValue.trim() !== "");
+    setTextValue(e.target.value);
   };
 
   const handleSubmit = async () => {
     if (!isValid) return;
+
     try {
+      let response;
       if (mode === "question") {
-        await answerService.postQuestion({
-          subject_id: id,
-          content: textValue,
-        });
-        console.log("질문 등록 완료!");
-        onClose();
+        response = await postQuestion({ subject_id: id, content: textValue });
         setSend(true);
         setOffset(0);
       } else if (mode === "answer") {
-        if (isEditing && answerId) {
-          // 수정 모드
-          const response = await answerService.updateAnswer(
+        if (isEditing) {
+          response = await updateAnswer({
             answerId,
-            textValue,
-            false
-          );
-          console.log("답변 수정 응답:", response); // 응답 디버깅
-          if (!response || !response.id) {
-            throw new Error("답변 수정 응답이 올바르지 않습니다.");
-          }
+            answerText: textValue,
+            isRejected: false,
+          });
         } else {
-          // 답변 추가 모드
-          const response = await answerService.submitAnswer(
-            id,
-            textValue,
-            false
-          );
-          console.log("답변 등록 응답:", response);
-          if (!response || !response.id) {
-            throw new Error("답변 등록 응답이 올바르지 않습니다.");
-          }
+          response = await submitAnswer({
+            questionId: id,
+            answerText: textValue,
+            isRejected: false,
+          });
         }
-        onClose();
         setSend(true);
-        setOffset(0);
       }
+      setTextValue("");
+      return response; // 수정: 서버 응답 반환
     } catch (error) {
-      console.error(
-        `${mode === "question" ? "질문" : "답변"} ${
-          isEditing ? "수정" : "등록"
-        } 실패:`,
-        error.message
-      );
-      throw error;
+      console.error(`${mode} 제출 실패:`, error);
     }
   };
 
-  return {
-    textValue,
-    isValid,
-    handleTextChange,
-    handleSubmit,
-  };
+  return { textValue, isValid, handleTextChange, handleSubmit };
 };
 
 export default useTextForm;

@@ -1,100 +1,31 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
-export const ProfileSection = styled.div`
-  /* 수정: absolute positioning으로 변경하여 individualFeedStyle.js와 동일한 위치 제어 */
-  position: absolute;
-  top: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-`;
-
-export const ProfileName = styled.span`
-  /* 수정: individualFeedStyle.js의 profileName과 동일한 위치 및 스타일 적용 */
-  position: absolute;
-  top: 277px;
-  font: var(--body1-regular);
-  font-size: 3.2rem;
-  color: var(--gray60);
-
-  @media (max-width: 767px) {
-    font-size: 2.4rem;
+const spin = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 `;
 
-export const IconBoxContainer = styled.div`
-  /* 수정: individualFeedStyle.js의 Icons와 동일한 위치 적용 */
-  position: absolute;
-  top: 329px;
-  display: flex;
-  flex-direction: row;
-  gap: 12px;
-
-  /* 기존 반응형 스타일 제거, individualFeedStyle.js와 통일 */
+export const RotatingAnimation = styled.div`
+  margin-left: auto;
+  margin-right: auto;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc;
+  border-top-color: gray;
+  border-radius: 50%;
+  animation: ${spin} 1s linear infinite;
 `;
 
-export const QuestionsContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-`;
-
-export const QuestionsWrapper = styled.div`
-  width: 100%;
-  background-color: rgba(199, 187, 181, 0.3);
-  border-radius: 16px;
-  padding: 24px;
-  margin-bottom: 24px;
-  position: relative; /* DeleteButton의 부모로 사용 */
-
-  @media (max-width: 767px) {
-    padding: 16px;
-    margin-bottom: 16px;
-  }
-`;
-
-export const QuestionCount = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
-  width: 100%;
-  text-align: center;
-
-  img {
-    width: 24px;
-    height: 24px;
-    margin-right: 8px;
-  }
-
-  span {
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--gray60);
-  }
-
-  @media (max-width: 767px) {
-    margin-bottom: 16px;
-
-    img {
-      width: 20px;
-      height: 20px;
-      margin-right: 6px;
-    }
-
-    span {
-      font-size: 14px;
-    }
-  }
-`;
-
-// "삭제하기" 버튼 스타일 추가
 export const DeleteButton = styled.button`
   position: absolute;
-  top: 0;
-  right: 0; /* QuestionsWrapper의 우측 경계에 맞춤 */
+  top: 380px;
+  right: calc(
+    50% - 716px / 2 + 2px
+  ); /* 수정: PC에서 오른쪽으로 2px 이동 (4px → 2px) */
   padding: 12px 24px;
   background: var(--brown40);
   color: white;
@@ -106,4 +37,26 @@ export const DeleteButton = styled.button`
   &:hover {
     background: var(--brown50);
   }
+
+  @media (max-width: 767px) {
+    right: calc(
+      50% - 327px / 2 - 2px
+    ); /* 수정: 모바일에서 왼쪽으로 2px 이동 (-4px → -2px) */
+  }
+`;
+
+export const Toast = styled.div`
+  position: fixed;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+  padding: 12px 20px;
+  background: #757575;
+  color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 18px;
 `;

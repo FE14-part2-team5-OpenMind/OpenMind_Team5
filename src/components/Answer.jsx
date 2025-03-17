@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { BiLike, BiDislike, BiDotsVerticalRounded } from "react-icons/bi";
-import { postLikeDislike } from "../services/postLikeDislike";
+import { postLikeDislike } from "../services/answerService";
 import TextForm from "./TextForm.jsx";
+import styled from "styled-components";
 import {
   Container,
   Header,
@@ -17,10 +18,38 @@ import {
   ReactionButton,
 } from "../styles/AnswerStyle";
 
-// 상대적 시간 계산 함수
+// KebabMenu 스타일 정의
+const KebabContainer = styled.div`
+  position: relative;
+`;
+
+const KebabMenuWrapper = styled.div`
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+`;
+
+const KebabButton = styled.button`
+  padding: 8px 16px;
+  min-width: 80px; /* 최소 너비 설정으로 가로 표시 보장 */
+  text-align: left;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+  white-space: nowrap; /* 줄바꿈 방지 */
+  &:hover {
+    background: #f5f5f5; /* 호버 효과 추가 */
+  }
+`;
+
 const formatTime = (timestamp) => {
   if (!timestamp) return "방금 전";
-
   const now = new Date();
   const date = new Date(timestamp);
   const diffInSeconds = Math.floor((now - date) / 1000);
@@ -34,12 +63,11 @@ const formatTime = (timestamp) => {
   return `${Math.floor(diffInSeconds / 604800)}주 전`;
 };
 
-// 드롭다운 메뉴 컴포넌트
 const KebabMenu = ({ onEdit }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div style={{ position: "relative" }}>
+    <KebabContainer>
       <BiDotsVerticalRounded
         size={20}
         onClick={(e) => {
@@ -49,39 +77,18 @@ const KebabMenu = ({ onEdit }) => {
         style={{ cursor: "pointer" }}
       />
       {isOpen && (
-        <div
-          style={{
-            position: "absolute",
-            top: "100%",
-            right: 0,
-            background: "#fff",
-            border: "1px solid #ccc",
-            borderRadius: "4px",
-            boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-            zIndex: 1000,
-          }}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <button
+        <KebabMenuWrapper onClick={(e) => e.stopPropagation()}>
+          <KebabButton
             onClick={() => {
               onEdit();
               setIsOpen(false);
             }}
-            style={{
-              padding: "8px 16px",
-              width: "100%",
-              textAlign: "left",
-              border: "none",
-              background: "none",
-              cursor: "pointer",
-              fontSize: "14px",
-            }}
           >
             수정하기
-          </button>
-        </div>
+          </KebabButton>
+        </KebabMenuWrapper>
       )}
-    </div>
+    </KebabContainer>
   );
 };
 
@@ -96,6 +103,7 @@ const Answer = ({
   isPreview = false,
   setSend,
   setOffset,
+  setQuestionInfo,
 }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [isDisliked, setIsDisliked] = useState(false);
@@ -112,12 +120,12 @@ const Answer = ({
         });
         setLikeCount(response.like);
         if (isDisliked) {
-          setDislikeCount((prev) => prev - 1);
+          setDislikeCount(response.dislike);
           setIsDisliked(false);
         }
         setIsLiked(true);
       } else {
-        setLikeCount((prev) => prev - 1); // 취소 API 없음, 로컬 처리
+        setLikeCount((prev) => prev - 1);
         setIsLiked(false);
       }
     } catch (error) {
@@ -134,12 +142,12 @@ const Answer = ({
         });
         setDislikeCount(response.dislike);
         if (isLiked) {
-          setLikeCount((prev) => prev - 1);
+          setLikeCount(response.like);
           setIsLiked(false);
         }
         setIsDisliked(true);
       } else {
-        setDislikeCount((prev) => prev - 1); // 취소 API 없음, 로컬 처리
+        setDislikeCount((prev) => prev - 1);
         setIsDisliked(false);
       }
     } catch (error) {
@@ -155,8 +163,16 @@ const Answer = ({
     setIsEditing(true);
   };
 
-  const handleClose = () => {
+  const handleClose = (response) => {
     setIsEditing(false);
+    if (response) {
+      setQuestionInfo((prev) =>
+        prev.map((q) =>
+          q.id === questionId ? { ...q, answer: response, isAnswered: true } : q
+        )
+      );
+      setSend(true);
+    }
   };
 
   return (

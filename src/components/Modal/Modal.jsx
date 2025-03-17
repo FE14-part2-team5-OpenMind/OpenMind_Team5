@@ -21,6 +21,9 @@ const Modal = ({ onClose, userInfo, setSend, setOffset }) => {
     }
   };
 
+  // 수정: userInfo가 없으면 렌더링 중단
+  if (!userInfo) return null;
+
   return (
     <Background onClick={handleModalClose}>
       <Container>
