@@ -30,8 +30,7 @@ export const Badge = styled.div`
   background-color: transparent;
   color: ${(props) => (props.isAnswered ? "var(--brown40)" : "var(--gray60)")};
   border-radius: 7px;
-  font-size: 14px;
-  font-weight: 500;
+  font: var(--caption1-medium);
   border: 1px solid
     ${(props) => (props.isAnswered ? "var(--brown40)" : "var(--gray30)")};
 `;

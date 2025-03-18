@@ -66,7 +66,7 @@ const FeedCard = ({ question, userName, profileImage }) => {
             >
               {question.answer?.isRejected
                 ? "답변 거절"
-                : question.answer.content}
+                : question.answer?.content}
             </p>
           </div>
         </div>
