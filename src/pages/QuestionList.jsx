@@ -1,16 +1,49 @@
 import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+
+import Button from "../components/Button";
+import ProfileCard from "../components/ProfileCard";
+
+import { getAllDataSubjects } from "../api/apiSubjects";
+
 import openMindLogo from "../assets/images/Openmind.svg";
 import ArrowRightIcon from "../assets/images/arrow-right.svg";
 import ArrowDownIcon from "../assets/icons/Arrow-down.svg";
 import ArrowUpIcon from "../assets/icons/Arrow-up.svg";
-import React, { useState } from "react";
-import Button from "../components/Button";
-import ProfileCard from "../components/ProfileCard";
-import Pagination from "../components/Pagination";
 
 const QuestionList = () => {
-  const [sortOrder, setSortOrder] = useState("이름순");
+  const [sortOrder, setSortOrder] = useState("최신순");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [profiles, setProfiles] = useState(null);
+  const [dataErrorMessage, setDataErrorMessage] = useState("");
+
+  // api 호출 함수
+  const handleSubjectsData = async () => {
+    try {
+      const profiles = await getAllDataSubjects();
+      setProfiles(profiles);
+    } catch (error) {
+      setDataErrorMessage(error.message);
+    }
+  };
+
+  // 정렬 기준에 따라 정렬하기
+  const sortProfiles = (profiles, sortOrder) => {
+    if (sortOrder === "이름순") {
+      return profiles?.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortOrder === "최신순") {
+      return profiles?.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
+    }
+    return profiles;
+  };
+
+  const sortedProfiles = sortProfiles(profiles?.results || [], sortOrder);
+
+  useEffect(() => {
+    handleSubjectsData();
+  }, [sortOrder]);
 
   return (
     <Container>
@@ -57,12 +90,10 @@ const QuestionList = () => {
         </SortDropdown>
       </TitleContainer>
 
-      <ProfileContainer>
-        <ProfileCardContainer>
-          <ProfileCard />
-        </ProfileCardContainer>
-        <Pagination />
-      </ProfileContainer>
+      <ProfileCard
+        profiles={{ results: sortedProfiles }}
+        message={dataErrorMessage}
+      />
     </Container>
   );
 };
@@ -74,13 +105,26 @@ const Container = styled.div`
   margin: 0 auto;
   padding: 20px;
   text-align: center;
+
+  @media (max-width: 600px) {
+    max-width: 100%;
+    padding: 16px;
+  }
 `;
 
 const Header = styled.nav`
+  width: 80%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin: 0 auto;
   padding: 20px 0;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
 `;
 
 const Logo = styled.a`
@@ -93,6 +137,11 @@ const Logo = styled.a`
     height: 100%;
     object-fit: cover;
   }
+
+  @media (max-width: 600px) {
+    width: 145px;
+    height: auto;
+  }
 `;
 
 const TitleContainer = styled.div`
@@ -100,12 +149,23 @@ const TitleContainer = styled.div`
   flex-direction: column;
   align-items: center;
   margin: 25px auto;
+
+  @media (max-width: 600px) {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 370px;
+  }
 `;
 
 const Title = styled.h1`
   font-size: 40px;
   font-weight: 400;
   margin-bottom: 25px;
+
+  @media (max-width: 600px) {
+    font-size: 24px;
+    margin-bottom: 0;
+  }
 `;
 
 const SortDropdown = styled.div`
@@ -135,6 +195,12 @@ const SortButton = styled.button`
     filter: ${({ active }) => (active ? "none" : "grayscale(100%)")};
     opacity: ${({ active }) => (active ? "1" : "0.6")};
   }
+
+  @media (max-width: 600px) {
+    width: 80px;
+    height: 30px;
+    font-size: 12px;
+  }
 `;
 
 const DropdownMenu = styled.ul`
@@ -149,6 +215,10 @@ const DropdownMenu = styled.ul`
   list-style: none;
   padding: 5px 0;
   z-index: 1000;
+
+  @media (max-width: 600px) {
+    width: 80px;
+  }
 `;
 
 const DropdownItem = styled.li`
@@ -162,18 +232,9 @@ const DropdownItem = styled.li`
   &:hover {
     background: #f0f0f0;
   }
-`;
 
-const ProfileContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 45px;
-`;
-
-const ProfileCardContainer = styled.div`
-  width: 940px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
+  @media (max-width: 600px) {
+    font-size: 12px;
+    padding: 8px;
+  }
 `;
