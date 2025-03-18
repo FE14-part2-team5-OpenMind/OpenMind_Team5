@@ -1,60 +1,38 @@
 import { useState } from "react";
-import {
-  submitAnswer,
-  updateAnswer,
-  postQuestion,
-} from "../services/answerService";
+import { postQuestion } from "../services/postQuestion";
 
-const useTextForm = ({
-  mode,
-  id,
-  onClose,
-  setSend,
-  setOffset,
-  initialContent = "",
-  answerId,
-  isEditing,
-}) => {
-  const [textValue, setTextValue] = useState(initialContent);
-  const isValid = textValue.trim().length > 0;
+const useTextForm = ({ mode, id, onClose, setSend }) => {
+  const [textValue, setTextValue] = useState("");
+  const [isValid, setIsValid] = useState(false);
 
   const handleTextChange = (e) => {
-    setTextValue(e.target.value);
+    const nextValue = e.target.value;
+    setTextValue(nextValue);
+    setIsValid(nextValue.trim() !== "");
   };
 
   const handleSubmit = async () => {
     if (!isValid) return;
-
     try {
-      let response;
       if (mode === "question") {
-        response = await postQuestion({ subject_id: id, content: textValue });
-        setSend(true);
-        setOffset(0);
-      } else if (mode === "answer") {
-        if (isEditing) {
-          response = await updateAnswer({
-            answerId,
-            answerText: textValue,
-            isRejected: false,
-          });
-        } else {
-          response = await submitAnswer({
-            questionId: id,
-            answerText: textValue,
-            isRejected: false,
-          });
-        }
+        await postQuestion({ subject_id: id, content: textValue });
+        console.log("질문 등록 완료!");
+        onClose();
         setSend(true);
       }
-      setTextValue("");
-      return response; // 수정: 서버 응답 반환
+      // 답변 부분 (mode === "answer")은 추후 구현
     } catch (error) {
-      console.error(`${mode} 제출 실패:`, error);
+      console.log("질문 등록 실패");
+      console.error(error);
     }
   };
 
-  return { textValue, isValid, handleTextChange, handleSubmit };
+  return {
+    textValue,
+    isValid,
+    handleTextChange,
+    handleSubmit,
+  };
 };
 
 export default useTextForm;

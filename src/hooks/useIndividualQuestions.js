@@ -28,7 +28,7 @@ export const useIndividualQuestions = ({ offset, limit = 10 }) => {
     };
 
     fetchIndividualQuestions();
-  }, [offset, send, id, limit]);
+  }, [offset, send, limit]);
 
   return {
     questionInfo,
