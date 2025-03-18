@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 
 import Button from "../components/Button";
 import ProfileCard from "../components/ProfileCard";
+import AnswerModal from "../components/Modal/AnswerModal";
 
 import { getAllDataSubjects } from "../api/apiSubjects";
 
@@ -48,7 +48,7 @@ const QuestionList = () => {
     handleSubjectsData();
   }, [sortOrder]);
 
-  // 로컬 스토리지 확인
+  // 답변하러가기 버튼 함수
   const handleAnswerClick = () => {
     const storedFeeds = localStorage.getItem("feeds");
 
@@ -57,10 +57,10 @@ const QuestionList = () => {
       return;
     }
 
-    const feedsObject = JSON.parse(storedFeeds); // JSON 문자열 → 객체 변환
-    const feedsArray = Object.values(feedsObject); // 객체의 값만 배열로 추출
+    const feedsObject = JSON.parse(storedFeeds);
+    const feedsArray = Object.values(feedsObject);
 
-    setUserId(feedsArray); // 모달에서 렌더링할 데이터 저장
+    setUserId(feedsArray);
     setIsModalOpen(true);
   };
 
@@ -114,55 +114,16 @@ const QuestionList = () => {
         message={dataErrorMessage}
       />
 
-      {isModalOpen && (
-        <Modal>
-          <ModalContent>
-            <h2>환영합니다!</h2>
-            {userId.map((feed, index) => (
-              <p key={index}>
-                <Link to={`/post/${feed.id}/answer`}>{feed.이름}</Link>
-              </p>
-            ))}
-            <CloseButton onClick={() => setIsModalOpen(false)}>
-              닫기
-            </CloseButton>
-          </ModalContent>
-        </Modal>
-      )}
+      <AnswerModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        userId={userId}
+      />
     </Container>
   );
 };
 
 export default QuestionList;
-
-const Modal = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ModalContent = styled.div`
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-`;
-
-const CloseButton = styled.button`
-  margin-top: 10px;
-  padding: 10px;
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-`;
 
 const Container = styled.div`
   max-width: 1200px;
