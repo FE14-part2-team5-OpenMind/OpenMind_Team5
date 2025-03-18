@@ -41,7 +41,7 @@ const Modal = ({ onClose, userInfo, setSend }) => {
         <TextForm
           placeholder="질문을 입력해주세요"
           buttonText="질문 보내기"
-          subject_id={userInfo.id}
+          id={userInfo.id}
           mode="question"
           onClose={onClose}
           setSend={setSend}

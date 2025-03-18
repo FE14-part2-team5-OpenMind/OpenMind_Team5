@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import backgroundImage from "../assets/images/IndividualFeed-BackgroundImage.png";
 import logo from "../assets/images/logo.png";
 import message from "../assets/images/Messages.png";
@@ -29,7 +29,13 @@ const IndividualFeed = () => {
     offset,
     limit: LIMIT,
   });
-  const { moreData } = useScroll({ setOffset, questionInfo, LIMIT, count, setSend });
+  const { moreData } = useScroll({
+    setOffset,
+    questionInfo,
+    LIMIT,
+    count,
+    setSend,
+  });
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
