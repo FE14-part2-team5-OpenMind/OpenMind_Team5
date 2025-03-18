@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 import Button from "../components/Button";
 import ProfileCard from "../components/ProfileCard";
@@ -16,6 +17,8 @@ const QuestionList = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [profiles, setProfiles] = useState(null);
   const [dataErrorMessage, setDataErrorMessage] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userId, setUserId] = useState("");
 
   // api 호출 함수
   const handleSubjectsData = async () => {
@@ -45,13 +48,29 @@ const QuestionList = () => {
     handleSubjectsData();
   }, [sortOrder]);
 
+  // 로컬 스토리지 확인
+  const handleAnswerClick = () => {
+    const storedFeeds = localStorage.getItem("feeds");
+
+    if (!storedFeeds) {
+      alert("아이디를 입력하세요.");
+      return;
+    }
+
+    const feedsObject = JSON.parse(storedFeeds); // JSON 문자열 → 객체 변환
+    const feedsArray = Object.values(feedsObject); // 객체의 값만 배열로 추출
+
+    setUserId(feedsArray); // 모달에서 렌더링할 데이터 저장
+    setIsModalOpen(true);
+  };
+
   return (
     <Container>
       <Header>
         <Logo href="/">
           <img src={openMindLogo} alt="Logo" />
         </Logo>
-        <Button variant="ask" icon={ArrowRightIcon}>
+        <Button variant="ask" icon={ArrowRightIcon} onClick={handleAnswerClick}>
           답변하러 가기
         </Button>
       </Header>
@@ -94,11 +113,56 @@ const QuestionList = () => {
         profiles={{ results: sortedProfiles }}
         message={dataErrorMessage}
       />
+
+      {isModalOpen && (
+        <Modal>
+          <ModalContent>
+            <h2>환영합니다!</h2>
+            {userId.map((feed, index) => (
+              <p key={index}>
+                <Link to={`/post/${feed.id}/answer`}>{feed.이름}</Link>
+              </p>
+            ))}
+            <CloseButton onClick={() => setIsModalOpen(false)}>
+              닫기
+            </CloseButton>
+          </ModalContent>
+        </Modal>
+      )}
     </Container>
   );
 };
 
 export default QuestionList;
+
+const Modal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ModalContent = styled.div`
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+`;
+
+const CloseButton = styled.button`
+  margin-top: 10px;
+  padding: 10px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+`;
 
 const Container = styled.div`
   max-width: 1200px;
