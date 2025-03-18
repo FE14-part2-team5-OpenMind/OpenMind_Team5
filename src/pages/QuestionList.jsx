@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Button from "../components/Button";
 import ProfileCard from "../components/ProfileCard";
@@ -20,6 +21,7 @@ const QuestionList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userId, setUserId] = useState("");
   const [questionCounts, setQuestionCounts] = useState({});
+  const navigate = useNavigate(); // useNavigate 훅을 사용합니다.
 
   // API 호출 함수
   const handleSubjectsData = async () => {
@@ -55,6 +57,7 @@ const QuestionList = () => {
 
     if (!storedFeeds) {
       alert("아이디를 입력하세요.");
+      navigate("/"); // alert 창을 띄운 후, index 페이지로 이동
       return;
     }
 
