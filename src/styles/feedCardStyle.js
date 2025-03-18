@@ -17,9 +17,39 @@ export const Card = styled.div`
   div.head {
     display: flex;
     flex-direction: row;
+    align-items: center;
+    position: relative;
 
-    img {
+    .more-icon {
+      width: 26px;
+      height: 26px;
       margin-left: auto;
+      cursor: pointer;
+    }
+    div.dropdown {
+      width: 102px;
+      height: 80px;
+      border-radius: 16px;
+      position: absolute;
+      top: 45px;
+      right: 8px;
+      display: flex;
+      flex-direction: column;
+      font: var(--caption1-regular);
+      color: var(--gray40);
+      border: 1px solid var(--gray40);
+      justify-content: center;
+      align-items: center;
+
+      div{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
     }
   }
 
@@ -33,6 +63,7 @@ export const Card = styled.div`
       color: var(--gray40);
     }
     span.content {
+      width: 100%;
       margin-top: 4px;
       font: var(--body2-regular);
       color: var(--gray60);
@@ -62,6 +93,7 @@ export const Card = styled.div`
       display: flex;
       flex-direction: column;
       margin-left: 12px;
+      width: 100%;
 
       span.userName {
         color: var(--gray60);

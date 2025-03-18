@@ -3,13 +3,15 @@ import useTextForm from "../hooks/useTextForm";
 
 export const TextArea = styled.textarea`
   display: flex;
-  max-width: 532px;
+  /* max-width: 532px; */
+  margin-top: 4px;
   width: 100%;
   height: 180px;
   padding: 16px;
   border: none;
   border-radius: 8px;
   background: var(--gray20);
+  font: var(--body3-bold);
   white-space: pre-wrap;
   resize: none;
   &::placeholder {
@@ -28,6 +30,7 @@ export const SendingButton = styled.button`
   width: 100%;
   background: var(--brown30);
   color: var(--gray10);
+  font: var(--body3-bold);
   border-radius: 8px;
   border: none;
   margin-top: 8px;
@@ -44,13 +47,25 @@ export const SendingButton = styled.button`
       : `background: var(--brown30)`};
 `;
 
-const TextForm = ({ placeholder, buttonText, id, mode, onClose, setSend, setOffset }) => {
+const TextForm = ({
+  placeholder,
+  buttonText,
+  id,
+  mode,
+  onClose,
+  setSend,
+  setOffset,
+  setLocalAnswer,
+  setDone,
+}) => {
   const { textValue, isValid, handleTextChange, handleSubmit } = useTextForm({
     mode,
     id,
     onClose,
     setSend,
-    setOffset
+    setOffset,
+    setLocalAnswer,
+    setDone,
   });
 
   return (

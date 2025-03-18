@@ -1,7 +1,15 @@
 import { useState } from "react";
 import { postQuestion } from "../services/postQuestion";
 
-const useTextForm = ({ mode, id, onClose, setSend, setOffset }) => {
+const useTextForm = ({
+  mode,
+  id,
+  onClose,
+  setSend,
+  setOffset,
+  setLocalAnswer,
+  setDone,
+}) => {
   const [textValue, setTextValue] = useState("");
   const [isValid, setIsValid] = useState(false);
 
@@ -22,6 +30,11 @@ const useTextForm = ({ mode, id, onClose, setSend, setOffset }) => {
         setOffset(0);
       }
       // 답변 부분 (mode === "answer")은 추후 구현
+      else if (mode === "answer") {
+        setLocalAnswer(textValue);
+        setDone(true);
+        // 답변 넣는 api 구현
+      }
     } catch (error) {
       console.log("질문 등록 실패");
       console.error(error);

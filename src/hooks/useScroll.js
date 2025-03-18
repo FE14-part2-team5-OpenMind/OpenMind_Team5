@@ -15,7 +15,7 @@ export const useScroll = ({
         document.documentElement.clientHeight <=
       window.scrollY
     ) {
-      if (moreData === false && questionInfo.length < count) {
+      if (moreData === false && questionInfo?.length < count) {
         setSend(false);
         console.log("데이터 추가로 호출");
         setMoreData(true);

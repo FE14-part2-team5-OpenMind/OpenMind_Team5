@@ -3,9 +3,10 @@ import { BodyWrapper, EmptyIcon, Wrapper } from "../styles/individualFeedStyle";
 import message from "../assets/images/Messages.png";
 import FeedCardPlaceholder from "../components/FeedCardPlaceholder";
 import emptyIcon from "../assets/images/NoQuestion.svg";
-import FeedCard from "../components/FeedCard";
+import Answer from "../components/Answer";
 
-const FeedBody = ({ count, questionInfo, userInfo }) => {
+const AnswerBody = ({ count, questionInfo, userInfo }) => {
+  console.log("answerBody");
   return (
     <Wrapper>
       {/* 질문을 보여주는 부분 */}
@@ -27,7 +28,7 @@ const FeedBody = ({ count, questionInfo, userInfo }) => {
           </>
         ) : questionInfo.length > 0 ? (
           questionInfo.map((question, index) => (
-            <FeedCard
+            <Answer
               question={question}
               key={index}
               userName={userInfo?.name}
@@ -42,4 +43,4 @@ const FeedBody = ({ count, questionInfo, userInfo }) => {
   );
 };
 
-export default FeedBody;
+export default AnswerBody;
