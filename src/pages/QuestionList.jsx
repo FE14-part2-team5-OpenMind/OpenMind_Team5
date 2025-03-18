@@ -19,8 +19,9 @@ const QuestionList = () => {
   const [dataErrorMessage, setDataErrorMessage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userId, setUserId] = useState("");
+  const [questionCounts, setQuestionCounts] = useState({});
 
-  // api 호출 함수
+  // API 호출 함수
   const handleSubjectsData = async () => {
     try {
       const profiles = await getAllDataSubjects();
@@ -63,6 +64,21 @@ const QuestionList = () => {
     setUserId(feedsArray);
     setIsModalOpen(true);
   };
+
+  useEffect(() => {
+    if (profiles && userId && userId.length > 0) {
+      const counts = {};
+      userId.forEach((feed) => {
+        const profile = profiles.results.find((p) => p.id === feed.id);
+        if (profile) {
+          const questionCount =
+            profile.questionCount !== undefined ? profile.questionCount : 0;
+          counts[feed.id] = questionCount;
+        }
+      });
+      setQuestionCounts(counts);
+    }
+  }, [profiles, userId]);
 
   return (
     <Container>
@@ -118,6 +134,7 @@ const QuestionList = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         userId={userId}
+        questionCounts={questionCounts} // 전달한 질문 개수
       />
     </Container>
   );
