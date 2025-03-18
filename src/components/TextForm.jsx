@@ -44,12 +44,13 @@ export const SendingButton = styled.button`
       : `background: var(--brown30)`};
 `;
 
-const TextForm = ({ placeholder, buttonText, id, mode, onClose, setSend }) => {
+const TextForm = ({ placeholder, buttonText, id, mode, onClose, setSend, setOffset }) => {
   const { textValue, isValid, handleTextChange, handleSubmit } = useTextForm({
     mode,
     id,
     onClose,
     setSend,
+    setOffset
   });
 
   return (

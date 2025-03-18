@@ -34,6 +34,6 @@ export const useIndividualQuestions = ({ offset, limit = 10 }) => {
     questionInfo,
     count,
     setSend,
-    setQuestionInfo, // 수정: questionInfo를 외부에서 업데이트 가능하도록 추가
+    // setQuestionInfo, // 수정: questionInfo를 외부에서 업데이트 가능하도록 추가
   };
 };

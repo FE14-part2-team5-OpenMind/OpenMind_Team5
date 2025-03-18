@@ -1,6 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 
-export const useScroll = ({ setOffset, questionInfo, LIMIT, count, setSend }) => {
+export const useScroll = ({
+  setOffset,
+  questionInfo,
+  LIMIT,
+  count,
+  setSend,
+}) => {
   const [moreData, setMoreData] = useState(false);
 
   const handleScroll = useCallback(() => {

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { postQuestion } from "../services/postQuestion";
 
-const useTextForm = ({ mode, id, onClose, setSend }) => {
+const useTextForm = ({ mode, id, onClose, setSend, setOffset }) => {
   const [textValue, setTextValue] = useState("");
   const [isValid, setIsValid] = useState(false);
 
@@ -19,6 +19,7 @@ const useTextForm = ({ mode, id, onClose, setSend }) => {
         console.log("질문 등록 완료!");
         onClose();
         setSend(true);
+        setOffset(0);
       }
       // 답변 부분 (mode === "answer")은 추후 구현
     } catch (error) {
