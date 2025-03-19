@@ -32,12 +32,12 @@ const FeedCard = ({ question, userName, profileImage }) => {
   };
 
   useEffect(() => {
-    if (question.answer) {
+    if (question.answer?.id) {
       setDone(true);
     } else {
       setDone(false);
     }
-  }, []);
+  }, [question]);
 
   return (
     <Card>
@@ -52,7 +52,7 @@ const FeedCard = ({ question, userName, profileImage }) => {
       </div>
 
       {/* 답변 */}
-      {done ? (
+      {done && question.answer ? (
         <div className="answer">
           <img src={profileImage} alt="프로필 사진" />
           <div className="content">

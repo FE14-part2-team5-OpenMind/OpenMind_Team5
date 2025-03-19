@@ -57,6 +57,10 @@ const TextForm = ({
   setOffset,
   setLocalAnswer,
   setDone,
+  isEdit,
+  setIsEdit,
+  setEditHistory,
+  localAnswer,
 }) => {
   const { textValue, isValid, handleTextChange, handleSubmit } = useTextForm({
     mode,
@@ -66,7 +70,13 @@ const TextForm = ({
     setOffset,
     setLocalAnswer,
     setDone,
+    isEdit,
+    setIsEdit,
+    setEditHistory,
+    localAnswer,
   });
+
+  console.log(id);
 
   return (
     <>

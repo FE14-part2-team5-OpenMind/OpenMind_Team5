@@ -28,7 +28,7 @@ export const Card = styled.div`
     }
     div.dropdown {
       width: 102px;
-      height: 80px;
+      height: 40px;
       border-radius: 16px;
       position: absolute;
       top: 45px;

@@ -9,7 +9,7 @@ const FeedBody = ({ count, questionInfo, userInfo }) => {
   return (
     <Wrapper>
       {/* 질문을 보여주는 부분 */}
-      <BodyWrapper count={count}>
+      <BodyWrapper count={count} questionInfo={questionInfo} button={false}>
         <div className="questionNum">
           <img src={message} alt="질문 아이콘" />
           <span>

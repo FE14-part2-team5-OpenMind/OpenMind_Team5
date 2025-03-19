@@ -6,6 +6,7 @@ import { RotatingAnimation } from "../styles/rotatingAnimation";
 import { useScroll } from "../hooks/useScroll";
 import FeedHeader from "../components/FeedHeader";
 import AnswerBody from "../components/AnswerBody";
+import DeleteButton from "../components/DeleteButton";
 
 const AnswerPage = () => {
   const [offset, setOffset] = useState(0);

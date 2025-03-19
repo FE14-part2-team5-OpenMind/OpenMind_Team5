@@ -6,6 +6,8 @@ import { BiDislike } from "react-icons/bi";
 import { postLikeDislike } from "../services/postLikeDislike";
 import TextForm from "./TextForm";
 import { FiMoreHorizontal } from "react-icons/fi";
+import { patchAnswer } from "../services/patchAnswer";
+import { postAnswer } from "../services/postAnswer";
 
 const Answer = ({ question, userName, profileImage }) => {
   const [done, setDone] = useState(false);
@@ -13,9 +15,13 @@ const Answer = ({ question, userName, profileImage }) => {
   const [isDislikeClicked, setIsDislikeClicked] = useState(false);
   const [like, setLike] = useState(question.like);
   const [dislike, setDislike] = useState(question.dislike);
-  const [localAnswer, setLocalAnswer] = useState("");
+  const [localAnswer, setLocalAnswer] = useState(() => {
+    return question.answer ? question.answer.content : "";
+  });
   const [isRejected, setIsRejected] = useState(false);
   const [dropdown, setDropDown] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [editHistory, setEditHistory] = useState("");
 
   const handleClick = async ({ type }) => {
     if (type === "like" && isLikeClicked === false) {
@@ -38,9 +44,12 @@ const Answer = ({ question, userName, profileImage }) => {
 
   const handleEdit = () => {
     setDone(false);
-  }
+    setIsEdit(true);
+  };
 
-  const handleReject = () => {
+  const handleReject = async () => {
+    // 곧 수정
+    await postAnswer(question.id, "답변 거절", true);
     setIsRejected(true);
     setDone(true);
     setLocalAnswer("답변 거절");
@@ -67,8 +76,8 @@ const Answer = ({ question, userName, profileImage }) => {
           ? dropdown && <div></div>
           : dropdown && (
               <div className="dropdown">
-                <div onClick={handleEdit}>수정하기</div>
-                <div onClick={handleReject}>거절하기</div>
+                {question.answer && <div onClick={handleEdit}>수정하기</div>}
+                {!question.answer && <div onClick={handleReject}>거절하기</div>}
               </div>
             )}
       </div>
@@ -81,23 +90,51 @@ const Answer = ({ question, userName, profileImage }) => {
 
       {/* 답변 */}
       {question.answer ? (
-        <div className="answer">
-          <img src={profileImage} alt="프로필 사진" />
-          <div className="content">
-            <span className="userName">{userName}</span>
-            <p
-              className={
-                question.answer?.isRejected
-                  ? "answer-rejected"
-                  : "content-answer"
-              }
-            >
-              {question.answer?.isRejected
-                ? "답변 거절"
-                : question.answer?.content}
-            </p>
+        isEdit ? (
+          <div className="answer">
+            <img src={profileImage} alt="프로필 사진" />
+            <div className="content">
+              <span className="userName">{userName}</span>
+              <TextForm
+                buttonText={"답변 완료"}
+                mode={"answer"}
+                setLocalAnswer={setLocalAnswer}
+                setDone={setDone}
+                id={question.answer?.id}
+                isEdit={isEdit}
+                setIsEdit={setIsEdit}
+                setEditHistory={setEditHistory}
+                localAnswer={localAnswer}
+              />
+            </div>
           </div>
-        </div>
+        ) : editHistory === "수정됨" ? ( // !!!!!!!
+          <div className="answer">
+            <img src={profileImage} alt="프로필 사진" />
+            <div className="content">
+              <span className="userName">{userName}</span>
+              <p className="content-answer">{localAnswer}</p>
+            </div>
+          </div>
+        ) : (
+          <div className="answer">
+            <img src={profileImage} alt="프로필 사진" />
+            <div className="content">
+              <span className="userName">{userName}</span>
+              <p
+                className={
+                  question.answer?.isRejected
+                    ? "answer-rejected"
+                    : "content-answer"
+                }
+              >
+                {question.answer?.isRejected
+                  ? "답변 거절"
+                  : question.answer?.content}
+              </p>
+            </div>
+          </div>
+        )
       ) : // 이곳에 경훈님이 텍스트 폼을 작성
       done ? ( // 답변 입력시
         isRejected ? ( // 답변 입력했는데 그게 거절한거였을 때
@@ -123,7 +160,7 @@ const Answer = ({ question, userName, profileImage }) => {
           </>
         )
       ) : (
-        // 답변입력이 안된 경우나 수정할 때 텍스트 상자 띄우기
+        // 답변입력이 안된 경우에 텍스트 상자 띄우기
         <>
           <div className="answer">
             <img src={profileImage} alt="프로필 사진" />
@@ -134,6 +171,9 @@ const Answer = ({ question, userName, profileImage }) => {
                 mode={"answer"}
                 setLocalAnswer={setLocalAnswer}
                 setDone={setDone}
+                id={question?.id}
+                isEdit={isEdit}
+                setIsEdit={setIsEdit}
               />
             </div>
           </div>

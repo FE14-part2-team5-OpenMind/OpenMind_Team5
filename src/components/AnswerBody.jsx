@@ -4,13 +4,15 @@ import message from "../assets/images/Messages.png";
 import FeedCardPlaceholder from "../components/FeedCardPlaceholder";
 import emptyIcon from "../assets/images/NoQuestion.svg";
 import Answer from "../components/Answer";
+import DeleteButton from "./DeleteButton";
 
 const AnswerBody = ({ count, questionInfo, userInfo }) => {
-  console.log("answerBody");
   return (
     <Wrapper>
+      <DeleteButton userInfo={userInfo} />
+
       {/* 질문을 보여주는 부분 */}
-      <BodyWrapper count={count}>
+      <BodyWrapper count={count} button={true}>
         <div className="questionNum">
           <img src={message} alt="질문 아이콘" />
           <span>
