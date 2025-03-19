@@ -16,7 +16,7 @@ import Button from "../components/Button";
 import ProfileCard from "../components/ProfileCard";
 import AnswerModal from "../components/Modal/AnswerModal";
 
-import { getAllDataSubjects } from "../api/apiSubjects";
+import { getAllDataSubjects } from "../services/apiSubjects";
 
 import openMindLogo from "../assets/images/Openmind.svg";
 import ArrowRightIcon from "../assets/images/arrow-right.svg";
