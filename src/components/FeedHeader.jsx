@@ -18,7 +18,7 @@ const FeedHeader = ({ userInfo, setToast }) => {
   };
 
   return (
-    <Wrapper>
+    <>
       {/* 배경사진, 사용자 이름은 userInfo에서 가져온다 */}
       <img src={backgroundImage} alt="배경사진" />
       <Logo src={logo} alt="로고" onClick={navigateToMain} />
@@ -31,7 +31,7 @@ const FeedHeader = ({ userInfo, setToast }) => {
 
       {/* 아이콘 컴포넌트 */}
       <IconBox setToast={setToast} />
-    </Wrapper>
+    </>
   );
 };
 

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Card } from "../styles/feedCardStyle";
 import Badge from "./Badge";
-import More from "../assets/icons/More.png";
 import { BiLike } from "react-icons/bi";
 import { BiDislike } from "react-icons/bi";
 import { postLikeDislike } from "../services/postLikeDislike";
@@ -33,18 +32,17 @@ const FeedCard = ({ question, userName, profileImage }) => {
   };
 
   useEffect(() => {
-    if (question.answer) {
+    if (question.answer?.id) {
       setDone(true);
     } else {
       setDone(false);
     }
-  }, []);
+  }, [question]);
 
   return (
     <Card>
       <div className="head">
         <Badge finished={done} />
-        <img src={More} alt="more 아이콘" />
       </div>
 
       {/* 질문 */}
@@ -54,7 +52,7 @@ const FeedCard = ({ question, userName, profileImage }) => {
       </div>
 
       {/* 답변 */}
-      {done ? (
+      {done && question.answer ? (
         <div className="answer">
           <img src={profileImage} alt="프로필 사진" />
           <div className="content">
@@ -68,7 +66,7 @@ const FeedCard = ({ question, userName, profileImage }) => {
             >
               {question.answer?.isRejected
                 ? "답변 거절"
-                : question.answer.content}
+                : question.answer?.content}
             </p>
           </div>
         </div>

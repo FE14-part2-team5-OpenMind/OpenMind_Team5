@@ -1,163 +1,51 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import logo from "../assets/images/logo.png";
-import backgroundImage from "../assets/images/IndividualFeed-BackgroundImage.png";
-import message from "../assets/images/Messages.png";
-import emptyIcon from "../assets/images/NoQuestion.svg";
-import Answer from "../components/Answer";
-import IconBox from "../components/IconBox";
-import AddQuestion from "../components/AddQuestion";
-import Modal from "../components/Modal/Modal";
-import {
-  Wrapper,
-  Logo,
-  Profile,
-  ProfilePlaceholder,
-  BodyWrapper,
-  EmptyIcon,
-} from "../styles/individualFeedStyle";
-import {
-  DeleteButton,
-  Toast,
-  RotatingAnimation,
-} from "../styles/AnswerPageStyle";
+import React, { useEffect, useState } from "react";
+import { Wrapper, Toast } from "../styles/individualFeedStyle"; // Toast 추가
 import { useSubjectInfo } from "../hooks/useSubjectInfo";
 import { useIndividualQuestions } from "../hooks/useIndividualQuestions";
+import { RotatingAnimation } from "../styles/rotatingAnimation";
 import { useScroll } from "../hooks/useScroll";
-import { deleteQuestion } from "../services/answerService";
+import FeedHeader from "../components/FeedHeader";
+import AnswerBody from "../components/AnswerBody";
+import DeleteButton from "../components/DeleteButton";
 
 const AnswerPage = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
   const [offset, setOffset] = useState(0);
-  const [showQuestionForm, setShowQuestionForm] = useState(false);
   const LIMIT = 10;
-
   const { userInfo } = useSubjectInfo();
-  const { questionInfo, count, setSend, setQuestionInfo } =
-    useIndividualQuestions({
-      offset,
-      limit: LIMIT,
-    });
-  const { moreData } = useScroll({ setOffset, questionInfo, LIMIT, count });
-  const [loading, setLoading] = useState(true);
-  const [toastMessage, setToastMessage] = useState("");
+  const { questionInfo, count, setSend } = useIndividualQuestions({
+    offset,
+    limit: LIMIT,
+  });
+  const { moreData } = useScroll({
+    setOffset,
+    questionInfo,
+    LIMIT,
+    count,
+    setSend,
+  });
+  const [toast, setToast] = useState(false);
 
   useEffect(() => {
-    if (userInfo && questionInfo !== null && questionInfo !== undefined) {
-      setLoading(false);
-    } else {
-      setLoading(true);
+    // 5초 동안 보이다가 사라지는 토스트 팝업
+    if (toast) {
+      const timer = setTimeout(() => setToast(false), 5000);
+      return () => clearTimeout(timer);
     }
-  }, [userInfo, questionInfo, id]);
-
-  useEffect(() => {
-    setOffset(0);
-  }, [id]);
-
-  const handleLogoClick = () => {
-    navigate("/");
-  };
-
-  const handleQuestionDelete = async (questionId) => {
-    try {
-      await deleteQuestion({ questionId });
-      setQuestionInfo((prev) => prev.filter((q) => q.id !== questionId));
-      setSend(true);
-      setToastMessage("질문이 삭제되었습니다.");
-      setTimeout(() => setToastMessage(""), 3000);
-    } catch (error) {
-      console.error("질문 삭제 실패:", error.message || error);
-      setToastMessage("질문 삭제에 실패했습니다.");
-      setTimeout(() => setToastMessage(""), 3000);
-    }
-  };
-
-  const handleAddQuestionClick = () => {
-    if (!loading && userInfo) {
-      setShowQuestionForm(true);
-    }
-  };
-
-  // 수정: 모달 닫기 시 응답 처리
-  const handleModalClose = (response) => {
-    setShowQuestionForm(false);
-    if (response) {
-      setQuestionInfo((prev) => [response, ...prev]); // 새 질문 즉시 추가
-      setSend(true);
-      setOffset(0);
-    }
-  };
+  }, [toast]);
 
   return (
     <Wrapper>
-      <img src={backgroundImage} alt="배경사진" />
-      <Logo src={logo} alt="로고" onClick={handleLogoClick} />
-      {loading || !userInfo ? (
-        <ProfilePlaceholder />
-      ) : (
-        <Profile src={userInfo.imageSource} />
-      )}
-      <span className="profileName">
-        {loading || !userInfo ? "로딩 중..." : userInfo.name}
-      </span>
-      <IconBox />
-      {questionInfo?.length > 0 && (
-        <DeleteButton onClick={() => handleQuestionDelete(questionInfo[0].id)}>
-          삭제하기
-        </DeleteButton>
-      )}
-      <br />
-      <BodyWrapper count={count}>
-        <div className="questionNum">
-          <img src={message} alt="질문 아이콘" />
-          <span>
-            {count === 0
-              ? "아직 질문이 없습니다."
-              : `${count}개의 질문이 있습니다.`}
-          </span>
-        </div>
-        {loading ? (
-          <>
-            {Array.from({ length: 5 }).map((_, index) => (
-              <Answer key={index} isPreview={true} />
-            ))}
-          </>
-        ) : questionInfo?.length > 0 ? (
-          questionInfo.map((q, index) => (
-            <React.Fragment key={q.id}>
-              <Answer
-                questionId={q.id}
-                question={q.content}
-                answer={q.answer}
-                profileImage={userInfo?.imageSource || ""}
-                username={userInfo?.name || "Unknown"}
-                timestamp={q.createdAt}
-                isAnswered={q.isAnswered || !!q.answer}
-                setSend={setSend}
-                setOffset={setOffset}
-                setQuestionInfo={setQuestionInfo}
-              />
-              {index < questionInfo.length - 1 && <br />}
-            </React.Fragment>
-          ))
-        ) : (
-          <EmptyIcon src={emptyIcon} alt="질문 없을 때 이미지" />
-        )}
-        {moreData && questionInfo && questionInfo.length < count && (
-          <RotatingAnimation />
-        )}
-        <AddQuestion onClick={handleAddQuestionClick} />
-        {showQuestionForm && (
-          <Modal
-            onClose={handleModalClose} // 수정: 응답을 처리하는 handleModalClose 전달
-            userInfo={userInfo}
-            setSend={setSend}
-            setOffset={setOffset}
-          />
-        )}
-      </BodyWrapper>
-      {toastMessage && <Toast>{toastMessage}</Toast>}
+      <FeedHeader userInfo={userInfo} setToast={setToast} />
+
+      <AnswerBody
+        count={count}
+        questionInfo={questionInfo}
+        userInfo={userInfo}
+      />
+
+      {toast && <Toast>URL이 복사되었습니다</Toast>}
+
+      {moreData && questionInfo.length < count && <RotatingAnimation />}
     </Wrapper>
   );
 };

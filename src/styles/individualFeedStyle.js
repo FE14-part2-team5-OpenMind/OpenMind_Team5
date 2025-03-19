@@ -91,7 +91,7 @@ export const Icon = styled.a`
 `;
 
 export const BodyWrapper = styled.div`
-  margin-top: 189px !important;
+  margin-top: ${({ button }) => (button ? "22px" : "189px")} !important;
   width: 716px;
   padding: 0 16px;
   padding-bottom: 16px;
@@ -100,8 +100,9 @@ export const BodyWrapper = styled.div`
   margin-bottom: 136px;
   border: 1px solid var(--brown20);
 
-  ${({ count }) =>
+  ${({ count, questionInfo }) =>
     count === 0 &&
+    questionInfo &&
     `
     height: 330px;
     justify-content: center;
@@ -139,6 +140,10 @@ export const EmptyIcon = styled.img`
   width: 150px;
   height: 154px;
   margin-top: 54px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 65px;
 
   @media (max-width: 480px) {
     margin-top: 35px;

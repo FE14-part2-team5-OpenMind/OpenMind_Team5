@@ -1,9 +1,7 @@
 import { useState } from "react";
-import {
-  submitAnswer,
-  updateAnswer,
-  postQuestion,
-} from "../services/answerService";
+import { postQuestion } from "../services/postQuestion";
+import { postAnswer } from "../services/postAnswer";
+import { patchAnswer } from "../services/patchAnswer";
 
 const useTextForm = ({
   mode,
@@ -11,50 +9,59 @@ const useTextForm = ({
   onClose,
   setSend,
   setOffset,
-  initialContent = "",
-  answerId,
-  isEditing,
+  setLocalAnswer,
+  setDone,
+  isEdit,
+  setIsEdit,
+  setEditHistory,
+  localAnswer,
 }) => {
-  const [textValue, setTextValue] = useState(initialContent);
-  const isValid = textValue.trim().length > 0;
+  const [textValue, setTextValue] = useState(() => {
+    return localAnswer?.length > 0 ? localAnswer : "";
+  });
+  const [isValid, setIsValid] = useState(false);
 
   const handleTextChange = (e) => {
-    setTextValue(e.target.value);
+    const nextValue = e.target.value;
+    setTextValue(nextValue);
+    setIsValid(nextValue.trim() !== "");
   };
 
   const handleSubmit = async () => {
     if (!isValid) return;
-
     try {
-      let response;
       if (mode === "question") {
-        response = await postQuestion({ subject_id: id, content: textValue });
+        await postQuestion({ subject_id: id, content: textValue });
+        console.log("질문 등록 완료!");
+        onClose();
         setSend(true);
         setOffset(0);
-      } else if (mode === "answer") {
-        if (isEditing) {
-          response = await updateAnswer({
-            answerId,
-            answerText: textValue,
-            isRejected: false,
-          });
-        } else {
-          response = await submitAnswer({
-            questionId: id,
-            answerText: textValue,
-            isRejected: false,
-          });
-        }
-        setSend(true);
       }
-      setTextValue("");
-      return response; // 수정: 서버 응답 반환
+      // 답변 부분 (mode === "answer")은 추후 구현
+      else if (mode === "answer" && isEdit === false) {
+        await postAnswer(id, textValue);
+        setLocalAnswer(textValue);
+        setDone(true);
+      } else if (mode === "answer" && isEdit === true) {
+        // 수정 구현 patch
+        console.log("patch");
+        await patchAnswer(id, textValue);
+        setLocalAnswer(textValue);
+        setEditHistory("수정됨");
+        setIsEdit(false);
+      }
     } catch (error) {
-      console.error(`${mode} 제출 실패:`, error);
+      console.log("질문 등록 실패");
+      console.error(error);
     }
   };
 
-  return { textValue, isValid, handleTextChange, handleSubmit };
+  return {
+    textValue,
+    isValid,
+    handleTextChange,
+    handleSubmit,
+  };
 };
 
 export default useTextForm;

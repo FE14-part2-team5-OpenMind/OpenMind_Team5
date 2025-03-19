@@ -3,13 +3,16 @@ import { BodyWrapper, EmptyIcon, Wrapper } from "../styles/individualFeedStyle";
 import message from "../assets/images/Messages.png";
 import FeedCardPlaceholder from "../components/FeedCardPlaceholder";
 import emptyIcon from "../assets/images/NoQuestion.svg";
-import FeedCard from "../components/FeedCard";
+import Answer from "../components/Answer";
+import DeleteButton from "./DeleteButton";
 
-const FeedBody = ({ count, questionInfo, userInfo }) => {
+const AnswerBody = ({ count, questionInfo, userInfo }) => {
   return (
     <Wrapper>
+      <DeleteButton userInfo={userInfo} />
+
       {/* 질문을 보여주는 부분 */}
-      <BodyWrapper count={count} questionInfo={questionInfo} button={false}>
+      <BodyWrapper count={count} button={true}>
         <div className="questionNum">
           <img src={message} alt="질문 아이콘" />
           <span>
@@ -27,7 +30,7 @@ const FeedBody = ({ count, questionInfo, userInfo }) => {
           </>
         ) : questionInfo.length > 0 ? (
           questionInfo.map((question, index) => (
-            <FeedCard
+            <Answer
               question={question}
               key={index}
               userName={userInfo?.name}
@@ -42,4 +45,4 @@ const FeedBody = ({ count, questionInfo, userInfo }) => {
   );
 };
 
-export default FeedBody;
+export default AnswerBody;
