@@ -1,9 +1,6 @@
 import React, {useState } from "react";
 import { Card } from "../styles/feedCardStyle";
 import Badge from "./Badge";
-import { BiLike } from "react-icons/bi";
-import { BiDislike } from "react-icons/bi";
-import { postLikeDislike } from "../services/postLikeDislike";
 import { FiMoreHorizontal } from "react-icons/fi";
 import AnswerPageContent from "./AnswerPageContent";
 import useAnswer from "../hooks/useAnswer";
