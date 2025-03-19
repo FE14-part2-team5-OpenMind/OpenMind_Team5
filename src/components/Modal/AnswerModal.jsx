@@ -39,11 +39,11 @@ const Overlay = styled.div`
 
 const ModalContainer = styled.div`
   display: flex;
-  gap: 23px;
+  gap: 40px;
   flex-direction: column;
   justify-content: center;
-  width: 350px;
-  height: 200px;
+  width: 450px;
+  height: 280px;
   background: white;
   border-radius: 10px;
 `;
@@ -55,6 +55,8 @@ const ModalContent = styled.div`
   font-size: 15px;
   align-items: center;
   justify-content: center;
+  max-height: 150px;
+  overflow-y: auto;
 
   > div a {
     color: black;
