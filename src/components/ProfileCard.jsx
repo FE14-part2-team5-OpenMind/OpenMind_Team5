@@ -1,84 +1,91 @@
-import React from "react";
-import profileImg from "../assets/images/profile-image.png";
-import messages from "../assets/icons/Messages.svg";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import ProfileCardItem from "./ProfilecardItem";
+import Pagination from "./Pagination";
 
-const Card = styled.div`
-  height: 187px;
-  border-radius: 12px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+const ProfileContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  background-color: white;
-  border: 1px solid var(--Grayscale-40);
-  cursor: pointer;
+  gap: 45px;
+  max-width: 1200px;
+  width: 90%;
+  margin: 0 auto;
 `;
 
-const UserNameContainer = styled.div`
-  width: 180px;
-  height: 97px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-`;
+const ProfileCardContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, minmax(186px, 220px));
+  gap: 2rem;
+  justify-content: center;
 
-const ProfileImage = styled.img`
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 15px;
-`;
-
-const Username = styled.h3`
-  font-size: 20px;
-  font-weight: 400;
-`;
-
-const QuestionContainer = styled.div`
-  width: 80%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  color: var(--Grayscale-40);
-  font-size: 14px;
-`;
-
-const QuestionIcon = styled.span`
-  display: flex;
-  align-items: center;
-
-  > img {
-    width: 20px;
-    height: 20px;
-
-    opacity: 0.6;
+  @media screen and (max-width: 865px) {
+    grid-template-columns: repeat(3, minmax(186px, 220px));
+  }
+  @media screen and (max-width: 600px) {
+    grid-template-columns: repeat(2, minmax(155px, 220px));
+    gap: 1.6rem;
   }
 `;
 
-const QuestionCount = styled.span`
-  margin-left: auto;
-`;
+function ProfileCard({ profiles }) {
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태
+  const [cardsPerPage, setCardsPerPage] = useState(8); // 기본적으로 8개 카드 표시
 
-const ProfileCard = () => {
+  // 화면 크기에 따라 페이지당 카드 수를 동적으로 조정
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 865) {
+        setCardsPerPage(6); // 화면 너비가 865px 이하일 경우 6개 카드로 변경
+      } else {
+        setCardsPerPage(8); // 기본적으로 8개 카드 표시
+      }
+    };
+
+    handleResize(); // 초기 로드 시 체크
+    window.addEventListener("resize", handleResize); // 리사이즈 시 카드 수 업데이트
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  // 프로필 데이터를 `cardsPerPage`만큼 나누는 함수
+  const groupProfiles = (profilesArray, groupSize) => {
+    const grouped = [];
+    for (let i = 0; i < profilesArray.length; i += groupSize) {
+      grouped.push(profilesArray.slice(i, i + groupSize));
+    }
+    return grouped;
+  };
+
+  const groupedProfiles = groupProfiles(profiles?.results || [], cardsPerPage); // 페이지당 카드 수에 맞게 그룹화
+  const totalPages = groupedProfiles.length; // 총 페이지 수
+
+  // 페이지 변경 함수
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
   return (
-    <Card>
-      <UserNameContainer>
-        <ProfileImage src={profileImg} alt="profile" />
-        <Username>아초는고양이</Username>
-      </UserNameContainer>
-      <QuestionContainer>
-        <QuestionIcon>
-          <img src={messages} alt="messages" />
-          <div>받은 질문</div>
-        </QuestionIcon>
-        <QuestionCount>9개</QuestionCount>
-      </QuestionContainer>
-    </Card>
+    <>
+      <ProfileContainer>
+        {/* 현재 페이지에 해당하는 프로필 그룹만 표시 */}
+        {groupedProfiles[currentPage - 1]?.length > 0 && (
+          <ProfileCardContainer>
+            {groupedProfiles[currentPage - 1].map((profile) => (
+              <ProfileCardItem key={profile.id} profile={profile} />
+            ))}
+          </ProfileCardContainer>
+        )}
+        {/* 페이지네이션 추가 */}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      </ProfileContainer>
+    </>
   );
-};
+}
 
 export default ProfileCard;
