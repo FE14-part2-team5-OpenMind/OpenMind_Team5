@@ -10,7 +10,7 @@ import {
   SortButton,
   DropdownMenu,
   DropdownItem,
-} from "../styles/questionList";
+} from "../styles/questionListStyle";
 
 import Button from "../components/Button";
 import ProfileCard from "../components/ProfileCard";
