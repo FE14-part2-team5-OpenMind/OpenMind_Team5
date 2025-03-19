@@ -11,8 +11,18 @@ const DeleteButton = ({ userInfo }) => {
     if (!isConfirmed) return;
 
     console.log("삭제");
+
+    // 로컬 스토리지에서 feeds 가져오기
+    const feeds = JSON.parse(localStorage.getItem("feeds")) || {};
+
     const response = await deleteFeed(userInfo.id);
     if (response) {
+      // userInfo.id를 가진 항목 삭제
+      if (feeds[userInfo.id]) {
+        delete feeds[userInfo.id];
+        localStorage.setItem("feeds", JSON.stringify(feeds));
+        console.log(`로컬 스토리지에서 ${userInfo.id} 삭제 완료`);
+      }
       navigate("/");
     }
   };
