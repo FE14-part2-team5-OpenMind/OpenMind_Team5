@@ -41,7 +41,7 @@ export const Card = styled.div`
       justify-content: center;
       align-items: center;
 
-      div{
+      div {
         width: 100%;
         height: 100%;
         display: flex;
@@ -120,59 +120,59 @@ export const Card = styled.div`
     border: 0.5px solid var(--gray30);
     margin-top: 32px;
   }
+`;
 
-  div.like-dislike {
-    display: flex;
-    flex-direction: row;
-    margin-top: 25px;
-    align-items: center;
+export const LikeDislikeStyle = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 24px;
 
-    span {
-      margin-left: 6px;
+  span {
+    margin-left: 6px;
+  }
+  div.like {
+    color: var(--gray40);
+    font: var(--caption1-medium);
+
+    div.like-icon {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
     }
-    div.like {
-      color: var(--gray40);
-      font: var(--caption1-medium);
+  }
+  div.like-clicked {
+    color: var(--blue50);
+    font: var(--caption1-medium);
 
-      div.like-icon {
-        width: 16px;
-        height: 16px;
-        cursor: pointer;
-      }
+    div.like-icon {
+      border-color: var(--blue50);
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
     }
-    div.like-clicked {
-      color: var(--blue50);
-      font: var(--caption1-medium);
+  }
+  div.dislike {
+    color: var(--gray40);
+    font: var(--caption1-medium);
+    margin-left: 32px;
 
-      div.like-icon {
-        border-color: var(--blue50);
-        width: 16px;
-        height: 16px;
-        cursor: pointer;
-      }
+    div.dislike-icon {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
     }
-    div.dislike {
-      color: var(--gray40);
-      font: var(--caption1-medium);
-      margin-left: 32px;
+  }
+  div.dislike-clicked {
+    color: var(--red50);
+    font: var(--caption1-medium);
+    margin-left: 32px;
 
-      div.dislike-icon {
-        width: 16px;
-        height: 16px;
-        cursor: pointer;
-      }
-    }
-    div.dislike-clicked {
-      color: var(--red50);
-      font: var(--caption1-medium);
-      margin-left: 32px;
-
-      div.dislike-icon {
-        border-color: var(--red50);
-        width: 16px;
-        height: 16px;
-        cursor: pointer;
-      }
+    div.dislike-icon {
+      border-color: var(--red50);
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
     }
   }
 `;
