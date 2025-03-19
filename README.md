@@ -106,6 +106,107 @@ $ npm install
 $ npm run dev
 ```
 
+## 📁 디렉토리 구조
+
+### 📦 FE14-part2-team5-OpenMind
+
+<img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/folder-node.svg" width="16"/> **node_modules/**  
+<img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/folder-public.svg" width="16"/> **public/**  
+<img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/folder-src.svg" width="16"/> **src/**  
+ &nbsp;&nbsp;&nbsp;<img src="https://github.com/material-extensions/vscode-material-icon-theme/blob/main/icons/folder-desktop.svg" width="16"/> **assets/**  
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src=https://github.com/material-extensions/vscode-material-icon-theme/blob/main/icons/folder-font.svg width="16"/> **font/**  
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/material-extensions/vscode-material-icon-theme/blob/main/icons/folder-desktop.svg" width="16"/> **actor/**  
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/folder-desktop.svg" width="16"/> **pretendard/**  
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/folder-images.svg" width="16"/> **icons/**  
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/folder-images.svg" width="16"/> **images/**  
+ &nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/folder-components.svg" width="16"/> **components/**  
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/folder-desktop.svg" width="16"/> **Modal/**  
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/folder-desktop.svg" width="16"/> **common/**  
+ &nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/folder-hook.svg" width="16"/> **hooks/**  
+ &nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/folder-desktop.svg" width="16"/> **pages/**  
+ &nbsp;&nbsp;&nbsp;<img src="https://github.com/material-extensions/vscode-material-icon-theme/blob/main/icons/folder-api.svg" width="16"/> **services/**  
+ &nbsp;&nbsp;&nbsp;<img src="https://github.com/material-extensions/vscode-material-icon-theme/blob/main/icons/folder-css.svg" width="16"/> **styles/**  
+ &nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/css.svg" width="16"/> **App.css**  
+ &nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/react.svg" width="16"/> **App.jsx**  
+ &nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/css.svg" width="16"/> **index.css**  
+ &nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/react.svg" width="16"/> **main.jsx**  
+ &nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/css.svg" width="16"/> **reset.css**  
+<img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/git.svg" width="16"/> **.gitignore**  
+<img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/eslint.svg" width="16"/> **eslint.config.js**  
+<img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/html.svg" width="16"/> **index.html**  
+<img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/json.svg" width="16"/> **package-lock.json**  
+<img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/json.svg" width="16"/> **package.json**  
+<img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/markdown.svg" width="16"/> **README.md**  
+<img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/vite.svg" width="16"/> **vite.config.js** 
+
+---
+
+### <img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/folder-node.svg" width="16"/> node_modules/
+	•	프로젝트의 의존성 패키지들이 저장되는 디렉토리입니다.
+	•	npm install 명령어를 통해 설치된 모든 라이브러리들이 이곳에 위치합니다.
+
+### <img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/folder-public.svg" width="16"/> public/
+	•	애플리케이션의 정적 파일들이 위치하는 폴더입니다.
+	•	index.html 파일을 비롯한 이미지, 아이콘, 폰트 파일들이 포함됩니다.
+
+### <img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/folder-src.svg" width="16"/> src/
+	•	애플리케이션의 주요 소스 코드들이 위치하는 디렉토리입니다.
+	•	React 컴포넌트, 스타일 파일, 유틸리티 함수 등이 이곳에 포함됩니다.
+
+### <img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/folder-desktop.svg" width="16"/> assets/
+	•	애플리케이션에서 사용하는 이미지, 폰트 등과 같은 정적 자원이 저장되는 폴더입니다.
+	•	font/: 애플리케이션에서 사용하는 폰트 파일들
+	•	actor/: actor 폰트 관련 파일들
+	•	pretendard/: pretendard 폰트 관련 파일들
+	•	icons/: 애플리케이션에서 사용하는 아이콘 파일들
+	•	images/: 이미지 파일들이 위치합니다.
+
+### <img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/folder-components.svg" width="16"/> components/
+	•	재사용 가능한 React 컴포넌트들이 위치하는 폴더입니다.
+	•	Modal/: 모달 컴포넌트 관련 코드
+	•	common/: 공통 UI 컴포넌트들
+
+### <img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/folder-hook.svg" width="16"/> hooks/
+	•	React의 커스텀 훅들이 위치하는 폴더입니다.
+	•	상태 관리, 데이터 fetching 등의 로직을 처리하는 훅들이 포함됩니다.
+
+### <img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/folder-desktop.svg" width="16"/> pages/
+	•	애플리케이션의 각 페이지 컴포넌트들이 위치하는 폴더입니다.
+
+### <img src="https://github.com/material-extensions/vscode-material-icon-theme/blob/main/icons/folder-api.svg" width="16"/> services/
+	•	API 통신, 데이터 처리 로직을 처리하는 서비스 코드들이 위치하는 폴더입니다.
+
+### <img src="https://github.com/material-extensions/vscode-material-icon-theme/blob/main/icons/folder-css.svg" width="16"/> styles/
+	•	CSS 파일들이 위치하는 폴더입니다. 전체적인 스타일, 레이아웃을 정의합니다.
+
+### <img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/react.svg" width="16"/> App.jsx
+	•	애플리케이션의 루트 컴포넌트입니다. 전체 구조와 레이아웃을 정의합니다.
+
+### <img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/react.svg" width="16"/> main.jsx
+	•	React 애플리케이션의 진입점 파일입니다. App.jsx 컴포넌트를 렌더링합니다.
+
+### <img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/json.svg" width="16"/> package.json
+	•	프로젝트의 의존성, 스크립트, 설정 등이 포함된 메타데이터 파일입니다.
+
+### <img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/json.svg" width="16"/> package-lock.json
+	•	의존성의 정확한 버전 정보를 기록하는 파일입니다. 팀원 간 동일한 버전의 패키지를 사용하도록 보장합니다.
+
+### <img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/git.svg" width="16"/> .gitignore
+	•	Git에서 추적하지 않을 파일들을 정의한 파일입니다. 예: node_modules/, 빌드 결과물 등.
+
+### <img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/eslint.svg" width="16"/> eslint.config.js
+	•	코드 품질을 유지하기 위해 ESLint의 규칙을 설정하는 파일입니다.
+
+### <img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/html.svg" width="16"/> index.html
+	•	애플리케이션의 루트 HTML 템플릿입니다. React 애플리케이션이 렌더링될 DOM을 포함합니다.
+
+### <img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/markdown.svg" width="16"/>README.md
+	•	프로젝트에 대한 설명, 설치 방법, 사용법 등을 제공하는 파일입니다.
+
+### <img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/vite.svg" width="16"/> vite.config.js
+	•	Vite의 빌드 및 개발 서버 설정을 정의한 파일입니다.
+
+
 
 ## 🖼️ Screenshots
 
