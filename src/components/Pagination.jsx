@@ -6,8 +6,8 @@ import {
   Icon,
 } from "../styles/paginationStyle";
 
-import ArrowRightIcon from "../assets/icons/arrow-right.svg";
-import ArrowLeftIcon from "../assets/icons/arrow-left.svg";
+import ArrowRightIcon from "../assets/icons/Arrow-right.svg";
+import ArrowLeftIcon from "../assets/icons/Arrow-left.svg";
 
 // 상수 정의
 const PAGE_GROUP_SIZE = 5;
@@ -36,7 +36,8 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     <PaginationWrapper>
       <ArrowButton
         onClick={() => handleClick(currentPage - FIRST_PAGE)}
-        disabled={currentPage === FIRST_PAGE}>
+        disabled={currentPage === FIRST_PAGE}
+      >
         <Icon src={ArrowLeftIcon} alt="Previous" />
       </ArrowButton>
 
@@ -44,14 +45,16 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         <PageNumber
           key={page}
           active={currentPage === page}
-          onClick={() => handleClick(page)}>
+          onClick={() => handleClick(page)}
+        >
           {page}
         </PageNumber>
       ))}
 
       <ArrowButton
         onClick={() => handleClick(currentPage + FIRST_PAGE)}
-        disabled={currentPage === totalPages}>
+        disabled={currentPage === totalPages}
+      >
         <Icon src={ArrowRightIcon} alt="Next" />
       </ArrowButton>
     </PaginationWrapper>
