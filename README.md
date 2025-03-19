@@ -1,324 +1,202 @@
-# **FE14-part2-team5-OpenMind**
+<h1>익명으로 고민을 나누는 채팅 커뮤니티 서비스 - 오픈마인드</h1>
 
-# 🖥️ 프로젝트 소개
-코드잇 스프린트 기초 프로젝트
+### 🕰️ 개발 기간
 
-<br/>
+📅 25.03.06 - 25.03.21
 
-# 🕰️ 개발 기간
+### 💫 팀원 소개
 
-25/03/06 ~ 25/03/21
+| 이나경 👩🏻‍💻 | 이현석 👨‍💻 | 정지원 👩‍💻 | 차경훈 👨‍💻 | 홍승원 👨‍💻 |
+|:---:|:---:|:---:|:---:|:---:|
+| <a href="https://github.com/lee-nakyung"><img src="https://github.com/lee-nakyung.png" width="80"></a> | <a href="https://github.com/leeunduck"><img src="https://github.com/leeunduck.png" width="80"></a> | <a href="https://github.com/Jiwon42"><img src="https://github.com/Jiwon42.png" width="80"></a> | <a href="https://github.com/maclovedany"><img src="https://github.com/maclovedany.png" width="80"></a> | <a href="https://github.com/seungwonHong"><img src="https://github.com/seungwonHong.png" width="80"></a> |
 
-<br/>
-
-# 1. 시작하기
 ---
 
-### 1. Clone
+## 💼 팀원 역할
+
+### 이나경 👩🏻‍💻
+- **메인 페이지 (/) 구현**
+  - 반응형 레이아웃을 구성하고, 사용자 경험을 고려한 인터페이스 구현
+  - 질문받기 버튼 클릭 시 피드 생성 API와 연결하고, 응답 데이터를 처리하는 로직 구현
+  - API 응답으로 받은 id와 name을 로컬 스토리지에 저장하여 세션 유지 및 사용자 식별 기능 추가
+  - 피드 생성 후 반환된 id 값을 활용하여 /post/{id}/answer 경로로 동적 이동하는 기능 구현
+- **개별 피드 (질문이 없을 때) 페이지 (/post/{id}) 구현**
+  - 질문이 존재하지 않을 경우의 상태를 고려하여 적절한 UI/UX 설계 및 개발
+  - "링크 공유하기" 버튼 클릭 시 성공적으로 복사되었음을 알리는 토스트 팝업 UI 구현
+
+### 이현석 👨‍💻
+- **질문목록 페이지 (/list) 구현**
+  - 반응형 디자인 구성 및 최신순 정렬 기능 추가
+  - 로고 클릭 시 메인 페이지로 이동
+- **기능 개발**
+  - API 응답으로 받은 id와 name을 로컬 스토리지에 저장하여 세션 유지 및 사용자 식별 기능 추가
+  - 로컬스토리지를 확인하여 값이 없을 경우 경고창을 띄우고, 값이 있을 경우 해당 값을 표시하며, 클릭하면 동적으로 /post/{id}/answer 경로로 이동하는 기능 구현
+  - API 서버에서 데이터를 받아와 카드 프로필을 동적으로 생성하고, 각 카드 프로필을 클릭하면 /post/{id} 경로로 동적 이동하는 기능 구현
+  - 카드 목록을 최신순과 이름순으로 정렬할 수 있도록 구현하였으며, 기본적으로 최신순으로 정렬됨
+  - 5개의 페이지 번호를 표시하며,. 오른쪽 화살표(▶) 클릭 시 다음 페이지로 이동하고, 마지막 번호에서 클릭하면 번호가 오른쪽으로 이동. 왼쪽 화살표(◀) 클릭 시 이전 페이지로 이동하며, 첫 번호에서 클릭하면 번호가 왼쪽으로 이동.
+
+### 정지원 👩‍💻
+- **Global 스타일 설정**
+  - 프로젝트 전반의 일관된 UI/UX 경험을 위해 Global Style을 정의 및 적용
+- **개별 피드 질문하기 모달창 구현 (/post/{id})**
+  - 모달창 퍼블리싱 (재사용성을 고려한 TextForm 컴포넌트 개발)
+  - 모달창 상태 관리 (X 버튼 및 외부 클릭 시 닫기)
+  - 입력 여부에 따른 UI 변경 (질문 입력 시 "질문 보내기" 버튼 활성화, 미입력 시 비활성화)
+  - API 연동 및 데이터 처리 (질문 생성 API 호출 및 응답 처리, 에러 핸들링 및 사용자 피드백 제공)
+  - 반응형 UI 적용 (PC, Tablet, Mobile 환경 대응, CSS Media Query 및 Styled-components 활용)
+
+### 차경훈 👨‍💻
+- **답변완료 페이지 (/post/{id}/answer) 구현**
+  - 답변 입력 및 "답변 완료" 버튼 활성화 기능 
+  - 작성된 답변 “수정하기” 버튼 클릭 시 수정 가능
+  - 수정 내용이 없을 경우 “수정 완료” 버튼 비활성화
+  - “삭제하기” 버튼 클릭 시 받은 질문 및 피드 일괄 삭제
+
+### 홍승원 👨‍💻
+- **개별 피드 페이지 (/post/{id}) 구현**
+  - API 연동 (사용자 정보, 질문, 답변 불러오기)
+  - 아이콘 컴포넌트 분리 및 공유 기능 구현
+  - 질문, 답변 렌더링 및 좋아요/싫어요 기능 구현
+  - 질문 작성하기 버튼 퍼블리싱
+
+---
+
+## 🚀 기술 스택
+
+### 🛠 Tools
+<p align="center">
+  <img src="https://img.shields.io/badge/visualStudiocode-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white">
+  <img src="https://img.shields.io/badge/vite-646cff?style=for-the-badge&logo=vite&logoColor=white">
+  <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
+  <img src="https://img.shields.io/badge/git-f05032?style=for-the-badge&logo=git&logoColor=white">
+</p>
+
+### ⚙️ Config
+<p align="center">
+  <img src="https://img.shields.io/badge/prettier-f7b93e?style=for-the-badge&logo=prettier&logoColor=white">
+  <img src="https://img.shields.io/badge/eslint-4b32c3?style=for-the-badge&logo=eslint&logoColor=white">
+</p>
+
+### 💻 Development
+<p align="center">
+  <img src="https://img.shields.io/badge/html5-e34f26?style=for-the-badge&logo=html5&logoColor=white">
+  <img src="https://img.shields.io/badge/css3-1572b6?style=for-the-badge&logo=css3&logoColor=white">
+  <img src="https://img.shields.io/badge/javascript-f7df1e?style=for-the-badge&logo=javascript&logoColor=black">
+  <img src="https://img.shields.io/badge/react-61dafb?style=for-the-badge&logo=react&logoColor=black">
+</p>
+
+### 📢 Communication
+<p align="center">
+  <img src="https://img.shields.io/badge/kakaotalk-ffe812?style=for-the-badge&logo=kakaotalk&logoColor=black">
+  <img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white">
+  <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
+  <img src="https://img.shields.io/badge/discord-5865f2?style=for-the-badge&logo=discord&logoColor=white">
+</p>
+
+---
+
+<!-- Getting Started -->
+## 	:toolbox: Getting Started
+
 ```
 $ git clone https://github.com/FE14-part2-team5-OpenMind/OpenMind_Team5.git
-$ cd OpenMind_Team5
-$ npm install
-```
-### 2. Run
 
-```
+$ npm install
+
 $ npm run dev
 ```
-<br/>
-<br/>
-
-# 2. 기술 스택
-
----
-
-<img src="https://img.shields.io/badge/visualstudiocode-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white"> <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=white"> 
-<img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=white">
-
-<img src="https://img.shields.io/badge/prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=white"> <img src="https://img.shields.io/badge/eslint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white"> <img src="https://img.shields.io/badge/styledcomponents-DB7093?style=for-the-badge&logo=styledcomponents&logoColor=white">
-
-<br/>
-<br/>
-
-# 3. 디렉토리 구조
-
----
-
-```
-📦  FE14-part2-team5-OpenMind
-├─ node_modules
-├─ public
-├── src
-│   ├── assets
-│   │   ├── font
-│   │   │   ├── actor
-│   │   │   └── pretendard
-│   │   ├── icons
-│   │   ├── images
-│   ├── components
-│   │   ├── AddQuestion.jsx
-│   │   ├── Answer.jsx
-│   │   ├── Badge.jsx
-│   │   ├── Button.jsx
-│   │   ├── FeedBody.jsx
-│   │   ├── FeedCard.jsx
-│   │   ├── FeedCardPlaceholder.jsx
-│   │   ├── FeedHeader.jsx
-│   │   ├── IconBox.jsx
-│   │   ├── Modal
-│   │   │   ├── AnswerModal.jsx
-│   │   │   └── Modal.jsx
-│   │   ├── Pagination.jsx
-│   │   ├── ProfileCard.jsx
-│   │   ├── ProfileCardItem.jsx
-│   │   ├── TextForm.jsx
-│   │   └── common
-│   │       └── GlobalStyle.jsx
-│   ├── hooks
-│   │   ├── useIndividualQuestions.js
-│   │   ├── useKakaoShare.js
-│   │   ├── useScroll.js
-│   │   ├── useSubjectInfo.js
-│   │   └── useTextForm.js
-│   ├── pages
-│   │   ├── AnswerPage.jsx
-│   │   ├── IndividualFeed.jsx
-│   │   ├── MainPage.jsx
-│   │   └── QuestionList.jsx
-│   ├── services
-│   │   ├── answerService.js
-│   │   ├── getIndividualQuestions.js
-│   │   ├── getSubjectInfo.js
-│   │   ├── mainpageService.js
-│   │   ├── postLikeDislike.js
-│   │   └── postQuestion.js
-│   ├── styles
-│   │   ├── AnswerPageStyle.js
-│   │   ├── AnswerStyle.js
-│   │   ├── buttonStyle.js
-│   │   ├── feedCardPlaceholderStyle.js
-│   │   ├── feedCardStyle.js
-│   │   ├── individualFeedStyle.js
-│   │   ├── mainpageStyle.js
-│   │   ├── modalStyle.js
-│   │   └── rotatingAnimation.js
-│   ├── App.css
-│   ├── App.jsx
-│   ├── index.css
-│   ├── main.jsx
-│   └── reset.css
-├─ .gitignore
-├─ eslint.config.js
-├─ index.html
-├─ package-lock.json
-├─ package.json
-├─ README.md
-└─ vite.config.js
-```
-
----
-
-## 📁 node_modules/
-- 프로젝트에서 사용하는 npm 패키지가 설치되는 디렉토리
-- `package.json`에서 정의된 패키지들이 저장되며, 실행 파일과 의존성이 포함됨
-
----
-
-## 📁 public/
-- 정적 자원(HTML, 이미지, 폰트 등)이 위치하는 폴더
-- `public` 폴더 내의 파일은 Vite에서 변환하지 않고 그대로 제공됨
-
----
-
-## 📁 src/ (소스 코드 폴더)
-### 📂 assets/ (정적 자원 폴더)
-- `font/` → 프로젝트에서 사용되는 폰트 저장 (`actor`, `pretendard` 등)
-- `icons/` → 아이콘 파일 저장
-- `images/` → 프로젝트에서 사용하는 이미지 저장
-
-### 📂 components/ (재사용 가능한 UI 컴포넌트 폴더)
-- `AddQuestion.jsx` → 질문 추가 버튼 및 입력 폼 컴포넌트
-- `Answer.jsx` → 답변을 표시하는 컴포넌트
-- `Badge.jsx` → 배지(마크) 컴포넌트
-- `Button.jsx` → 공통 버튼 컴포넌트
-- `FeedBody.jsx` → 피드 본문 렌더링 컴포넌트
-- `FeedCard.jsx` → 개별 피드 카드 UI 컴포넌트
-- `FeedCardPlaceholder.jsx` → 피드 카드 로딩 시 표시될 플레이스홀더 컴포넌트
-- `FeedHeader.jsx` → 피드 목록의 헤더 컴포넌트
-- `IconBox.jsx` → 아이콘 박스 컴포넌트
-- `Modal/`
-  - `AnswerModal.jsx` → 답변 입력 모달
-  - `Modal.jsx` → 공통 모달 컴포넌트
-- `Pagination.jsx` → 페이지네이션(페이지 이동) 컴포넌트
-- `ProfileCard.jsx` → 사용자 프로필 카드 컴포넌트
-- `ProfileCardItem.jsx` → 프로필 카드 내부 아이템 컴포넌트
-- `TextForm.jsx` → 텍스트 입력 폼 컴포넌트
-- `common/`
-  - `GlobalStyle.jsx` → 프로젝트 전체에 적용되는 글로벌 스타일
-
-### 📂 hooks/ (커스텀 훅 폴더)
-- `useIndividualQuestions.js` → 특정 질문 데이터를 가져오는 훅
-- `useKakaoShare.js` → 카카오 공유 기능을 위한 훅
-- `useScroll.js` → 스크롤 관련 기능을 제공하는 훅
-- `useSubjectInfo.js` → 특정 주제 정보를 가져오는 훅
-- `useTextForm.js` → 텍스트 입력 관리 훅
-
-### 📂 pages/ (페이지 단위 컴포넌트 폴더)
-- `AnswerPage.jsx` → 답변 페이지
-- `IndividualFeed.jsx` → 개별 피드 상세 페이지
-- `MainPage.jsx` → 메인 피드 페이지
-- `QuestionList.jsx` → 질문 목록 페이지
-
-### 📂 services/ (API 호출 및 데이터 관리 폴더)
-- `answerService.js` → 답변 관련 API 호출
-- `getIndividualQuestions.js` → 특정 질문 데이터를 가져오는 API 호출
-- `getSubjectInfo.js` → 특정 주제 정보를 가져오는 API 호출
-- `mainpageService.js` → 메인 페이지 관련 API 호출
-- `postLikeDislike.js` → 좋아요/싫어요 기능을 처리하는 API 호출
-- `postQuestion.js` → 질문 등록 API 호출
-
-### 📂 styles/ (스타일 관련 파일 폴더)
-- `AnswerPageStyle.js` → 답변 페이지 스타일
-- `AnswerStyle.js` → 답변 컴포넌트 스타일
-- `buttonStyle.js` → 버튼 스타일
-- `feedCardPlaceholderStyle.js` → 피드 카드 플레이스홀더 스타일
-- `feedCardStyle.js` → 피드 카드 스타일
-- `individualFeedStyle.js` → 개별 피드 스타일
-- `mainpageStyle.js` → 메인 페이지 스타일
-- `modalStyle.js` → 모달 스타일
-- `rotatingAnimation.js` → 회전 애니메이션 관련 스타일
-
-### 📄 기타 주요 파일
-- `App.css` → 전체 애플리케이션 스타일
-- `App.jsx` → 애플리케이션의 루트 컴포넌트
-- `index.css` → 글로벌 CSS 스타일
-- `main.jsx` → 애플리케이션의 진입점(React 렌더링 시작)
-- `reset.css` → 브라우저 스타일 초기화
-
----
-
-- **.gitignore** → Git에 포함되지 않을 파일 및 디렉토리 목록을 정의
-- **eslint.config.js** → ESLint(코드 스타일 및 린팅 도구)의 설정 파일
-- **index.html** → 애플리케이션의 기본 HTML 파일 (React가 렌더링될 루트)
-- **package-lock.json** → 설치된 npm 패키지의 정확한 버전 정보 기록
-- **package.json** → 프로젝트 메타데이터 및 npm 패키지 목록 정의
-- **README.md** → 프로젝트 소개 및 설명 문서
-- **vite.config.js** → Vite(빠른 개발 서버 및 번들러) 설정 파일
-
-<br/>
-<br/>
-
-# 4. 협업 방법
-
----
-
-## 1. Branching Strategy
-
-PR을 통해 `Feature 브랜치`들을 `develop`에 `merge`하고,
-최종 배포할 시기가 되면 Admin 관리자가 `develop 브랜치`를 `main 브랜치`에 머지하여 배포하는 단순한 구조를 따릅니다.
-
-## 2. 협업 과정
-
-### 1.  본인 기능 작업
-본인 작업 하기 전에 `git pull origin develop`를 해줍니다
-<br/>
-
-### 2. 브랜치 생성
-MyPage를 작업 하기 전에 브랜치 생성을 해줍니다
-
-`// 아래 명령어를 통해 브랜치 생성`
-
-`$ git checkout -b Feature/[기능요약]`
-<br/>
-
-### 3. 작업 후 push
-`$ git push origin [브랜치명]`
-<br/>
-
-### 4. Github에서 PR을 생성합니다. PR 시 나타나는 템플릿을 채워주세요.
-```
-**## Feature Description**- 이런 이런 기능입니다
-
-**## To Reviewers**- 이런 이런 점을 유의해주세요
-```
-
-아래 예시를 참고해주세요
-
-![](https://user-images.githubusercontent.com/110515401/230116422-6631dd1a-19b7-414d-b143-3521a4765b25.png)
-<br/>
-
-### 6. 코드 리뷰
-1. 작업한 개발자가 PR을 요청하면 카카오톡으로 `작업자이름-기능설명 PR 올렸습니다.` 라고 보내야 합니다.
-2. 다른 개발자가 코드리뷰를 했다면 `작업자이름- 기능설명 PR 검토 완료!` 라고 보내줍니다.
-3. 1명이상의 개발자가 검토완료가 되었다면 작업한 개발자는 Merge를 합니다.
-- *️⃣ Merge 시 나타나는 템플릿을 아래와 같이 채워주세요
-    
-    ![](https://user-images.githubusercontent.com/110515401/230120382-3073d734-5675-4ee6-af1f-b39a1909fe77.png)
-    
-- *️⃣ Squash Merge되며, Merge된 Branch는 자동 삭제됩니다.
-<br/>
-
-### 7. 로컬에서 master 브랜치로 체크아웃한 뒤 Pull하고, 새로운 브랜치로 분기하여 다음 작업을 진행해주세요.
-`$ git checkout develop`
-
-`$ git pull origin develop`
-
-`$ git checkout -b Feture/작업자이름/[기능요약]`
-
-> 주의사항
-> 
-> 
-> > 브랜치를 Local에서 만들고 지우지 않으면 다음에 비슷한 이름을 사용한 브랜치를 만들 수 없게 됩니다 반드시 브랜치를 지워주세요!
-> > 
-
-`// 무슨 브랜치 있는지 확인`
-
-`$ git branch`
 
 
-`// 브랜치 삭제`
+## 🖼️ Screenshots
 
-`$ git branch -d`
+### ✨ 메인페이지
+<div align="center">
+  <img width="1465" src="https://github.com/user-attachments/assets/ec0615d4-41c0-4386-84fa-6f37bdd600ab">
+</div>
 
-<br/>
-<br/>
+### ✨ 질문목록(List) 페이지
+<div align="center">
+  <img width="1469" src="https://github.com/user-attachments/assets/bd482f62-2da0-423f-8fc4-4d43c7ed43c9">
+</div>
 
-# 4. 브랜치 이름 컨벤션
+### ✨ 개별피드(Post) 페이지
+<div align="center">
+  <img width="1469" src="https://github.com/user-attachments/assets/4f00abdb-39a0-43c7-9b35-758faf972853">
+</div>
 
-```
-Feature/작업자이름/[기능요약]
+### ✨ 질문 모달창
+<div align="center">
+  <img width="1469" src="https://github.com/user-attachments/assets/a30e0b93-aea9-49cf-9ac8-97a6b8041984">
+</div>
 
-- 맨 첫글자 F만 대문자로, 기능요약은 소문자로 작성해주세요
-- 기능요약은 영어로 작성해주세요
+### ✨ 답변완료(Answer) 페이지
+<div align="center">
+  <img width="1469" src="https://github.com/user-attachments/assets/5dc57d90-e583-48c7-bdf6-5b13f25314a4">
+</div>
 
-ex) Feature/leehyunseok/modal-publishing
 
-```
+<!-- 기획요구사항 
 
-<br/>
-<br/>
+## 기획 요구 사항
 
-# 5. 커밋 컨벤션
+### 1. 메인 페이지(`/`) <a href="https://github.com/Nahyunfirstorganization/OpenMind_Team2/wiki/%EA%B8%B0%EB%8A%A5-%EC%86%8C%EA%B0%9C1(%EB%A9%94%EC%9D%B8-%ED%8E%98%EC%9D%B4%EC%A7%80)" >상세보기 - WIKI 이동</a>
 
-```
-<태그>: <제목>
+<details><summary>요구사항 보기</summary>
 
-- : 뒤에만 띄어쓰기가 있습니다
-- 제목은 한영 혼용이 가능합니다 (가급적 영어로)
-- 태그의 첫글자는 소문자로 작성해주세요
-- 태그는 아래에 적힌 것들만 사용해주세요
-- 검사 예외 조건 (자동 생성, 최초 커밋)
- - Merge branch*, Merge pull request*, initial*
+- 이름을 입력하고 '질문 받기' 버튼을 클릭하면 피드 생성 요청으로 피드를 생성합니다.
+- 피드 생성 응답을 받으면 응답으로 받은 피드 id를 활용해 `/post/{id}/answer` 페이지로 이동합니다.
+</details>
 
-feat: 새로운 기능 추가, 기능 로직 변경
-fix: 버그 수정
-refactor: 코드 리팩토링 (기능 변화 X)
-style: 코드 포맷팅, 코드 변경이 없는 경우
-chore: 빌드 업무 수정, 패키지 매니저 수정
-docs: 문서 수정, 주석
-test : Test 관련한 코드의 추가, 수정
-! : 급한 변경 사항인 경우에 추가 (접두사, () 뒤 / 콜론 이전)
-() : 추가 요약 정보가 필요할 경우 (접두사 뒤 / !, 콜론 이전)
-BREAKING CHANGE : 급한 변경 footer에 추가
+### 2. 질문 목록 페이지(`/list`) <a href="https://github.com/Nahyunfirstorganization/OpenMind_Team2/wiki/%EA%B8%B0%EB%8A%A5-%EC%86%8C%EA%B0%9C2(%EC%A7%88%EB%AC%B8-%EB%AA%A9%EB%A1%9D-%ED%8E%98%EC%9D%B4%EC%A7%80)" >상세보기 - WIKI 이동</a>
 
-```
+<details><summary>요구사항 보기</summary>
+
+- 오픈마인드 로고를 클릭하면 `/` 페이지로 이동합니다.
+- 현재 페이지, 정렬 순서를 설정해서 카드 리스트 조회 요청합니다.(기본 정렬 순서는 '최신순')
+- '답변하러 가기' 버튼을 클릭 시, 질문 받기로 생성한 id가 로컬 스토리지에 없으면 메인 페이지(`/`)로 이동하고, 있으면 `/post/{id}/answer` 페이지로 이동합니다.
+- PC에서 너비가 1200px 보다 커질 경우 내부 내용의 위치는 고정하고 좌우 여백만 커집니다.
+- PC에서 카드 컴포넌트의 너비는 220px 입니다.
+- Tablet에서 상단 네비게이션 영역의 좌우 여백은 50px을 유지해주세요.
+- Tablet에서 카드 리스트 영역의 좌우 최소 여백은 32px 입니다.
+- Tablet에서 카드 컴포넌트의 최소 너비는 186px 입니다.
+- Tablet에서 카드 리스트 영역이 줄어드는 것에 따라 카드 크기가 작아지다가 186px보다 작아질 때 하나의 행에 4개 → 3개씩 보이도록 합니다.
+- Mobile에서 '누구에게 질문할까요?'는 좌측 여백 24px과 정렬 드롭 다운은 우측 여백 24px을
+  유지하며 둘 사이의 간격이 멀어집니다.
+- Mobile에서 카드 리스트 영역의 좌우 최소 여백은 24px 입니다.
+</details>
+
+### 3. 개별 피드( `/post/{id}`) <a href="https://github.com/Nahyunfirstorganization/OpenMind_Team2/wiki/%EA%B8%B0%EB%8A%A5-%EC%86%8C%EA%B0%9C3(%EA%B0%9C%EB%B3%84-%ED%94%BC%EB%93%9C)" >상세보기 - WIKI 이동</a>
+
+<details><summary>요구사항 보기</summary>
+
+- 답변이 완료된 질문은 '답변완료'로 표시해주세요.
+- 답변이 완료된 질문에는 '수정하기'와 '삭제하기' 버튼이 생깁니다.
+- 답변이 완료되지 않은 질문은 '미답변'으로 표시해주세요.
+- 답변거절 버튼을 누르면 ‘답변거절’로 입력이 됩니다
+- 질문이 없는 경우 'No_question 화면'이 보입니다.('아직 질문이 없습니다' 텍스트 보여주기)
+- '질문 작성하기' 버튼을 클릭하면 '질문을 작성하세요' 모달이 뜹니다.
+- 질문은 '최신순'으로 무한 스크롤 방식으로 배치합니다.
+- '…'을 누르면 삭제하기 버튼이 나타나고 누르면 해당 질문이 삭제됩니다.
+- '링크 아이콘'을 클릭하면 URL을 클립보드에 복사하고, 'URL이 복사되었습니다' 토스트가 5초 동안 보이다가 사라집니다.
+- '카카오 아이콘'을 클릭하면 카카오톡으로 공유하는 화면이 보입니다.
+- '페이스북 아이콘'을 클릭하면 페이스북으로 공유하는 화면이 보입니다.
+- 좋아요, 싫어요 개수를 표시합니다.
+</details>
+
+### 4. 개별 피드에 대한 질문하기 모달창( `/post/{id}`) <a href="https://github.com/Nahyunfirstorganization/OpenMind_Team2/wiki/%EA%B8%B0%EB%8A%A5-%EC%86%8C%EA%B0%9C4(%EA%B0%9C%EB%B3%84-%ED%94%BC%EB%93%9C%EC%97%90-%EB%8C%80%ED%95%9C-%EC%A7%88%EB%AC%B8%ED%95%98%EA%B8%B0-%EB%AA%A8%EB%8B%AC%EC%B0%BD)" >상세보기 - WIKI 이동</a>
+
+<details><summary>요구사항 보기</summary>
+- 모달의 'X' 버튼이나 모달 내용을 벗어난 부분을 클릭하면 모달을 닫습니다.
+- 모달에 질문 내용이 없는 경우 '질문 보내기' 버튼은 비활성화 상태입니다. 질문 내용이 있는 경우 활성화 됩니다.
+</details>
+
+### 5. 답변하기 (`/post/{id}/answer`) <a href="https://github.com/Nahyunfirstorganization/OpenMind_Team2/wiki/%EA%B8%B0%EB%8A%A5-%EC%86%8C%EA%B0%9C5(%EB%8B%B5%EB%B3%80%ED%95%98%EA%B8%B0)" >상세보기 - WIKI 이동</a>
+
+<details><summary>요구사항 보기</summary>
+- 답변이 입력되면 '답변 완료' 버튼이 활성화가 됩니다.
+- 답변이 완료된 질문에 '수정하기' 버튼을 누르면 해당 질문칸은 수정이 가능한 질문칸으로 변경이 됩니다.
+- 수정할 내용이 없으면 '수정완료' 버튼은 활성화 되지 않습니다.
+- 화면 최상단의 '삭제하기' 버튼을 누르면 받은 질문들과 피드가 한 번에 삭제가 됩니다.
+</details>
+
+-->
