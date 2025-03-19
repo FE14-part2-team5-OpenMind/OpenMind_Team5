@@ -17,7 +17,7 @@
 ### 1. Clone
 ```
 $ git clone https://github.com/FE14-part2-team5-OpenMind/OpenMind_Team5.git
-$ cd BK-Nutrition_Clone_Code
+$ cd OpenMind_Team5
 $ npm install
 ```
 ### 2. Run
@@ -45,108 +45,165 @@ $ npm run dev
 ---
 
 ```
-📦  **FE14-part2-team5-OpenMind** 
+📦  FE14-part2-team5-OpenMind
 ├─ node_modules
 ├─ public
 ├── src
-│   ├── App.css
-│   ├── App.jsx
 │   ├── assets
 │   │   ├── font
 │   │   │   ├── actor
-│   │   │   │   ├── Actor-Regular.ttf
-│   │   │   │   └── Actor.css
 │   │   │   └── pretendard
-│   │   │       ├── pretendard.css
-│   │   │       ├── woff
-│   │   │       │   ├── Pretendard-Black.woff
-│   │   │       │   ├── Pretendard-Bold.woff
-│   │   │       │   ├── Pretendard-ExtraBold.woff
-│   │   │       │   ├── Pretendard-ExtraLight.woff
-│   │   │       │   ├── Pretendard-Light.woff
-│   │   │       │   ├── Pretendard-Medium.woff
-│   │   │       │   ├── Pretendard-Regular.woff
-│   │   │       │   ├── Pretendard-SemiBold.woff
-│   │   │       │   └── Pretendard-Thin.woff
-│   │   │       └── woff2
-│   │   │           ├── Pretendard-Black.woff2
-│   │   │           ├── Pretendard-Bold.woff2
-│   │   │           ├── Pretendard-ExtraBold.woff2
-│   │   │           ├── Pretendard-ExtraLight.woff2
-│   │   │           ├── Pretendard-Light.woff2
-│   │   │           ├── Pretendard-Medium.woff2
-│   │   │           ├── Pretendard-Regular.woff2
-│   │   │           ├── Pretendard-SemiBold.woff2
-│   │   │           └── Pretendard-Thin.woff2
 │   │   ├── icons
 │   │   ├── images
-│   │   └── react.svg
 │   ├── components
-│   ├── index.css
-│   ├── main.jsx
+│   │   ├── AddQuestion.jsx
+│   │   ├── Answer.jsx
+│   │   ├── Badge.jsx
+│   │   ├── Button.jsx
+│   │   ├── FeedBody.jsx
+│   │   ├── FeedCard.jsx
+│   │   ├── FeedCardPlaceholder.jsx
+│   │   ├── FeedHeader.jsx
+│   │   ├── IconBox.jsx
+│   │   ├── Modal
+│   │   │   ├── AnswerModal.jsx
+│   │   │   └── Modal.jsx
+│   │   ├── Pagination.jsx
+│   │   ├── ProfileCard.jsx
+│   │   ├── ProfileCardItem.jsx
+│   │   ├── TextForm.jsx
+│   │   └── common
+│   │       └── GlobalStyle.jsx
+│   ├── hooks
+│   │   ├── useIndividualQuestions.js
+│   │   ├── useKakaoShare.js
+│   │   ├── useScroll.js
+│   │   ├── useSubjectInfo.js
+│   │   └── useTextForm.js
 │   ├── pages
-│   ├── reset.css
-│   └── styles
-│       ├── feedCardStyle.js
-│       └── individualFeedStyle.js
- ├─ .gitignore
- ├─ eslint.config.js
- ├─ index.html
- ├─ package-lock.json
- ├─ package.json
- ├─ README.md
- └─ vite.config.js
-
+│   │   ├── AnswerPage.jsx
+│   │   ├── IndividualFeed.jsx
+│   │   ├── MainPage.jsx
+│   │   └── QuestionList.jsx
+│   ├── services
+│   │   ├── answerService.js
+│   │   ├── getIndividualQuestions.js
+│   │   ├── getSubjectInfo.js
+│   │   ├── mainpageService.js
+│   │   ├── postLikeDislike.js
+│   │   └── postQuestion.js
+│   ├── styles
+│   │   ├── AnswerPageStyle.js
+│   │   ├── AnswerStyle.js
+│   │   ├── buttonStyle.js
+│   │   ├── feedCardPlaceholderStyle.js
+│   │   ├── feedCardStyle.js
+│   │   ├── individualFeedStyle.js
+│   │   ├── mainpageStyle.js
+│   │   ├── modalStyle.js
+│   │   └── rotatingAnimation.js
+│   ├── App.css
+│   ├── App.jsx
+│   ├── index.css
+│   ├── main.jsx
+│   └── reset.css
+├─ .gitignore
+├─ eslint.config.js
+├─ index.html
+├─ package-lock.json
+├─ package.json
+├─ README.md
+└─ vite.config.js
 ```
 
-### 1. 디렉토리 설명
+---
 
-### assets
+## 📁 node_modules/
+- 프로젝트에서 사용하는 npm 패키지가 설치되는 디렉토리
+- `package.json`에서 정의된 패키지들이 저장되며, 실행 파일과 의존성이 포함됨
 
-- 모든 이미지가 들어가는 폴더
-- 이미지 이름의 경우 직관적으로 작명
+---
 
-### components
+## 📁 public/
+- 정적 자원(HTML, 이미지, 폰트 등)이 위치하는 폴더
+- `public` 폴더 내의 파일은 Vite에서 변환하지 않고 그대로 제공됨
 
-- 재사용 가능한 컴포넌트
+---
 
-### hooks
+## 📁 src/ (소스 코드 폴더)
+### 📂 assets/ (정적 자원 폴더)
+- `font/` → 프로젝트에서 사용되는 폰트 저장 (`actor`, `pretendard` 등)
+- `icons/` → 아이콘 파일 저장
+- `images/` → 프로젝트에서 사용하는 이미지 저장
 
-- 다양한 커스텀 훅들
-    - fetch 훅
+### 📂 components/ (재사용 가능한 UI 컴포넌트 폴더)
+- `AddQuestion.jsx` → 질문 추가 버튼 및 입력 폼 컴포넌트
+- `Answer.jsx` → 답변을 표시하는 컴포넌트
+- `Badge.jsx` → 배지(마크) 컴포넌트
+- `Button.jsx` → 공통 버튼 컴포넌트
+- `FeedBody.jsx` → 피드 본문 렌더링 컴포넌트
+- `FeedCard.jsx` → 개별 피드 카드 UI 컴포넌트
+- `FeedCardPlaceholder.jsx` → 피드 카드 로딩 시 표시될 플레이스홀더 컴포넌트
+- `FeedHeader.jsx` → 피드 목록의 헤더 컴포넌트
+- `IconBox.jsx` → 아이콘 박스 컴포넌트
+- `Modal/`
+  - `AnswerModal.jsx` → 답변 입력 모달
+  - `Modal.jsx` → 공통 모달 컴포넌트
+- `Pagination.jsx` → 페이지네이션(페이지 이동) 컴포넌트
+- `ProfileCard.jsx` → 사용자 프로필 카드 컴포넌트
+- `ProfileCardItem.jsx` → 프로필 카드 내부 아이템 컴포넌트
+- `TextForm.jsx` → 텍스트 입력 폼 컴포넌트
+- `common/`
+  - `GlobalStyle.jsx` → 프로젝트 전체에 적용되는 글로벌 스타일
 
-### pages
+### 📂 hooks/ (커스텀 훅 폴더)
+- `useIndividualQuestions.js` → 특정 질문 데이터를 가져오는 훅
+- `useKakaoShare.js` → 카카오 공유 기능을 위한 훅
+- `useScroll.js` → 스크롤 관련 기능을 제공하는 훅
+- `useSubjectInfo.js` → 특정 주제 정보를 가져오는 훅
+- `useTextForm.js` → 텍스트 입력 관리 훅
 
-- 다양한 페이지 화면들
+### 📂 pages/ (페이지 단위 컴포넌트 폴더)
+- `AnswerPage.jsx` → 답변 페이지
+- `IndividualFeed.jsx` → 개별 피드 상세 페이지
+- `MainPage.jsx` → 메인 피드 페이지
+- `QuestionList.jsx` → 질문 목록 페이지
 
-### services
+### 📂 services/ (API 호출 및 데이터 관리 폴더)
+- `answerService.js` → 답변 관련 API 호출
+- `getIndividualQuestions.js` → 특정 질문 데이터를 가져오는 API 호출
+- `getSubjectInfo.js` → 특정 주제 정보를 가져오는 API 호출
+- `mainpageService.js` → 메인 페이지 관련 API 호출
+- `postLikeDislike.js` → 좋아요/싫어요 기능을 처리하는 API 호출
+- `postQuestion.js` → 질문 등록 API 호출
 
-- api 요청 및 비즈니스 로직
-    - axios, fetch를 사용한 api 요청 함수를 모아둔 파일
-    - 로그인, 회원가입 관련
-    - 상품 관련
+### 📂 styles/ (스타일 관련 파일 폴더)
+- `AnswerPageStyle.js` → 답변 페이지 스타일
+- `AnswerStyle.js` → 답변 컴포넌트 스타일
+- `buttonStyle.js` → 버튼 스타일
+- `feedCardPlaceholderStyle.js` → 피드 카드 플레이스홀더 스타일
+- `feedCardStyle.js` → 피드 카드 스타일
+- `individualFeedStyle.js` → 개별 피드 스타일
+- `mainpageStyle.js` → 메인 페이지 스타일
+- `modalStyle.js` → 모달 스타일
+- `rotatingAnimation.js` → 회전 애니메이션 관련 스타일
 
-### context
+### 📄 기타 주요 파일
+- `App.css` → 전체 애플리케이션 스타일
+- `App.jsx` → 애플리케이션의 루트 컴포넌트
+- `index.css` → 글로벌 CSS 스타일
+- `main.jsx` → 애플리케이션의 진입점(React 렌더링 시작)
+- `reset.css` → 브라우저 스타일 초기화
 
-- context api를 사용한 글로벌 상태를 관리하는 폴더
+---
 
-### store
-
-- 상태관리
-- 리덕스나 zustand, recoil을 사용하기 위한 디렉토리
-
-### routes
-
-- 리엑트 라우터 파일을 위한 공간
-
-### utils
-
-- 재사용할 수 있는 자주 사용하는 함수들을 모아놓은 폴더
-- 날짜 변환, 데이터 정리 등
-
-### tests
-
-- 테스트 코드 저장
+- **.gitignore** → Git에 포함되지 않을 파일 및 디렉토리 목록을 정의
+- **eslint.config.js** → ESLint(코드 스타일 및 린팅 도구)의 설정 파일
+- **index.html** → 애플리케이션의 기본 HTML 파일 (React가 렌더링될 루트)
+- **package-lock.json** → 설치된 npm 패키지의 정확한 버전 정보 기록
+- **package.json** → 프로젝트 메타데이터 및 npm 패키지 목록 정의
+- **README.md** → 프로젝트 소개 및 설명 문서
+- **vite.config.js** → Vite(빠른 개발 서버 및 번들러) 설정 파일
 
 <br/>
 <br/>
