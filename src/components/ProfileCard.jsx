@@ -4,7 +4,7 @@ import {
   ProfileCardContainer,
 } from "../styles/profileCardStyle";
 
-import ProfileCardItem from "./ProfilecardItem";
+import ProfileCardItem from "./ProfileCardItem";
 import Pagination from "./Pagination";
 
 function ProfileCard({ profiles }) {
