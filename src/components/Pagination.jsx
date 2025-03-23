@@ -12,7 +12,7 @@ import ArrowLeftIcon from "../assets/icons/Arrow-left.svg";
 // 상수 정의
 const PAGE_GROUP_SIZE = 5;
 const FIRST_PAGE = 1;
-const MAX_PAGE_DISPLAY = 5; // 한 번에 표시할 페이지 개수
+const MAX_PAGE_DISPLAY = 5;
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   // 페이지네이션 범위 계산 (5개씩)
@@ -20,12 +20,13 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     Math.floor((currentPage - FIRST_PAGE) / PAGE_GROUP_SIZE) * PAGE_GROUP_SIZE +
     FIRST_PAGE;
 
-  // 페이지 번호 목록 (동적 계산 제거)
+  // 페이지 번호 목록
   const pageNumbers = Array.from(
     { length: MAX_PAGE_DISPLAY },
     (_, i) => rangeStart + i
   ).filter((page) => page <= totalPages);
 
+  // 페이지네이션 함수
   const handleClick = (page) => {
     if (page >= FIRST_PAGE && page <= totalPages && page !== currentPage) {
       onPageChange(page);

@@ -1,19 +1,20 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 export const Container = styled.div`
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  text-align: center;
 
-  @media (max-width: 600px) {
-    max-width: 100%;
+  @media (max-width: 768px) {
     padding: 16px;
   }
 `;
 
 export const Header = styled.nav`
   width: 80%;
+  max-width: 1200px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -23,11 +24,11 @@ export const Header = styled.nav`
   @media (max-width: 600px) {
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: clamp(8px, 2vw, 16px);
   }
 `;
 
-export const Logo = styled.a`
+export const Logo = styled(Link)`
   display: block;
   width: 146px;
   height: 57px;
@@ -39,7 +40,7 @@ export const Logo = styled.a`
   }
 
   @media (max-width: 600px) {
-    width: 145px;
+    width: min(146px, 30vw);
     height: auto;
   }
 `;
@@ -83,11 +84,11 @@ export const SortButton = styled.button`
   height: 34px;
   background: white;
   border: ${({ active }) =>
-    active ? "1px solid black" : "1px solid var(--Grayscale-40)"};
+    active ? "1px solid var(--gray60)" : "1px solid var(--Grayscale-40)"};
   border-radius: 8px;
   font-size: 14px;
   font-weight: 500;
-  color: ${({ active }) => (active ? "black" : "var(--Grayscale-40)")};
+  color: ${({ active }) => (active ? "var(--gray60)" : "var(--Grayscale-40)")};
 
   > img {
     width: 18px;
@@ -109,9 +110,9 @@ export const DropdownMenu = styled.ul`
   left: 0;
   width: 89px;
   background: white;
-  border: 1px solid #ccc;
+  border: 1px solid var(--gray30);
   border-radius: 8px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow1pt);
   list-style: none;
   padding: 5px 0;
   z-index: 1000;
@@ -127,7 +128,7 @@ export const DropdownItem = styled.li`
   font-weight: 500;
   cursor: pointer;
   text-align: center;
-  color: ${({ selected }) => (selected ? "var(--blue50)" : "black")};
+  color: ${({ selected }) => (selected ? "var(--blue50)" : "var(--gray60)")};
 
   &:hover {
     background: #f0f0f0;
