@@ -12,18 +12,16 @@ export const PageNumber = styled.button`
   margin: 0 8px;
   font-size: 18px;
   color: ${(props) =>
-    props.active
-      ? "var(--brown40)" // active 상태일 때 색상
-      : "var(--Grayscale-40)"}; // 비활성화 상태일 때 색상
+    props.active ? "var(--brown40)" : "var(--Grayscale-40)"};
   cursor: pointer;
 
   &:hover {
-    color: var(--brown40); // hover 시 색상
+    color: var(--brown40);
   }
 
   &:disabled {
     cursor: default;
-    color: var(--Grayscale-40); // disabled 상태일 때 색상
+    color: var(--Grayscale-40);
   }
 `;
 

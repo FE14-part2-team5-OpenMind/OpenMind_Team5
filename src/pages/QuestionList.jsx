@@ -29,9 +29,9 @@ const QuestionList = () => {
   const [profiles, setProfiles] = useState(null);
   const [dataErrorMessage, setDataErrorMessage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [userId, setUserId] = useState("");
+  const [userId, setUserId] = useState([]);
   const [questionCounts, setQuestionCounts] = useState({});
-  const navigate = useNavigate(); // useNavigate 훅을 사용합니다.
+  const navigate = useNavigate();
 
   // API 호출 함수
   const handleSubjectsData = async () => {
@@ -67,7 +67,7 @@ const QuestionList = () => {
 
     if (!storedFeeds) {
       alert("아이디를 입력하세요.");
-      navigate("/"); // alert 창을 띄운 후, index 페이지로 이동
+      navigate("/");
       return;
     }
 
@@ -96,7 +96,7 @@ const QuestionList = () => {
   return (
     <Container>
       <Header>
-        <Logo href="/">
+        <Logo to="/">
           <img src={openMindLogo} alt="Logo" />
         </Logo>
         <Button variant="ask" icon={ArrowRightIcon} onClick={handleAnswerClick}>
@@ -106,6 +106,7 @@ const QuestionList = () => {
 
       <TitleContainer>
         <Title>누구에게 질문할까요?</Title>
+
         <SortDropdown onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
           <SortButton active={isDropdownOpen}>
             {sortOrder}{" "}
@@ -147,7 +148,7 @@ const QuestionList = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         userId={userId}
-        questionCounts={questionCounts} // 전달한 질문 개수
+        questionCounts={questionCounts}
       />
     </Container>
   );
